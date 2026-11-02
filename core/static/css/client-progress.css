@@ -1,0 +1,471 @@
+/* =========================================================
+   FITCONNECT — CLIENT PROGRESS CONTENT
+   The shared shell is controlled by client base.html.
+========================================================= */
+
+.progress-page {
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 54px 52px 80px;
+    box-sizing: border-box;
+}
+
+.progress-page,
+.progress-page * {
+    box-sizing: border-box;
+}
+
+.progress-page > * {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.progress-header {
+    margin: 0 0 36px;
+}
+
+.progress-header .eyebrow {
+    color: #b66cff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+}
+
+.progress-header h1 {
+    margin: 10px 0 12px;
+    color: #f7f4fa;
+    font-size: clamp(38px, 4vw, 52px);
+    line-height: 1.02;
+    letter-spacing: -2px;
+}
+
+.progress-header p {
+    margin: 0;
+    color: #9c94aa;
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+.progress-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.progress-card {
+    min-width: 0;
+    background: linear-gradient(145deg, rgba(29,24,37,.94), rgba(15,12,19,.97));
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.26);
+}
+
+.summary-card {
+    min-height: 132px;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.summary-icon {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    color: #c084fc;
+    background: rgba(168,85,247,.09);
+    border: 1px solid rgba(168,85,247,.14);
+    font-size: 20px;
+}
+
+.summary-copy {
+    min-width: 0;
+}
+
+.summary-copy span,
+.summary-copy small {
+    display: block;
+}
+
+.summary-copy span {
+    color: #7f778c;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.summary-copy strong {
+    display: block;
+    color: #f7f4fa;
+    font-size: 22px;
+    letter-spacing: -.5px;
+    margin-bottom: 4px;
+    overflow-wrap: anywhere;
+}
+
+.summary-copy small {
+    color: #625b6b;
+    font-size: 10px;
+}
+
+.chart-card,
+.nutrition-card,
+.activity-card {
+    padding: 28px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.section-heading h2 {
+    margin: 8px 0 5px;
+    color: #f7f4fa;
+    font-size: 20px;
+    letter-spacing: -.4px;
+}
+
+.section-heading p {
+    margin: 0;
+    color: #716a7d;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.section-eyebrow {
+    color: #b66cff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+}
+
+.metric-tabs {
+    display: flex;
+    gap: 7px;
+    padding: 4px;
+    flex: 0 0 auto;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 12px;
+    background: rgba(255,255,255,.018);
+}
+
+.metric-tab {
+    border: 0;
+    background: transparent;
+    color: #80788d;
+    padding: 8px 12px;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.metric-tab:hover,
+.metric-tab.active {
+    color: #eadcff;
+    background: rgba(168,85,247,.14);
+}
+
+.chart-wrap {
+    width: 100%;
+    min-width: 0;
+    margin-top: 24px;
+}
+
+.trend-chart {
+    width: 100%;
+    max-width: 100%;
+    height: 300px;
+    display: block;
+    overflow: visible;
+}
+
+.grid-line {
+    stroke: rgba(255,255,255,.055);
+    stroke-width: 1;
+}
+
+.axis-line {
+    stroke: rgba(255,255,255,.09);
+    stroke-width: 1;
+}
+
+.trend-area {
+    fill: rgba(168,85,247,.09);
+}
+
+.trend-line {
+    fill: none;
+    stroke: #b66cff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.trend-point {
+    fill: #c084fc;
+    stroke: #1a1222;
+    stroke-width: 3;
+}
+
+.trend-label {
+    fill: #6e6678;
+    font-size: 10px;
+}
+
+.chart-empty-hint {
+    min-height: 18px;
+    margin-top: -8px;
+    color: #746c80;
+    font-size: 11px;
+}
+
+.empty-chart {
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+}
+
+.empty-chart-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    border-radius: 16px;
+    background: rgba(168,85,247,.08);
+    border: 1px solid rgba(168,85,247,.12);
+    font-size: 23px;
+}
+
+.empty-chart h3 {
+    margin: 0 0 6px;
+    color: #f7f4fa;
+    font-size: 16px;
+}
+
+.empty-chart p {
+    max-width: 490px;
+    margin: 0;
+    color: #756d80;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.nutrition-stat {
+    min-width: 0;
+    padding: 19px;
+    border: 1px solid rgba(255,255,255,.055);
+    border-radius: 16px;
+    background: rgba(255,255,255,.018);
+}
+
+.nutrition-stat span,
+.nutrition-stat small {
+    display: block;
+}
+
+.nutrition-stat span {
+    margin-bottom: 8px;
+    color: #847c90;
+    font-size: 11px;
+}
+
+.nutrition-stat strong {
+    display: block;
+    margin-bottom: 3px;
+    color: #f7f4fa;
+    font-size: 24px;
+    letter-spacing: -.7px;
+}
+
+.nutrition-stat small {
+    color: #625b6b;
+    font-size: 10px;
+}
+
+.activity-list {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.activity-row {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 66px minmax(0,1fr);
+    gap: 16px;
+    align-items: center;
+    padding: 14px 0;
+    border-top: 1px solid rgba(255,255,255,.045);
+}
+
+.activity-row:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.activity-date {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(168,85,247,.07);
+    border: 1px solid rgba(168,85,247,.11);
+}
+
+.activity-date strong {
+    color: #f7f4fa;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.activity-date span {
+    margin-top: 4px;
+    color: #8d8399;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.activity-main {
+    min-width: 0;
+}
+
+.activity-main > strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #f7f4fa;
+    font-size: 13px;
+}
+
+.activity-tags {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.activity-tag {
+    max-width: 100%;
+    padding: 6px 9px;
+    border-radius: 9px;
+    color: #8d8498;
+    font-size: 10px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.055);
+    overflow-wrap: anywhere;
+}
+
+.activity-tag.is-good {
+    color: #d8b4fe;
+    background: rgba(168,85,247,.08);
+    border-color: rgba(168,85,247,.14);
+}
+
+.activity-empty {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    color: #746c80;
+}
+
+.activity-empty > span {
+    font-size: 22px;
+}
+
+.activity-empty strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #f3edf8;
+}
+
+.activity-empty p {
+    margin: 0;
+    font-size: 11px;
+}
+
+@media (max-width: 1100px) {
+    .progress-page {
+        padding: 46px 34px 70px;
+    }
+
+    .progress-summary-grid,
+    .nutrition-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+    }
+}
+
+@media (max-width: 800px) {
+    .progress-page {
+        padding: 40px 28px 70px;
+    }
+
+    .section-heading {
+        flex-direction: column;
+    }
+
+    .metric-tabs {
+        width: 100%;
+    }
+
+    .metric-tab {
+        flex: 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .progress-page {
+        padding: 28px 18px 90px;
+    }
+
+    .progress-summary-grid,
+    .nutrition-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card,
+    .nutrition-card,
+    .activity-card {
+        padding: 21px 18px;
+        border-radius: 18px;
+    }
+
+    .summary-card {
+        min-height: 118px;
+        padding: 18px;
+    }
+
+    .trend-chart {
+        height: 240px;
+    }
+}

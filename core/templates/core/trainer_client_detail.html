@@ -1,0 +1,1841 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ client.user.username }} | FitConnect
+    </title>
+
+
+    <!-- SHARED TRAINER STYLES -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+
+    <!-- CLIENT DETAIL PAGE STYLES -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/trainer-client-detail.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================== -->
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <h2>
+            FitConnect
+        </h2>
+
+        <span>
+            Trainer Panel
+        </span>
+
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            href="{% url 'core:trainer_dashboard' %}"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ▣
+            </span>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <!-- CLIENTS -->
+
+        <a
+            href="{% url 'core:trainer_clients' %}"
+            class="nav-item active"
+        >
+
+            <span class="nav-icon">
+                👥
+            </span>
+
+            <span>
+                Clients
+            </span>
+
+        </a>
+
+
+        <!-- QUERIES & SUPPORT -->
+
+        <a
+            href="{% url 'core:trainer_queries' %}"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                💬
+            </span>
+
+            <span>
+                Queries &amp; Support
+            </span>
+
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================== -->
+
+<main class="main-content">
+
+
+    <!-- =====================================================
+         TOPBAR
+    ====================================================== -->
+
+    <header class="topbar">
+
+        <div class="topbar-date">
+
+            <span>
+                Today
+            </span>
+
+            <strong>
+                {% now "l, F j, Y" %}
+            </strong>
+
+        </div>
+
+
+        <div class="trainer-profile">
+
+            <div class="trainer-avatar">
+                T
+            </div>
+
+            <div class="trainer-info">
+
+                <span>
+                    Trainer
+                </span>
+
+                <strong>
+                    FitConnect
+                </strong>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         CLIENT DETAIL PAGE
+    ====================================================== -->
+
+    <section class="client-details-page">
+
+
+        <!-- =================================================
+             BACK TO CLIENTS
+        ================================================== -->
+
+        <div class="details-page-top">
+
+            <a
+                href="{% url 'core:trainer_clients' %}"
+                class="details-back"
+            >
+
+                <span>
+                    ←
+                </span>
+
+                <span>
+                    Back to Clients
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             CLIENT PROFILE HEADER
+        ================================================== -->
+
+        <section class="client-profile-header">
+
+            <div class="profile-header-left">
+
+
+                <!-- CLIENT AVATAR -->
+
+                <div class="large-client-avatar">
+
+                    {{ client.user.username|first|upper }}
+
+                </div>
+
+
+                <!-- CLIENT INFORMATION -->
+
+                <div class="profile-header-info">
+
+                    <span class="profile-eyebrow">
+                        CLIENT PROFILE
+                    </span>
+
+                    <h1>
+                        {{ client.user.username }}
+                    </h1>
+
+                    <p>
+                        Client · @{{ client.user.username }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- HEADER ACTIONS -->
+
+            <div class="profile-header-actions">
+
+
+                <!-- MEMBERSHIP STATUS -->
+
+                <div class="profile-header-status">
+
+                    {% if subscription_status == "active" %}
+
+                        <span class="client-status status-active">
+
+                            <span class="status-dot"></span>
+
+                            Active Membership
+
+                        </span>
+
+                    {% elif subscription_status == "inactive" %}
+
+                        <span class="client-status status-unknown">
+
+                            <span class="status-dot"></span>
+
+                            Membership Inactive
+
+                        </span>
+
+                    {% elif subscription_status == "expired" %}
+
+                        <span class="client-status status-expired">
+
+                            <span class="status-dot"></span>
+
+                            Membership Expired
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="client-status status-unknown">
+
+                            <span class="status-dot"></span>
+
+                            Membership Not Set
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+             <!-- CLIENT ACTIONS -->
+
+<div class="client-header-actions">
+
+    <a
+        href="{% url 'core:trainer_client_progress' client.id %}"
+        class="detail-action secondary"
+    >
+        <span>📈</span>
+        View Progress
+    </a>
+
+    <a
+        href="{% url 'core:trainer_client_plans' client.id %}"
+        class="detail-action primary"
+    >
+        <span></span>
+        Workout Management
+    </a>
+
+</div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             QUICK STATS
+        ================================================== -->
+
+        <section class="client-stat-grid">
+
+
+            <!-- ATTENDANCE -->
+
+            <div class="client-stat-card">
+
+                <div class="stat-card-top">
+
+                    <span class="section-eyebrow">
+                        ATTENDANCE
+                    </span>
+
+                    <span class="stat-icon">
+                        ✓
+                    </span>
+
+                </div>
+
+                <strong class="client-stat-number">
+                    {{ attendance_count }}
+                </strong>
+
+                <span class="client-stat-label">
+                    Days marked present
+                </span>
+
+            </div>
+
+
+            <!-- SLEEP -->
+
+            <div class="client-stat-card">
+
+                <div class="stat-card-top">
+
+                    <span class="section-eyebrow">
+                        SLEEP
+                    </span>
+
+                    <span class="stat-icon">
+                        ◐
+                    </span>
+
+                </div>
+
+                <strong class="client-stat-number">
+
+                    {% if daily_log and daily_log.sleep_hours %}
+
+                        {{ daily_log.sleep_hours }}
+
+                    {% else %}
+
+                        —
+
+                    {% endif %}
+
+                </strong>
+
+                <span class="client-stat-label">
+                    Hours today
+                </span>
+
+            </div>
+
+
+            <!-- WATER -->
+
+            <div class="client-stat-card">
+
+                <div class="stat-card-top">
+
+                    <span class="section-eyebrow">
+                        WATER
+                    </span>
+
+                    <span class="stat-icon">
+                        ◇
+                    </span>
+
+                </div>
+
+                <strong class="client-stat-number">
+
+                    {% if daily_log and daily_log.water_liters %}
+
+                        {{ daily_log.water_liters }}
+
+                    {% else %}
+
+                        —
+
+                    {% endif %}
+
+                </strong>
+
+                <span class="client-stat-label">
+                    Litres today
+                </span>
+
+            </div>
+
+
+            <!-- NUTRITION -->
+
+            <div class="client-stat-card">
+
+                <div class="stat-card-top">
+
+                    <span class="section-eyebrow">
+                        NUTRITION
+                    </span>
+
+                    <span class="stat-icon">
+                        ◆
+                    </span>
+
+                </div>
+
+                <strong class="client-stat-number nutrition-stat">
+
+                    {% if daily_log and daily_log.nutrition %}
+
+                        {{ daily_log.get_nutrition_display }}
+
+                    {% else %}
+
+                        —
+
+                    {% endif %}
+
+                </strong>
+
+                <span class="client-stat-label">
+                    Today's quality
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             DETAILS GRID
+        ================================================== -->
+
+        <div class="details-grid">
+
+
+            <!-- =================================================
+                 MEMBERSHIP
+            ================================================== -->
+
+            <section class="details-card full-width">
+
+
+                <div class="details-card-header">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            MEMBERSHIP
+                        </span>
+
+                        <h2>
+                            Membership Details
+                        </h2>
+
+                        <p class="details-card-subtitle">
+                            Manage this client's subscription and membership history
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     CREATE NEW SUBSCRIPTION
+                ================================================== -->
+
+                <div class="subscription-create-section">
+
+                    <div class="subscription-section-heading">
+
+                        <div>
+
+                            <h3>
+                                Activate New Subscription
+                            </h3>
+
+                            <p>
+                                Create a new membership for this client.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <form
+                        method="POST"
+                        class="subscription-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="action"
+                            value="create_subscription"
+                        >
+
+
+                        <!-- PLAN NAME -->
+
+                        <div class="subscription-form-group">
+
+                            <label for="plan-name">
+                                Plan Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="plan-name"
+                                name="plan_name"
+                                placeholder="Example: Premium Membership"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- AMOUNT -->
+
+                        <div class="subscription-form-group">
+
+                            <label for="subscription-amount">
+                                Amount
+                            </label>
+
+                            <input
+                                type="number"
+                                id="subscription-amount"
+                                name="amount"
+                                placeholder="₹ Amount"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+
+                        <!-- START DATE -->
+
+                        <div class="subscription-form-group">
+
+                            <label for="subscription-start-date">
+                                Start Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="subscription-start-date"
+                                name="start_date"
+                                value="{{ today|date:'Y-m-d' }}"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- DURATION -->
+
+                        <div class="subscription-form-group">
+
+                            <label for="subscription-duration">
+                                Duration
+                            </label>
+
+                            <select
+                                id="subscription-duration"
+                                name="duration"
+                                required
+                            >
+
+                                <option value="">
+                                    Select duration
+                                </option>
+
+                                <option value="1_month">
+                                    1 Month
+                                </option>
+
+                                <option value="3_months">
+                                    3 Months
+                                </option>
+
+                                <option value="6_months">
+                                    6 Months
+                                </option>
+
+                                <option value="1_year">
+                                    1 Year
+                                </option>
+
+                                <option value="custom">
+                                    Custom Duration
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- CUSTOM DAYS -->
+
+                        <div
+                            class="subscription-form-group custom-duration-group"
+                            id="custom-duration-group"
+                            style="display: none;"
+                        >
+
+                            <label for="custom-days">
+                                Custom Duration
+                            </label>
+
+                            <input
+                                type="number"
+                                id="custom-days"
+                                name="custom_days"
+                                placeholder="Number of days"
+                                min="1"
+                            >
+
+                            <span class="form-help-text">
+                                Enter the number of days.
+                            </span>
+
+                        </div>
+
+
+                        <!-- SUBMIT -->
+
+                        <div class="subscription-form-actions">
+
+                            <button
+                                type="submit"
+                                class="membership-action-button activate-button"
+                            >
+
+                                Activate Subscription
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- =================================================
+                     CURRENT SUBSCRIPTION
+                ================================================== -->
+
+                {% if current_subscription %}
+
+                    <div class="current-subscription-section">
+
+                        <div class="subscription-section-heading">
+
+                            <div>
+
+                                <h3>
+                                    Current Subscription
+                                </h3>
+
+                                <p>
+
+                                    {% if subscription_status == "active" %}
+
+                                        This membership is currently active for this client.
+
+                                    {% elif subscription_status == "inactive" %}
+
+                                        This membership is currently inactive but has not expired.
+
+                                    {% elif subscription_status == "expired" %}
+
+                                        This membership has expired.
+
+                                    {% else %}
+
+                                        Membership information for this client.
+
+                                    {% endif %}
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- SUMMARY -->
+
+                        <div class="membership-status-row">
+
+
+                            <!-- STATUS -->
+
+                            <div class="membership-status-info">
+
+                                <span>
+                                    Status
+                                </span>
+
+
+                                {% if subscription_status == "active" %}
+
+                                    <strong class="membership-status-active">
+                                        🟢 Active
+                                    </strong>
+
+                                {% elif subscription_status == "inactive" %}
+
+                                    <strong class="membership-status-inactive">
+                                        🔴 Inactive
+                                    </strong>
+
+                                {% elif subscription_status == "expired" %}
+
+                                    <strong class="membership-status-expired">
+                                        ⚠️ Expired
+                                    </strong>
+
+                                {% else %}
+
+                                    <strong>
+                                        —
+                                    </strong>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- PLAN -->
+
+                            <div class="membership-status-info">
+
+                                <span>
+                                    Plan
+                                </span>
+
+                                <strong>
+                                    {{ current_subscription.plan_name }}
+                                </strong>
+
+                            </div>
+
+
+                            <!-- AMOUNT -->
+
+                            <div class="membership-status-info">
+
+                                <span>
+                                    Amount
+                                </span>
+
+                                <strong>
+
+                                    {% if current_subscription.amount %}
+
+                                        ₹{{ current_subscription.amount }}
+
+                                    {% else %}
+
+                                        —
+
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DATES -->
+
+                        <div class="membership-grid">
+
+
+                            <div class="membership-item">
+
+                                <span>
+                                    Start Date
+                                </span>
+
+                                <strong>
+                                    {{ current_subscription.start_date|date:"d M Y" }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="membership-item">
+
+                                <span>
+                                    End Date
+                                </span>
+
+                                <strong>
+                                    {{ current_subscription.end_date|date:"d M Y" }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="membership-item">
+
+                                <span>
+                                    Days Remaining
+                                </span>
+
+                                <strong>
+
+                                    {% if subscription_status == "expired" %}
+
+                                        Expired
+
+                                    {% elif days_remaining is not None %}
+
+                                        {{ days_remaining }} days
+
+                                    {% else %}
+
+                                        —
+
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- CURRENT SUBSCRIPTION ACTION -->
+
+                        <div class="membership-action">
+
+
+                            {% if subscription_status == "active" %}
+
+                                <form method="POST">
+
+                                    {% csrf_token %}
+
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="deactivate"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="subscription_id"
+                                        value="{{ current_subscription.id }}"
+                                    >
+
+                                    <button
+                                        type="submit"
+                                        class="membership-action-button deactivate-button"
+                                    >
+
+                                        Deactivate Subscription
+
+                                    </button>
+
+                                </form>
+
+
+                            {% elif subscription_status == "inactive" %}
+
+                                <form method="POST">
+
+                                    {% csrf_token %}
+
+                                    <input
+                                        type="hidden"
+                                        name="action"
+                                        value="activate"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="subscription_id"
+                                        value="{{ current_subscription.id }}"
+                                    >
+
+                                    <button
+                                        type="submit"
+                                        class="membership-action-button activate-button"
+                                    >
+
+                                        Activate Subscription
+
+                                    </button>
+
+                                </form>
+
+
+                            {% elif subscription_status == "expired" %}
+
+                                <span class="membership-expired-message">
+
+                                    This subscription has expired.
+                                    Create a new subscription above.
+
+                                </span>
+
+                            {% endif %}
+
+
+                        </div>
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <!-- =================================================
+                         NO CURRENT SUBSCRIPTION
+                    ================================================== -->
+
+                    <div class="no-data-box">
+
+                        <span class="no-data-icon">
+                            ○
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                No active subscription
+                            </strong>
+
+                            <p>
+                                This client currently has no active membership.
+                                Use the form above to create one.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =================================================
+                     SUBSCRIPTION HISTORY
+                ================================================== -->
+
+                <div class="subscription-history-section">
+
+                    <div class="subscription-section-heading">
+
+                        <div>
+
+                            <span class="section-eyebrow">
+                                HISTORY
+                            </span>
+
+                            <h3>
+                                Subscription History
+                            </h3>
+
+                            <p>
+                                Previous memberships are kept here for record keeping.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    {% if subscription_history %}
+
+                        <div class="subscription-history-wrapper">
+
+                            <table class="subscription-history-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Plan
+                                        </th>
+
+                                        <th>
+                                            Amount
+                                        </th>
+
+                                        <th>
+                                            Start Date
+                                        </th>
+
+                                        <th>
+                                            End Date
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                        <th>
+                                            Action
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    {% for subscription in subscription_history %}
+
+                                        <tr>
+
+
+                                            <!-- PLAN -->
+
+                                            <td>
+
+                                                <strong>
+                                                    {{ subscription.plan_name }}
+                                                </strong>
+
+                                            </td>
+
+
+                                            <!-- AMOUNT -->
+
+                                            <td>
+
+                                                {% if subscription.amount %}
+
+                                                    ₹{{ subscription.amount }}
+
+                                                {% else %}
+
+                                                    —
+
+                                                {% endif %}
+
+                                            </td>
+
+
+                                            <!-- START -->
+
+                                            <td>
+
+                                                {{ subscription.start_date|date:"d M Y" }}
+
+                                            </td>
+
+
+                                            <!-- END -->
+
+                                            <td>
+
+                                                {{ subscription.end_date|date:"d M Y" }}
+
+                                            </td>
+
+
+                                            <!-- STATUS -->
+
+                                            <td>
+
+                                                {% if subscription.status == "active" %}
+
+                                                    <span class="history-status history-status-active">
+                                                        Active
+                                                    </span>
+
+                                                {% elif subscription.status == "inactive" %}
+
+                                                    <span class="history-status history-status-inactive">
+                                                        Inactive
+                                                    </span>
+
+                                                {% elif subscription.status == "expired" %}
+
+                                                    <span class="history-status history-status-expired">
+                                                        Expired
+                                                    </span>
+
+                                                {% endif %}
+
+                                            </td>
+
+
+                                            <!-- ACTION -->
+
+                                            <td>
+
+
+                                                {% if subscription.status == "inactive" and subscription.end_date >= today %}
+
+                                                    <form method="POST">
+
+                                                        {% csrf_token %}
+
+                                                        <input
+                                                            type="hidden"
+                                                            name="action"
+                                                            value="activate"
+                                                        >
+
+                                                        <input
+                                                            type="hidden"
+                                                            name="subscription_id"
+                                                            value="{{ subscription.id }}"
+                                                        >
+
+                                                        <button
+                                                            type="submit"
+                                                            class="history-action-button"
+                                                        >
+
+                                                            Activate
+
+                                                        </button>
+
+                                                    </form>
+
+
+                                                {% elif subscription.status == "active" %}
+
+                                                    <form method="POST">
+
+                                                        {% csrf_token %}
+
+                                                        <input
+                                                            type="hidden"
+                                                            name="action"
+                                                            value="deactivate"
+                                                        >
+
+                                                        <input
+                                                            type="hidden"
+                                                            name="subscription_id"
+                                                            value="{{ subscription.id }}"
+                                                        >
+
+                                                        <button
+                                                            type="submit"
+                                                            class="history-action-button deactivate-history-button"
+                                                        >
+
+                                                            Deactivate
+
+                                                        </button>
+
+                                                    </form>
+
+
+                                                {% else %}
+
+                                                    <span class="history-no-action">
+                                                        —
+                                                    </span>
+
+                                                {% endif %}
+
+                                            </td>
+
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+                    {% else %}
+
+                        <div class="no-data-box">
+
+                            <span class="no-data-icon">
+                                ○
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    No subscription history
+                                </strong>
+
+                                <p>
+                                    Subscription records will appear here after a membership is created.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 TODAY'S LIFESTYLE
+            ================================================== -->
+
+            <section class="details-card full-width">
+
+
+                <div class="details-card-header">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            TODAY
+                        </span>
+
+                        <h2>
+                            Today's Lifestyle
+                        </h2>
+
+                        <p class="details-card-subtitle">
+                            Latest information submitted by the client
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% if daily_log %}
+
+                    <div class="lifestyle-grid">
+
+
+                        <!-- SLEEP -->
+
+                        <div class="lifestyle-item">
+
+                            <div class="lifestyle-item-top">
+
+                                <span class="lifestyle-label">
+                                    Sleep
+                                </span>
+
+                                <span class="lifestyle-mini-icon">
+                                    ◐
+                                </span>
+
+                            </div>
+
+                            <strong class="lifestyle-value">
+
+                                {% if daily_log.sleep_hours %}
+
+                                    {{ daily_log.sleep_hours }} hrs
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </strong>
+
+                            <span class="lifestyle-note">
+                                Today's sleep
+                            </span>
+
+                        </div>
+
+
+                        <!-- WATER -->
+
+                        <div class="lifestyle-item">
+
+                            <div class="lifestyle-item-top">
+
+                                <span class="lifestyle-label">
+                                    Water
+                                </span>
+
+                                <span class="lifestyle-mini-icon">
+                                    ◇
+                                </span>
+
+                            </div>
+
+                            <strong class="lifestyle-value">
+
+                                {% if daily_log.water_liters %}
+
+                                    {{ daily_log.water_liters }} L
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </strong>
+
+                            <span class="lifestyle-note">
+                                Today's intake
+                            </span>
+
+                        </div>
+
+
+                        <!-- NUTRITION -->
+
+                        <div class="lifestyle-item">
+
+                            <div class="lifestyle-item-top">
+
+                                <span class="lifestyle-label">
+                                    Nutrition
+                                </span>
+
+                                <span class="lifestyle-mini-icon">
+                                    ◆
+                                </span>
+
+                            </div>
+
+                            <strong class="lifestyle-value">
+
+                                {% if daily_log.nutrition %}
+
+                                    {{ daily_log.get_nutrition_display }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </strong>
+
+                            <span class="lifestyle-note">
+                                Today's quality
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                {% else %}
+
+                    <div class="no-data-box">
+
+                        <span class="no-data-icon">
+                            ○
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                No lifestyle data yet
+                            </strong>
+
+                            <p>
+                                This client has not recorded today's lifestyle information.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+            </section>
+
+
+            <!-- =================================================
+                 DAILY HISTORY
+            ================================================== -->
+
+            <section class="details-card full-width">
+
+
+                <div class="details-card-header">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            DAILY HISTORY
+                        </span>
+
+                        <h2>
+                            Recent Lifestyle Logs
+                        </h2>
+
+                        <p class="details-card-subtitle">
+                            Last seven recorded daily logs
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% if recent_logs %}
+
+                    <div class="logs-table-wrapper">
+
+                        <table class="logs-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Date
+                                    </th>
+
+                                    <th>
+                                        Attendance
+                                    </th>
+
+                                    <th>
+                                        Marked By
+                                    </th>
+
+                                    <th>
+                                        Sleep
+                                    </th>
+
+                                    <th>
+                                        Water
+                                    </th>
+
+                                    <th>
+                                        Nutrition
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for log in recent_logs %}
+
+                                    <tr>
+
+                                        <td class="log-date">
+                                            {{ log.date|date:"d M Y" }}
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if log.attendance %}
+
+                                                <span class="attendance-badge present">
+
+                                                    <span>
+                                                        ✓
+                                                    </span>
+
+                                                    Present
+
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="attendance-badge not-present">
+
+                                                    <span>
+                                                        —
+                                                    </span>
+
+                                                    Not Marked
+
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if log.attendance_marked_by == "client" %}
+
+                                                <span class="source-badge client-source">
+                                                    Client
+                                                </span>
+
+                                            {% elif log.attendance_marked_by == "trainer" %}
+
+                                                <span class="source-badge trainer-source">
+                                                    Trainer
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="source-empty">
+                                                    —
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if log.sleep_hours %}
+
+                                                {{ log.sleep_hours }} hrs
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if log.water_liters %}
+
+                                                {{ log.water_liters }} L
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if log.nutrition %}
+
+                                                <span
+                                                    class="nutrition-value nutrition-{{ log.nutrition }}"
+                                                >
+
+                                                    {{ log.get_nutrition_display }}
+
+                                                </span>
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                {% else %}
+
+                    <div class="no-data-box">
+
+                        <span class="no-data-icon">
+                            ○
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                No lifestyle logs available
+                            </strong>
+
+                            <p>
+                                Daily lifestyle information will appear here once recorded.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+            </section>
+
+
+            <!-- =================================================
+                 RECENT QUERIES
+            ================================================== -->
+
+            <section class="details-card full-width">
+
+
+                <div class="details-card-header">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            SUPPORT
+                        </span>
+
+                        <h2>
+                            Recent Queries
+                        </h2>
+
+                        <p class="details-card-subtitle">
+                            Recent questions submitted by this client
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% if queries %}
+
+                    <div class="queries-list">
+
+                        {% for query in queries %}
+
+                            <div class="client-query">
+
+                                <div class="query-main">
+
+                                    <div class="query-top">
+
+                                        <strong>
+                                            {{ query.subject }}
+                                        </strong>
+
+                                        <span
+                                            class="query-status query-status-{{ query.status }}"
+                                        >
+
+                                            {{ query.get_status_display }}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <p class="query-message">
+
+                                        {{ query.message|truncatechars:180 }}
+
+                                    </p>
+
+
+                                    <span class="query-date">
+
+                                        {{ query.created_at|date:"F j, Y" }}
+
+                                    </span>
+
+                                </div>
+
+
+                                <span class="query-arrow">
+                                    →
+                                </span>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                {% else %}
+
+                    <div class="no-data-box">
+
+                        <span class="no-data-icon">
+                            ○
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                No queries yet
+                            </strong>
+
+                            <p>
+                                This client has not submitted any support requests.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+            </section>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+</div>
+
+
+<!-- =========================================================
+     CUSTOM SUBSCRIPTION DURATION
+========================================================== -->
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const durationSelect =
+            document.getElementById(
+                "subscription-duration"
+            );
+
+        const customDurationGroup =
+            document.getElementById(
+                "custom-duration-group"
+            );
+
+        const customDaysInput =
+            document.getElementById(
+                "custom-days"
+            );
+
+
+        if (!durationSelect) {
+            return;
+        }
+
+
+        function updateCustomDuration() {
+
+            if (durationSelect.value === "custom") {
+
+                customDurationGroup.style.display =
+                    "block";
+
+                customDaysInput.required =
+                    true;
+
+            } else {
+
+                customDurationGroup.style.display =
+                    "none";
+
+                customDaysInput.required =
+                    false;
+
+                customDaysInput.value =
+                    "";
+
+            }
+
+        }
+
+
+        durationSelect.addEventListener(
+            "change",
+            updateCustomDuration
+        );
+
+
+        updateCustomDuration();
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

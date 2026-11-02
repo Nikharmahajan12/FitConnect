@@ -1,0 +1,1695 @@
+/* =========================================================
+   FITCONNECT — TRAINER CLIENTS
+   Complete Page Styling
+========================================================= */
+
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+    --bg: #08070d;
+    --bg-light: #0d0b13;
+
+    --sidebar: #0b0910;
+
+    --surface: #11101a;
+    --surface-2: #151320;
+    --surface-3: #1a1724;
+
+    --border: #282331;
+    --border-light: #393047;
+
+    --text: #f7f5fb;
+    --text-soft: #c7c1d0;
+    --text-muted: #858091;
+
+    --purple: #a855f7;
+    --purple-light: #c084fc;
+    --purple-dark: #7c3aed;
+
+    --green: #4ade80;
+    --yellow: #facc15;
+    --red: #fb7185;
+
+    --sidebar-width: 290px;
+
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+    --radius-xl: 22px;
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 75% 0%,
+            rgba(124, 58, 237, 0.10),
+            transparent 34%
+        ),
+        var(--bg);
+
+    color: var(--text);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    overflow-x: hidden;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app {
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: var(--sidebar-width);
+    height: 100vh;
+
+    padding: 34px 20px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0d0b12 0%,
+            #09080d 100%
+        );
+
+    border-right: 1px solid var(--border);
+
+    z-index: 1000;
+}
+
+
+/* =========================================================
+   SIDEBAR LOGO
+========================================================= */
+
+.sidebar-logo {
+    padding: 5px 2px 30px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.sidebar-logo h2 {
+    color: var(--text);
+
+    font-size: 23px;
+    font-weight: 800;
+
+    letter-spacing: -0.8px;
+}
+
+.sidebar-logo span {
+    display: block;
+
+    margin-top: 7px;
+
+    color: var(--text-muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   SIDEBAR NAVIGATION
+========================================================= */
+
+.sidebar-nav {
+    margin-top: 28px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.nav-item {
+    position: relative;
+
+    width: 100%;
+    min-height: 49px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 14px;
+
+    border: 1px solid transparent;
+    border-radius: 14px;
+
+    color: var(--text-muted);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.nav-item:hover {
+    color: var(--text);
+
+    background:
+        rgba(255, 255, 255, 0.035);
+}
+
+.nav-item.active {
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(168, 85, 247, 0.18),
+            rgba(168, 85, 247, 0.05)
+        );
+
+    border-color:
+        rgba(168, 85, 247, 0.34);
+}
+
+.nav-item.active::before {
+    content: "";
+
+    position: absolute;
+
+    left: -1px;
+    top: 8px;
+    bottom: 8px;
+
+    width: 3px;
+
+    border-radius: 0 4px 4px 0;
+
+    background: var(--purple);
+
+    box-shadow:
+        0 0 14px rgba(168, 85, 247, 0.65);
+}
+
+.nav-icon {
+    width: 34px;
+    height: 34px;
+
+    margin-right: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.045);
+
+    font-size: 14px;
+}
+
+.nav-item.active .nav-icon {
+    background:
+        rgba(168, 85, 247, 0.16);
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.main-content {
+    width: calc(100% - var(--sidebar-width));
+    min-height: 100vh;
+
+    margin-left: var(--sidebar-width);
+
+    padding:
+        0
+        44px
+        70px;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    width: 100%;
+    min-height: 140px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.06);
+}
+
+.topbar-date {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--text);
+
+    font-size: 14px;
+}
+
+.topbar-date span {
+    color: var(--purple-light);
+
+    font-weight: 700;
+}
+
+.topbar-date strong {
+    color: var(--text);
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   TRAINER PROFILE
+========================================================= */
+
+.trainer-profile {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+}
+
+.trainer-avatar {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(168, 85, 247, 0.24),
+            rgba(124, 58, 237, 0.09)
+        );
+
+    border:
+        1px solid rgba(168, 85, 247, 0.34);
+
+    color: var(--purple-light);
+
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.trainer-info strong {
+    display: block;
+
+    color: var(--text);
+
+    font-size: 14px;
+}
+
+.trainer-info span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--text-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.page-header {
+    width: 100%;
+
+    padding:
+        42px
+        0
+        30px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        430px;
+
+    align-items: center;
+
+    gap: 45px;
+}
+
+.page-header-main {
+    min-width: 0;
+}
+
+.page-eyebrow,
+.section-eyebrow {
+    display: block;
+
+    color: var(--purple-light);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.6px;
+
+    text-transform: uppercase;
+}
+
+.page-header h1 {
+    margin-top: 8px;
+
+    color: var(--text);
+
+    font-size: 48px;
+    line-height: 1.05;
+
+    font-weight: 800;
+
+    letter-spacing: -2px;
+}
+
+.page-header p {
+    max-width: 680px;
+
+    margin-top: 12px;
+
+    color: var(--text-soft);
+
+    font-size: 15px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   GENERIC DASHBOARD CARD
+========================================================= */
+
+.dashboard-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.035),
+            rgba(255, 255, 255, 0.012)
+        );
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        var(--radius-lg);
+}
+
+
+/* =========================================================
+   CONNECT CLIENT CARD
+========================================================= */
+
+.connect-client-card {
+    width: 100%;
+
+    margin-bottom: 24px;
+
+    padding:
+        28px
+        30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(168, 85, 247, 0.09),
+            rgba(255, 255, 255, 0.018)
+        );
+
+    border:
+        1px solid rgba(168, 85, 247, 0.25);
+
+    border-radius:
+        var(--radius-lg);
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.18);
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.connect-client-card:hover {
+    border-color:
+        rgba(168, 85, 247, 0.38);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(168, 85, 247, 0.12),
+            rgba(255, 255, 255, 0.022)
+        );
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   CONNECT CLIENT CONTENT
+========================================================= */
+
+.connect-client-content {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(420px, 0.9fr);
+
+    align-items: center;
+
+    gap: 55px;
+}
+
+
+/* =========================================================
+   CONNECTION INFORMATION
+========================================================= */
+
+.connect-client-info {
+    min-width: 0;
+}
+
+.connect-client-info .section-eyebrow {
+    margin-bottom: 7px;
+}
+
+.connect-client-info h2 {
+    color: var(--text);
+
+    font-size: 22px;
+    line-height: 1.2;
+
+    font-weight: 750;
+
+    letter-spacing: -0.6px;
+}
+
+.connect-client-info p {
+    max-width: 520px;
+
+    margin-top: 7px;
+
+    color: var(--text-soft);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   CONNECT CLIENT FORM
+========================================================= */
+
+.connect-client-form {
+    width: 100%;
+
+    min-width: 0;
+}
+
+.connect-client-form label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--text-soft);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.connect-client-input {
+    width: 100%;
+
+    display: flex;
+    align-items: stretch;
+
+    gap: 9px;
+}
+
+.connect-client-input input {
+    flex: 1;
+
+    min-width: 0;
+
+    height: 44px;
+
+    padding:
+        0
+        13px;
+
+    background:
+        rgba(0, 0, 0, 0.25);
+
+    border:
+        1px solid var(--border-light);
+
+    border-radius:
+        10px;
+
+    outline: none;
+
+    color: var(--text);
+
+    font-size: 12px;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.connect-client-input input::placeholder {
+    color: #686271;
+}
+
+.connect-client-input input:focus {
+    border-color:
+        rgba(168, 85, 247, 0.65);
+
+    background:
+        rgba(0, 0, 0, 0.35);
+
+    box-shadow:
+        0 0 0 3px rgba(168, 85, 247, 0.09);
+}
+
+
+/* =========================================================
+   CONNECT CLIENT BUTTON
+========================================================= */
+
+.connect-client-input button {
+    height: 44px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding:
+        0
+        17px;
+
+    border:
+        1px solid rgba(168, 85, 247, 0.38);
+
+    border-radius:
+        10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(168, 85, 247, 0.20),
+            rgba(124, 58, 237, 0.14)
+        );
+
+    color: var(--purple-light);
+
+    font-size: 11px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.connect-client-input button:hover {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(168, 85, 247, 0.30),
+            rgba(124, 58, 237, 0.20)
+        );
+
+    border-color:
+        rgba(168, 85, 247, 0.60);
+
+    transform:
+        translateY(-1px);
+}
+
+.connect-client-input button span:last-child {
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   CONNECT HELP TEXT
+========================================================= */
+
+.connect-client-help {
+    display: block;
+
+    margin-top: 8px;
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   CLIENT SUMMARY
+========================================================= */
+
+.clients-summary {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 24px;
+}
+
+.client-summary-card {
+    position: relative;
+
+    min-height: 132px;
+
+    padding:
+        23px
+        24px;
+
+    overflow: hidden;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.client-summary-card:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        var(--border-light);
+
+    background:
+        var(--surface-2);
+}
+
+.client-summary-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 130px;
+    height: 130px;
+
+    right: -55px;
+    bottom: -65px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(168, 85, 247, 0.08);
+
+    pointer-events: none;
+}
+
+.summary-content {
+    position: relative;
+
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.summary-label {
+    color: var(--text-muted);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.summary-value {
+    margin-top: 7px;
+
+    color: var(--text);
+
+    font-size: 30px;
+    line-height: 1.1;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+}
+
+.summary-date {
+    font-size: 28px;
+}
+
+.summary-description {
+    margin-top: 6px;
+
+    color: var(--text-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   CLIENT LIST CARD
+========================================================= */
+
+.clients-list-card {
+    width: 100%;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================================
+   CLIENT LIST HEADER
+========================================================= */
+
+.card-header {
+    min-height: 104px;
+
+    padding:
+        25px
+        27px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+.card-header h2 {
+    margin-top: 5px;
+
+    color: var(--text);
+
+    font-size: 21px;
+
+    font-weight: 750;
+
+    letter-spacing: -0.5px;
+}
+
+.card-header p {
+    margin-top: 5px;
+
+    color: var(--text-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   CLIENT COUNT
+========================================================= */
+
+.client-list-count {
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 5px;
+
+    padding:
+        8px
+        13px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(168, 85, 247, 0.09);
+
+    border:
+        1px solid rgba(168, 85, 247, 0.22);
+
+    white-space: nowrap;
+}
+
+.client-list-count strong {
+    color: var(--purple-light);
+
+    font-size: 13px;
+}
+
+.client-list-count span {
+    color: var(--text-soft);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   CLIENT LIST
+========================================================= */
+
+.clients-list {
+    width: 100%;
+
+    padding: 8px;
+}
+
+
+/* =========================================================
+   CLIENT ITEM
+========================================================= */
+
+.client-item {
+    width: 100%;
+
+    min-width: 0;
+
+    padding:
+        19px
+        18px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(210px, 1.7fr)
+        minmax(120px, 0.9fr)
+        minmax(145px, 1fr)
+        minmax(120px, 0.9fr)
+        auto;
+
+    align-items: center;
+
+    gap: 22px;
+
+    border-radius:
+        14px;
+
+    transition:
+        background 0.2s ease;
+}
+
+.client-item:hover {
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+
+/* =========================================================
+   CLIENT PROFILE
+========================================================= */
+
+.client-profile {
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+.client-avatar {
+    width: 50px;
+    height: 50px;
+
+    min-width: 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius:
+        14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(168, 85, 247, 0.23),
+            rgba(124, 58, 237, 0.09)
+        );
+
+    border:
+        1px solid rgba(168, 85, 247, 0.30);
+
+    color: var(--purple-light);
+
+    font-size: 16px;
+
+    font-weight: 800;
+}
+
+.client-profile-info {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.client-name {
+    color: var(--text);
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.client-username {
+    margin-top: 3px;
+
+    color: var(--text-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   CLIENT INFORMATION
+========================================================= */
+
+.client-info-block {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.client-info-label {
+    color: var(--text-muted);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.9px;
+
+    text-transform: uppercase;
+}
+
+.client-info-value {
+    color: var(--text-soft);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   MEMBERSHIP STATUS
+========================================================= */
+
+.membership-status {
+    width: fit-content;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding:
+        5px
+        9px;
+
+    border-radius:
+        999px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+}
+
+.membership-active {
+    color: var(--green);
+
+    background:
+        rgba(74, 222, 128, 0.09);
+}
+
+.membership-active .status-dot {
+    background:
+        var(--green);
+
+    box-shadow:
+        0 0 8px rgba(74, 222, 128, 0.65);
+}
+
+.membership-expired {
+    color: var(--red);
+
+    background:
+        rgba(251, 113, 133, 0.09);
+}
+
+.membership-expired .status-dot {
+    background:
+        var(--red);
+}
+
+.membership-unknown {
+    width: fit-content;
+
+    padding:
+        5px
+        9px;
+
+    border-radius:
+        999px;
+
+    color: var(--text-muted);
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ATTENDANCE
+========================================================= */
+
+.client-attendance {
+    align-items: flex-start;
+}
+
+.client-attendance-status {
+    width: fit-content;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding:
+        5px
+        9px;
+
+    border-radius:
+        999px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+.client-attendance-status.present {
+    color: var(--green);
+
+    background:
+        rgba(74, 222, 128, 0.09);
+}
+
+.client-attendance-status.present span {
+    font-size: 12px;
+}
+
+.client-attendance-status.waiting {
+    color: var(--yellow);
+
+    background:
+        rgba(250, 204, 21, 0.09);
+}
+
+.client-attendance-status.waiting span {
+    color: var(--yellow);
+}
+
+
+/* =========================================================
+   VIEW DETAILS BUTTON
+========================================================= */
+
+.client-action {
+    display: flex;
+
+    justify-content: flex-end;
+}
+
+.client-view-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding:
+        9px
+        13px;
+
+    border-radius:
+        10px;
+
+    background:
+        rgba(168, 85, 247, 0.08);
+
+    border:
+        1px solid rgba(168, 85, 247, 0.23);
+
+    color: var(--purple-light);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.client-view-button:hover {
+    background:
+        rgba(168, 85, 247, 0.17);
+
+    border-color:
+        rgba(168, 85, 247, 0.40);
+
+    transform:
+        translateY(-1px);
+}
+
+.client-view-button span:last-child {
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   EMPTY CLIENTS
+========================================================= */
+
+.empty-clients {
+    min-height: 270px;
+
+    padding:
+        50px
+        25px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.empty-state-icon {
+    width: 55px;
+    height: 55px;
+
+    margin-bottom: 15px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius:
+        16px;
+
+    background:
+        rgba(168, 85, 247, 0.10);
+
+    border:
+        1px solid rgba(168, 85, 247, 0.18);
+
+    font-size: 21px;
+}
+
+.empty-clients strong {
+    color: var(--text);
+
+    font-size: 16px;
+}
+
+.empty-clients p {
+    max-width: 350px;
+
+    margin-top: 6px;
+
+    color: var(--text-muted);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   DJANGO MESSAGES
+========================================================= */
+
+.messages-container {
+    width: 100%;
+
+    padding-top: 18px;
+}
+
+.message {
+    padding:
+        12px
+        15px;
+
+    margin-bottom: 10px;
+
+    border-radius:
+        10px;
+
+    font-size: 12px;
+}
+
+.message-success {
+    color: var(--green);
+
+    background:
+        rgba(74, 222, 128, 0.08);
+
+    border:
+        1px solid rgba(74, 222, 128, 0.18);
+}
+
+.message-error {
+    color: var(--red);
+
+    background:
+        rgba(251, 113, 133, 0.08);
+
+    border:
+        1px solid rgba(251, 113, 133, 0.18);
+}
+
+.message-warning {
+    color: var(--yellow);
+
+    background:
+        rgba(250, 204, 21, 0.08);
+
+    border:
+        1px solid rgba(250, 204, 21, 0.18);
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1400px) {
+
+    .main-content {
+        padding-left: 52px;
+        padding-right: 52px;
+    }
+
+    .client-item {
+        gap: 28px;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    :root {
+        --sidebar-width: 240px;
+    }
+
+    .sidebar {
+        width: var(--sidebar-width);
+    }
+
+    .main-content {
+        width: calc(100% - var(--sidebar-width));
+
+        margin-left: var(--sidebar-width);
+
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    .page-header {
+        grid-template-columns: 1fr;
+
+        gap: 25px;
+    }
+
+    .connect-client-content {
+        grid-template-columns: 1fr;
+
+        gap: 24px;
+    }
+
+    .client-item {
+        grid-template-columns:
+            minmax(180px, 1.5fr)
+            minmax(110px, 0.8fr)
+            minmax(130px, 0.9fr)
+            auto;
+
+        gap: 16px;
+    }
+
+    .client-action {
+        grid-column: 4;
+    }
+}
+
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .clients-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        padding-top: 30px;
+    }
+
+    .client-item {
+        grid-template-columns:
+            minmax(200px, 1.5fr)
+            minmax(120px, 1fr)
+            minmax(130px, 1fr);
+
+        gap: 15px;
+    }
+
+    .client-action {
+        grid-column: auto;
+
+        justify-content:
+            flex-start;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .app {
+        display: block;
+    }
+
+    .sidebar {
+        position: relative;
+
+        width: 100%;
+        height: auto;
+
+        padding:
+            18px
+            16px;
+
+        border-right: none;
+
+        border-bottom:
+            1px solid var(--border);
+    }
+
+    .sidebar-logo {
+        padding-bottom: 18px;
+    }
+
+    .sidebar-nav {
+        margin-top: 16px;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 6px;
+    }
+
+    .nav-item {
+        min-height: 43px;
+    }
+
+    .main-content {
+        width: 100%;
+
+        margin-left: 0;
+
+        padding:
+            0
+            16px
+            45px;
+    }
+
+    .topbar {
+        min-height: 95px;
+    }
+
+    .trainer-profile {
+        display: none;
+    }
+
+    .page-header {
+        padding-top: 30px;
+
+        grid-template-columns: 1fr;
+
+        gap: 25px;
+    }
+
+    .page-header h1 {
+        font-size: 36px;
+    }
+
+    .page-header p {
+        font-size: 14px;
+    }
+
+
+    /* CONNECT CLIENT */
+
+    .connect-client-card {
+        padding: 20px 18px;
+    }
+
+    .connect-client-content {
+        grid-template-columns: 1fr;
+
+        gap: 22px;
+    }
+
+    .connect-client-input {
+        flex-direction: column;
+    }
+
+    .connect-client-input input,
+    .connect-client-input button {
+        width: 100%;
+    }
+
+
+    /* CLIENT LIST */
+
+    .card-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        padding: 21px;
+    }
+
+    .client-item {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 16px;
+
+        padding:
+            18px
+            13px;
+    }
+
+    .client-profile {
+        width: 100%;
+    }
+
+    .client-info-block {
+        width: 100%;
+    }
+
+    .client-action {
+        width: 100%;
+
+        justify-content:
+            flex-start;
+    }
+
+    .client-view-button {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .sidebar-nav {
+        grid-template-columns: 1fr;
+    }
+
+    .main-content {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .page-header h1 {
+        font-size: 32px;
+    }
+
+    .client-summary-card {
+        min-height: 115px;
+
+        padding: 19px;
+    }
+
+    .summary-value {
+        font-size: 27px;
+    }
+
+    .clients-list {
+        padding: 5px;
+    }
+
+    .client-item {
+        padding:
+            16px
+            11px;
+    }
+}

@@ -1,0 +1,611 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Register | FitConnect</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}?v=2"
+    >
+
+    <style>
+        .register-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 620px;
+            background: #171321;
+            border: 1px solid #2d263d;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .register-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .register-logo h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 32px;
+        }
+
+        .register-logo p {
+            margin-top: 8px;
+            color: #a9a1b8;
+            font-size: 14px;
+        }
+
+        .register-card h2 {
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .register-subtitle {
+            color: #a9a1b8;
+            margin-bottom: 28px;
+            font-size: 14px;
+        }
+
+        .register-section {
+            margin-top: 28px;
+            margin-bottom: 20px;
+        }
+
+        .register-section h3 {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .register-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .register-field {
+            margin-bottom: 18px;
+        }
+
+        .register-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .register-field label {
+            display: block;
+            color: #ddd6e8;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #9b7cff;
+        }
+
+        .optional {
+            color: #8f879e;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .register-field input,
+        .register-field select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 15px;
+            border-radius: 10px;
+            border: 1px solid #393148;
+            background: #0f0c16;
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .register-field select {
+            cursor: pointer;
+        }
+
+        .register-field input:focus,
+        .register-field select:focus {
+            border-color: #9b7cff;
+        }
+
+        .register-field input::placeholder {
+            color: #686174;
+        }
+
+        .register-error {
+            background: rgba(220, 70, 90, 0.12);
+            border: 1px solid rgba(220, 70, 90, 0.35);
+            color: #ff9da9;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .register-hint {
+            color: #777083;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .register-button {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            background: #8b6ff7;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        .register-button:hover {
+            background: #795ce8;
+        }
+
+        .register-footer {
+            text-align: center;
+            margin-top: 24px;
+            color: #8f879e;
+            font-size: 13px;
+        }
+
+        .register-footer a {
+            color: #9b7cff;
+            text-decoration: none;
+        }
+
+        .register-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 650px) {
+
+            .register-card {
+                padding: 28px 22px;
+            }
+
+            .register-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .register-field.full-width {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="register-page">
+
+    <div class="register-card">
+
+        <div class="register-logo">
+
+            <h1>FitConnect</h1>
+
+            <p>
+                Your fitness journey, connected.
+            </p>
+
+        </div>
+
+
+        <h2>
+            Create your account
+        </h2>
+
+        <p class="register-subtitle">
+            Join FitConnect and start your fitness journey.
+        </p>
+
+
+        {% if error %}
+
+            <div class="register-error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <!-- ========================= -->
+            <!-- PERSONAL DETAILS -->
+            <!-- ========================= -->
+
+            <div class="register-section">
+
+                <h3>
+                    Personal Details
+                </h3>
+
+                <div class="register-grid">
+
+                    <!-- FULL NAME -->
+
+                    <div class="register-field full-width">
+
+                        <label for="full_name">
+                            Full Name
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="full_name"
+                            name="full_name"
+                            placeholder="Enter your full name"
+                            value="{{ form_data.full_name|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- USERNAME -->
+
+                    <div class="register-field">
+
+                        <label for="username">
+                            Username
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Choose a username"
+                            value="{{ form_data.username|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="register-field">
+
+                        <label for="email">
+                            Email
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            value="{{ form_data.email|default:'' }}"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="register-field full-width">
+
+                        <label for="phone">
+                            Phone Number
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="Enter 10-digit phone number"
+                            value="{{ form_data.phone|default:'' }}"
+                            pattern="[0-9]{10}"
+                            maxlength="10"
+                            minlength="10"
+                            inputmode="numeric"
+                            autocomplete="tel"
+                            required
+                        >
+
+                        <div class="register-hint">
+                            Enter exactly 10 digits.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- PHYSICAL DETAILS -->
+            <!-- ========================= -->
+
+            <div class="register-section">
+
+                <h3>
+                    Physical Details
+                </h3>
+
+                <div class="register-grid">
+
+                    <!-- AGE -->
+
+                    <div class="register-field">
+
+                        <label for="age">
+                            Age
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="age"
+                            name="age"
+                            min="1"
+                            max="120"
+                            placeholder="Your age"
+                            value="{{ form_data.age|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- GENDER -->
+
+                    <div class="register-field">
+
+                        <label for="gender">
+                            Gender
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="gender"
+                            name="gender"
+                            required
+                        >
+
+                            <option value="Select gender">
+                                Select gender
+                            </option>
+
+                            <option
+                                value="male"
+                                {% if form_data.gender == "male" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Male
+                            </option>
+
+                            <option
+                                value="female"
+                                {% if form_data.gender == "female" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Female
+                            </option>
+
+                            <option
+                                value="other"
+                                {% if form_data.gender == "other" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- HEIGHT -->
+
+                    <div class="register-field">
+
+                        <label for="height">
+                            Height
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="height"
+                            name="height"
+                            step="0.01"
+                            min="1"
+                            placeholder="Height in cm"
+                            value="{{ form_data.height|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- WEIGHT -->
+
+                    <div class="register-field">
+
+                        <label for="weight">
+                            Weight
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="weight"
+                            name="weight"
+                            step="0.01"
+                            min="1"
+                            placeholder="Weight in kg"
+                            value="{{ form_data.weight|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- FITNESS GOAL -->
+
+                    <div class="register-field full-width">
+
+                        <label for="fitness_goal">
+                            Fitness Goal
+
+                            <span class="optional">
+                                Optional
+                            </span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="fitness_goal"
+                            name="fitness_goal"
+                            placeholder="e.g. Weight loss, muscle gain, general fitness"
+                            value="{{ form_data.fitness_goal|default:'' }}"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- ACCOUNT DETAILS -->
+            <!-- ========================= -->
+
+            <div class="register-section">
+
+                <h3>
+                    Account Details
+                </h3>
+
+                <div class="register-grid">
+
+                    <!-- PASSWORD -->
+
+                    <div class="register-field">
+
+                        <label for="password">
+                            Password
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter 6-digit password"
+                            pattern="[0-9]{6}"
+                            maxlength="6"
+                            minlength="6"
+                            inputmode="numeric"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <div class="register-hint">
+                            Password must contain exactly 6 digits.
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="register-field">
+
+                        <label for="confirm_password">
+                            Confirm Password
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            placeholder="Re-enter 6-digit password"
+                            pattern="[0-9]{6}"
+                            maxlength="6"
+                            minlength="6"
+                            inputmode="numeric"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- SUBMIT -->
+            <!-- ========================= -->
+
+            <button
+                type="submit"
+                class="register-button"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+
+        <div class="register-footer">
+
+            Already have an account?
+
+            <a href="{% url 'accounts:login' %}">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

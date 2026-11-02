@@ -1,0 +1,1181 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ client.user.username }} Progress | FitConnect
+    </title>
+
+
+    <!-- =====================================================
+         SHARED TRAINER STYLES
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+
+    <!-- =====================================================
+         CLIENT PROGRESS PAGE STYLES
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/trainer-client-progress.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- LOGO -->
+
+        <div class="sidebar-logo">
+
+            <h2>
+                FitConnect
+            </h2>
+
+            <span>
+                Trainer Panel
+            </span>
+
+        </div>
+
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="{% url 'core:trainer_dashboard' %}"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    ▣
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+
+            <!-- CLIENTS -->
+
+            <a
+                href="{% url 'core:trainer_clients' %}"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    👥
+                </span>
+
+                <span>
+                    Clients
+                </span>
+
+            </a>
+
+
+
+            <!-- QUERIES & SUPPORT -->
+
+            <a
+                href="{% url 'core:trainer_queries' %}"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    💬
+                </span>
+
+                <span>
+                    Queries &amp; Support
+                </span>
+
+            </a>
+
+
+
+            <!-- SCHEDULE -->
+
+           
+
+
+            <!-- PROGRESS -->
+
+          
+
+
+
+            <!-- PROFILE -->
+
+         
+
+
+        </nav>
+
+
+    </aside>
+
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =====================================================
+             TOPBAR
+        ====================================================== -->
+
+        <header class="topbar">
+
+
+            <div class="topbar-date">
+
+                <span>
+                    FitConnect
+                </span>
+
+                <strong>
+                    Trainer Portal
+                </strong>
+
+            </div>
+
+
+
+            <div class="trainer-profile">
+
+
+                <div class="trainer-avatar">
+                    T
+                </div>
+
+
+                <div class="trainer-info">
+
+                    <span>
+                        Trainer
+                    </span>
+
+                    <strong>
+                        testtrainer
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =====================================================
+             PROGRESS PAGE
+        ====================================================== -->
+
+        <section class="progress-page">
+
+
+            <!-- =================================================
+                 BACK
+            ================================================== -->
+
+            <a
+                href="{% url 'core:trainer_client_detail' client.id %}"
+                class="progress-back"
+            >
+
+                <span>
+                    ←
+                </span>
+
+                <span>
+                    Back to Client
+                </span>
+
+            </a>
+
+
+
+            <!-- =================================================
+                 CLIENT HEADER
+            ================================================== -->
+
+            <div class="progress-header">
+
+
+                <div class="progress-client">
+
+
+                    <div class="progress-avatar">
+
+                        {{ client.user.username|first|upper }}
+
+                    </div>
+
+
+
+                    <div class="progress-client-info">
+
+                        <span class="progress-eyebrow">
+                            CLIENT PROGRESS
+                        </span>
+
+                        <h1>
+                            {{ client.user.username }}
+                        </h1>
+
+                        <p>
+                            Lifestyle, nutrition and attendance overview
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="progress-header-label">
+
+                    <span>
+                        PROGRESS TRACKING
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+            <div class="progress-stats">
+
+
+                <!-- ATTENDANCE -->
+
+                <div class="progress-stat">
+
+
+                    <div class="stat-top">
+
+                        <span class="stat-title">
+                            ATTENDANCE
+                        </span>
+
+                        <span class="stat-icon">
+                            ✓
+                        </span>
+
+                    </div>
+
+
+                    <strong class="stat-value">
+                        {{ attendance_count }}
+                    </strong>
+
+
+                    <span class="stat-description">
+                        Days marked present
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- SLEEP -->
+
+                <div class="progress-stat">
+
+
+                    <div class="stat-top">
+
+                        <span class="stat-title">
+                            AVG SLEEP
+                        </span>
+
+                        <span class="stat-icon">
+                            ◐
+                        </span>
+
+                    </div>
+
+
+                    <strong class="stat-value">
+
+                        {% if avg_sleep %}
+
+                            {{ avg_sleep|floatformat:1 }}h
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </strong>
+
+
+                    <span class="stat-description">
+                        Recorded average
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- WATER -->
+
+                <div class="progress-stat">
+
+
+                    <div class="stat-top">
+
+                        <span class="stat-title">
+                            AVG WATER
+                        </span>
+
+                        <span class="stat-icon">
+                            ◇
+                        </span>
+
+                    </div>
+
+
+                    <strong class="stat-value">
+
+                        {% if avg_water %}
+
+                            {{ avg_water|floatformat:1 }}L
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </strong>
+
+
+                    <span class="stat-description">
+                        Daily average
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- NUTRITION -->
+
+                <div class="progress-stat">
+
+
+                    <div class="stat-top">
+
+                        <span class="stat-title">
+                            NUTRITION
+                        </span>
+
+                        <span class="stat-icon">
+                            ◆
+                        </span>
+
+                    </div>
+
+
+                    <strong class="stat-value">
+
+                        {% if avg_nutrition %}
+
+                            {{ avg_nutrition|floatformat:1 }}/4
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </strong>
+
+
+                    <span class="stat-description">
+                        Average nutrition quality
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 GRAPH + NUTRITION
+            ================================================== -->
+
+            <div class="progress-grid">
+
+
+                <!-- =================================================
+                     LIFESTYLE GRAPH
+                ================================================== -->
+
+                <section class="progress-card">
+
+
+                    <div class="progress-card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                LIFESTYLE
+                            </span>
+
+                            <h2>
+                                Sleep Progress
+                            </h2>
+
+                            <p class="card-subtitle">
+                                Recorded sleep over recent days
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    {% if progress_data %}
+
+
+                        <div
+                            class="graph-container"
+                            id="sleepGraph"
+                        >
+
+
+                            {% for item in progress_data %}
+
+
+                                <div class="graph-column">
+
+
+                                    {% if item.sleep %}
+
+
+                                        <span class="graph-value">
+                                            {{ item.sleep }}h
+                                        </span>
+
+
+                                        <div
+                                            class="graph-bar"
+                                            style="height: {{ item.sleep|floatformat:0 }}0px;"
+                                        ></div>
+
+
+                                    {% else %}
+
+
+                                        <span class="graph-value">
+                                            —
+                                        </span>
+
+
+                                        <div
+                                            class="graph-bar graph-bar-empty"
+                                            style="height: 3px;"
+                                        ></div>
+
+
+                                    {% endif %}
+
+
+
+                                    <span class="graph-date">
+                                        {{ item.date }}
+                                    </span>
+
+
+                                </div>
+
+
+                            {% endfor %}
+
+
+                        </div>
+
+
+                    {% else %}
+
+
+                        <div class="graph-container">
+
+
+                            <div class="graph-empty">
+
+                                <span>
+                                    ○
+                                </span>
+
+                                <div>
+
+                                    <strong>
+                                        No progress data yet
+                                    </strong>
+
+                                    <p>
+                                        Lifestyle records will appear here once the client starts logging them.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </section>
+
+
+
+                <!-- =================================================
+                     NUTRITION
+                ================================================== -->
+
+                <section class="progress-card">
+
+
+                    <div class="progress-card-header">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                NUTRITION
+                            </span>
+
+                            <h2>
+                                Nutrition Intake
+                            </h2>
+
+                            <p class="card-subtitle">
+                                Average daily nutrient intake
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    {% if avg_calories or avg_protein or avg_carbs or avg_fiber %}
+
+
+                        <div class="nutrient-grid">
+
+
+                            <!-- CALORIES -->
+
+                            <div class="nutrient-item">
+
+
+                                <div class="nutrient-icon">
+                                    🔥
+                                </div>
+
+
+                                <div class="nutrient-info">
+
+                                    <span>
+                                        Calories
+                                    </span>
+
+                                    <strong>
+
+                                        {% if avg_calories %}
+
+                                            {{ avg_calories|floatformat:0 }} kcal
+
+                                        {% else %}
+
+                                            —
+
+                                        {% endif %}
+
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- PROTEIN -->
+
+                            <div class="nutrient-item">
+
+
+                                <div class="nutrient-icon">
+                                    💪
+                                </div>
+
+
+                                <div class="nutrient-info">
+
+                                    <span>
+                                        Protein
+                                    </span>
+
+                                    <strong>
+
+                                        {% if avg_protein %}
+
+                                            {{ avg_protein|floatformat:1 }} g
+
+                                        {% else %}
+
+                                            —
+
+                                        {% endif %}
+
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- CARBOHYDRATES -->
+
+                            <div class="nutrient-item">
+
+
+                                <div class="nutrient-icon">
+                                    ⚡
+                                </div>
+
+
+                                <div class="nutrient-info">
+
+                                    <span>
+                                        Carbohydrates
+                                    </span>
+
+                                    <strong>
+
+                                        {% if avg_carbs %}
+
+                                            {{ avg_carbs|floatformat:1 }} g
+
+                                        {% else %}
+
+                                            —
+
+                                        {% endif %}
+
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- FIBER -->
+
+                            <div class="nutrient-item">
+
+
+                                <div class="nutrient-icon">
+                                    🌿
+                                </div>
+
+
+                                <div class="nutrient-info">
+
+                                    <span>
+                                        Fiber
+                                    </span>
+
+                                    <strong>
+
+                                        {% if avg_fiber %}
+
+                                            {{ avg_fiber|floatformat:1 }} g
+
+                                        {% else %}
+
+                                            —
+
+                                        {% endif %}
+
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- NUTRITION QUALITY -->
+
+                        <div class="nutrition-quality">
+
+
+                            <div>
+
+                                <span class="quality-label">
+                                    NUTRITION QUALITY
+                                </span>
+
+                                <p>
+                                    Average quality score
+                                </p>
+
+                            </div>
+
+
+                            <strong class="quality-value">
+
+                                {% if avg_nutrition %}
+
+                                    {{ avg_nutrition|floatformat:1 }} / 4
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </strong>
+
+
+                        </div>
+
+
+                    {% else %}
+
+
+                        <div class="no-progress">
+
+                            <span class="no-progress-icon">
+                                ○
+                            </span>
+
+                            <strong>
+                                No nutrition data yet
+                            </strong>
+
+                            <p>
+                                Nutrient intake will appear here once recorded.
+                            </p>
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </section>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PROGRESS HISTORY
+            ================================================== -->
+
+            <section class="progress-card full-width">
+
+
+                <div class="progress-card-header history-header">
+
+                    <div>
+
+                        <span class="card-eyebrow">
+                            HISTORY
+                        </span>
+
+                        <h2>
+                            Progress History
+                        </h2>
+
+                        <p class="card-subtitle">
+                            Historical lifestyle, nutrition and attendance records
+                        </p>
+
+                    </div>
+
+
+                    <span class="history-count">
+
+                        {% if logs %}
+                            {{ logs|length }} records
+                        {% else %}
+                            0 records
+                        {% endif %}
+
+                    </span>
+
+
+                </div>
+
+
+
+                {% if logs %}
+
+
+                    <div class="logs-wrapper">
+
+
+                        <table class="progress-table">
+
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Date
+                                    </th>
+
+                                    <th>
+                                        Attendance
+                                    </th>
+
+                                    <th>
+                                        Sleep
+                                    </th>
+
+                                    <th>
+                                        Water
+                                    </th>
+
+                                    <th>
+                                        Calories
+                                    </th>
+
+                                    <th>
+                                        Protein
+                                    </th>
+
+                                    <th>
+                                        Carbs
+                                    </th>
+
+                                    <th>
+                                        Fiber
+                                    </th>
+
+                                    <th>
+                                        Nutrition
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+
+                            <tbody>
+
+
+                                {% for log in logs reversed %}
+
+
+                                    <tr>
+
+
+                                        <!-- DATE -->
+
+                                        <td class="date-cell">
+
+                                            {{ log.date|date:"d M Y" }}
+
+                                        </td>
+
+
+
+                                        <!-- ATTENDANCE -->
+
+                                        <td>
+
+
+                                            {% if log.attendance %}
+
+                                                <span class="attendance-status present">
+
+                                                    <span class="status-dot"></span>
+
+                                                    Present
+
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="attendance-status not-present">
+
+                                                    <span class="status-dot"></span>
+
+                                                    Not Marked
+
+                                                </span>
+
+                                            {% endif %}
+
+
+                                        </td>
+
+
+
+                                        <!-- SLEEP -->
+
+                                        <td>
+
+                                            {% if log.sleep_hours %}
+
+                                                {{ log.sleep_hours }}h
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+
+
+                                        <!-- WATER -->
+
+                                        <td>
+
+                                            {% if log.water_liters %}
+
+                                                {{ log.water_liters }}L
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+
+
+                                        <!-- CALORIES -->
+
+                                        <td>
+
+                                            {% if log.calories %}
+
+                                                {{ log.calories }} kcal
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+
+
+                                        <!-- PROTEIN -->
+
+                                        <td>
+
+                                            {% if log.protein %}
+
+                                                {{ log.protein }}g
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+
+
+                                        <!-- CARBS -->
+
+                                        <td>
+
+                                            {% if log.carbs %}
+
+                                                {{ log.carbs }}g
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+
+
+                                        <!-- FIBER -->
+
+                                        <td>
+
+                                            {% if log.fiber %}
+
+                                                {{ log.fiber }}g
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+
+
+                                        <!-- NUTRITION -->
+
+                                        <td>
+
+
+                                            {% if log.nutrition %}
+
+                                                <span
+                                                    class="
+                                                        nutrition-value
+                                                        nutrition-{{ log.nutrition }}
+                                                    "
+                                                >
+
+                                                    {{ log.get_nutrition_display }}
+
+                                                </span>
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+
+                                        </td>
+
+
+                                    </tr>
+
+
+                                {% endfor %}
+
+
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <div class="no-progress">
+
+                        <span class="no-progress-icon">
+                            ○
+                        </span>
+
+                        <strong>
+                            No progress records yet
+                        </strong>
+
+                        <p>
+                            Historical lifestyle and nutrition data will appear here.
+                        </p>
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </section>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

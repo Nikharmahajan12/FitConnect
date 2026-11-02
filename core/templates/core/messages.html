@@ -1,0 +1,489 @@
+{% extends "core/client base.html" %}
+{% load static %}
+
+{% block title %}Messages | FitConnect{% endblock %}
+
+{% block content %}
+<style>
+/* =========================================================
+   FITCONNECT — CLIENT MESSAGES
+   Page content only. Common shell is in client base.html.
+========================================================= */
+
+.messages-page {
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 54px 52px 80px;
+    min-width: 0;
+}
+
+.messages-page,
+.messages-page * {
+    box-sizing: border-box;
+}
+
+.messages-header {
+    margin-bottom: 36px;
+}
+
+.messages-header .eyebrow {
+    color: #b66cff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+}
+
+.messages-header h1 {
+    margin: 10px 0 12px;
+    color: #f7f4fa;
+    font-size: clamp(42px, 4vw, 54px);
+    line-height: 1.02;
+    letter-spacing: -2px;
+}
+
+.messages-header p {
+    margin: 0;
+    color: #9c94aa;
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+.messages-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.messages-card {
+    min-width: 0;
+    background: linear-gradient(145deg, rgba(29,24,37,.96), rgba(15,12,19,.98));
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.24);
+}
+
+.message-form-card {
+    padding: 28px;
+}
+
+.section-eyebrow {
+    color: #b66cff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+}
+
+.section-heading h2 {
+    margin: 8px 0 5px;
+    color: #f7f4fa;
+    font-size: 20px;
+    letter-spacing: -.4px;
+}
+
+.section-heading p {
+    margin: 0;
+    color: #716a7d;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.query-form {
+    margin-top: 24px;
+}
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #b7afc2;
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.form-control {
+    width: 100%;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 12px;
+    background: #100d15;
+    color: #f5f1fa;
+    padding: 12px 13px;
+    font: inherit;
+    font-size: 12px;
+    outline: none;
+    transition: .18s ease;
+}
+
+.form-control::placeholder {
+    color: #5f5868;
+}
+
+.form-control:focus {
+    border-color: rgba(168,85,247,.48);
+    box-shadow: 0 0 0 3px rgba(168,85,247,.08);
+}
+
+textarea.form-control {
+    min-height: 150px;
+    resize: vertical;
+    line-height: 1.55;
+}
+
+select.form-control {
+    appearance: none;
+    cursor: pointer;
+    background-image:
+        linear-gradient(45deg, transparent 50%, #8e849b 50%),
+        linear-gradient(135deg, #8e849b 50%, transparent 50%);
+    background-position:
+        calc(100% - 16px) 50%,
+        calc(100% - 11px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+}
+
+select.form-control option {
+    background: #17131d;
+    color: #f5f1fa;
+}
+
+.submit-query {
+    width: 100%;
+    min-height: 46px;
+    margin-top: 4px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #a855f7, #7c3aed);
+    color: white;
+    font-size: 12px;
+    font-weight: 750;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(124,58,237,.22);
+    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+.submit-query:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.04);
+    box-shadow: 0 14px 30px rgba(124,58,237,.28);
+}
+
+.history-card {
+    padding: 28px;
+}
+
+.query-list {
+    margin-top: 23px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.query-item {
+    padding: 17px;
+    border: 1px solid rgba(255,255,255,.055);
+    border-radius: 16px;
+    background: rgba(255,255,255,.018);
+}
+
+.query-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.query-subject {
+    min-width: 0;
+}
+
+.query-subject h3 {
+    margin: 0 0 6px;
+    color: #f3edf8;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.query-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    align-items: center;
+}
+
+.query-category,
+.query-date,
+.query-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 9px;
+}
+
+.query-category {
+    color: #c084fc;
+    background: rgba(168,85,247,.08);
+    border: 1px solid rgba(168,85,247,.12);
+}
+
+.query-date {
+    color: #766d80;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.045);
+}
+
+.query-status {
+    color: #9b92a8;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.045);
+    text-transform: capitalize;
+}
+
+.query-status.pending {
+    color: #d8b4fe;
+    background: rgba(168,85,247,.10);
+    border-color: rgba(168,85,247,.16);
+}
+
+.query-status.answered,
+.query-status.closed {
+    color: #d6d0dc;
+    background: rgba(255,255,255,.035);
+}
+
+.query-message {
+    margin: 14px 0 0;
+    color: #9a92a5;
+    font-size: 11px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+.query-response {
+    margin-top: 13px;
+    padding: 13px 14px;
+    border-left: 2px solid #a855f7;
+    border-radius: 0 10px 10px 0;
+    background: rgba(168,85,247,.055);
+}
+
+.query-response-label {
+    display: block;
+    color: #c084fc;
+    margin-bottom: 5px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.query-response p {
+    margin: 0;
+    color: #b4adbc;
+    font-size: 11px;
+    line-height: 1.65;
+    white-space: pre-wrap;
+}
+
+.history-empty {
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+}
+
+.history-empty-icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    border-radius: 16px;
+    background: rgba(168,85,247,.08);
+    border: 1px solid rgba(168,85,247,.12);
+    font-size: 24px;
+}
+
+.history-empty h3 {
+    margin: 0 0 6px;
+    color: #f3edf8;
+    font-size: 16px;
+}
+
+.history-empty p {
+    max-width: 400px;
+    margin: 0;
+    color: #756d80;
+    font-size: 11px;
+    line-height: 1.65;
+}
+
+@media (max-width: 1000px) {
+    .messages-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 680px) {
+    .messages-page {
+        padding: 30px 18px 90px;
+    }
+
+    .messages-header h1 {
+        font-size: 40px;
+    }
+
+    .message-form-card,
+    .history-card {
+        padding: 21px 18px;
+        border-radius: 18px;
+    }
+
+    .query-top {
+        flex-direction: column;
+    }
+}
+</style>
+
+<div class="page-content messages-page">
+
+    <section class="page-header messages-header">
+        <div>
+            <span class="eyebrow">COMMUNICATION</span>
+            <h1>Messages</h1>
+            <p>Ask your trainer questions and keep track of your conversations.</p>
+        </div>
+    </section>
+
+    <section class="messages-layout">
+
+        <!-- ASK YOUR TRAINER -->
+        <article class="messages-card message-form-card">
+            <div class="section-heading">
+                <div>
+                    <span class="section-eyebrow">ASK YOUR TRAINER</span>
+                    <h2>Send a Message</h2>
+                    <p>Have a question about your training, nutrition, or membership?</p>
+                </div>
+            </div>
+
+            <form method="post" class="query-form">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input
+                        id="subject"
+                        name="subject"
+                        type="text"
+                        class="form-control"
+                        placeholder="e.g. Question about my workout"
+                        maxlength="200"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" class="form-control" required>
+                        <option value="" selected disabled>Select a category</option>
+                        <option value="workout">Workout</option>
+                        <option value="nutrition">Nutrition</option>
+                        <option value="membership">Membership</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea
+                        id="message"
+                        name="message"
+                        class="form-control"
+                        placeholder="Write your question here..."
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="submit-query">
+                    Send Message
+                </button>
+            </form>
+        </article>
+
+        <!-- PREVIOUS CONVERSATIONS -->
+        <article class="messages-card history-card">
+            <div class="section-heading">
+                <div>
+                    <span class="section-eyebrow">MESSAGE HISTORY</span>
+                    <h2>Your Conversations</h2>
+                    <p>Previous questions and trainer responses.</p>
+                </div>
+            </div>
+
+            <div class="query-list">
+
+                {% for query in queries %}
+                    <article class="query-item">
+
+                        <div class="query-top">
+                            <div class="query-subject">
+                                <h3>{{ query.subject }}</h3>
+
+                                <div class="query-meta">
+                                    {% if query.category %}
+                                        <span class="query-category">
+                                            {{ query.category|title }}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if query.created_at %}
+                                        <span class="query-date">
+                                            {{ query.created_at|date:"d M Y, h:i A" }}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if query.status %}
+                                        <span class="query-status {{ query.status }}">
+                                            {{ query.status|title }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="query-message">{{ query.message }}</p>
+
+                        {% if query.response %}
+                            <div class="query-response">
+                                <span class="query-response-label">Trainer Response</span>
+                                <p>{{ query.response }}</p>
+                            </div>
+                        {% endif %}
+
+                    </article>
+                {% empty %}
+                    <div class="history-empty">
+                        <div class="history-empty-icon">💬</div>
+                        <h3>No messages yet</h3>
+                        <p>Your questions and trainer responses will appear here once you start a conversation.</p>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </article>
+
+    </section>
+</div>
+{% endblock %}

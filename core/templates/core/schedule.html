@@ -1,0 +1,413 @@
+{% extends "core/client base.html" %}
+{% load static %}
+
+{% block title %}Schedule | FitConnect{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/client-schedule.css' %}?v=7">
+
+<style>
+    /* Workout video section */
+    .plan-video-section {
+        margin-top: 20px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(168, 85, 247, 0.18);
+    }
+
+    .plan-video-heading {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        color: #e9d5ff;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .plan-video-player {
+        display: block;
+        width: 100%;
+        max-height: 320px;
+        aspect-ratio: 16 / 9;
+        object-fit: contain;
+        background: #050407;
+        border: 1px solid rgba(168, 85, 247, 0.25);
+        border-radius: 12px;
+    }
+
+    .plan-video-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 12px;
+        padding: 12px 16px;
+        border: 1px solid rgba(168, 85, 247, 0.35);
+        border-radius: 10px;
+        background: rgba(124, 58, 237, 0.12);
+        color: #d8b4fe;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .plan-video-link:hover {
+        background: rgba(124, 58, 237, 0.24);
+        border-color: #a855f7;
+    }
+
+    .plan-video-note {
+        margin-top: 9px;
+        color: #a1a1aa;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .plan-video-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 10px;
+        padding: 5px 9px;
+        border-radius: 20px;
+        background: rgba(168, 85, 247, 0.12);
+        color: #c084fc;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+        .plan-video-player {
+            max-height: 230px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-content">
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <div>
+            <span class="eyebrow">YOUR TRAINING PLAN</span>
+            <h1>Schedule</h1>
+            <p>Your workout and nutrition plans, all in one place.</p>
+        </div>
+    </section>
+
+    <!-- WEEK SELECTOR -->
+    <section class="week-card">
+        <div class="week-header">
+            <div>
+                <span class="section-eyebrow">WEEKLY VIEW</span>
+                <h2>This Week</h2>
+                <p>
+                    {{ week_start|date:"d M" }}
+                    —
+                    {{ week_end|date:"d M Y" }}
+                </p>
+            </div>
+
+            {% if selected_date != today %}
+                <a href="{% url 'core:schedule' %}" class="today-button">
+                    Back to Today
+                </a>
+            {% else %}
+                <span class="today-indicator">Current Week</span>
+            {% endif %}
+        </div>
+
+        <!-- WEEK DAYS -->
+        <div class="week-days">
+            {% for day in week_days %}
+                <a
+                    href="?date={{ day.date|date:'Y-m-d' }}"
+                    class="
+                        day-card
+                        {% if day.is_selected %}selected{% endif %}
+                        {% if day.is_today %}today{% endif %}
+                    "
+                >
+                    <span class="day-name">{{ day.name }}</span>
+                    <strong class="day-number">{{ day.number }}</strong>
+
+                    {% if day.is_today %}
+                        <span class="today-label">TODAY</span>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- SELECTED DAY PLANS -->
+    <section class="plans-section">
+        <div class="section-heading">
+            <div>
+                {% if selected_date == today %}
+                    <span class="section-eyebrow">TODAY</span>
+                    <h2>Today's Plans</h2>
+                {% else %}
+                    <span class="section-eyebrow">SELECTED DAY</span>
+                    <h2>{{ selected_date|date:"l, d F" }}</h2>
+                {% endif %}
+            </div>
+
+            <span class="plan-count">
+                {{ selected_day_plans|length }}
+                {% if selected_day_plans|length == 1 %}
+                    Plan
+                {% else %}
+                    Plans
+                {% endif %}
+            </span>
+        </div>
+
+        <!-- PLAN CARDS -->
+        <div class="plans-grid">
+            {% for plan in selected_day_plans %}
+                <article class="plan-card">
+
+                    <!-- CARD HEADER -->
+                    <div class="plan-card-header">
+                        <div class="
+                            plan-icon
+                            {% if plan.plan_type == 'workout' %}
+                                workout-icon
+                            {% else %}
+                                nutrition-icon
+                            {% endif %}
+                        ">
+                            {% if plan.plan_type == "workout" %}
+                                🏋️
+                            {% else %}
+                                🥗
+                            {% endif %}
+                        </div>
+
+                        <span class="
+                            plan-type
+                            {% if plan.plan_type == 'workout' %}
+                                workout-type
+                            {% else %}
+                                nutrition-type
+                            {% endif %}
+                        ">
+                            {{ plan.get_plan_type_display }}
+                        </span>
+                    </div>
+
+                    <!-- CARD CONTENT -->
+                    <div class="plan-content">
+                        <h3>{{ plan.title }}</h3>
+
+                        <p class="plan-date">
+                            {{ plan.date|date:"l, d F Y" }}
+                        </p>
+
+                        <p class="plan-description">
+                            {% if plan.plan_type == "workout" %}
+                                Your workout plan prepared by your trainer.
+                            {% else %}
+                                Your nutrition plan prepared by your trainer.
+                            {% endif %}
+                        </p>
+
+                        {% if plan.video or plan.video_url %}
+                            <span class="plan-video-badge">
+                                ▶ Workout video included
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- PDF PLAN -->
+                    {% if plan.pdf %}
+                        <div class="file-row">
+                            <div class="file-icon">PDF</div>
+
+                            <div class="file-info">
+                                <strong>Plan document</strong>
+                                <span>PDF document</span>
+                            </div>
+                        </div>
+
+                        <a
+                            href="{{ plan.pdf.url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="open-plan-button"
+                        >
+                            <span>Open Plan</span>
+                            <span>→</span>
+                        </a>
+                    {% endif %}
+
+                    <!-- UPLOADED VIDEO PLAYER -->
+                    {% if plan.video %}
+                        <div class="plan-video-section">
+                            <div class="plan-video-heading">
+                                <span>▶</span>
+                                <span>Workout Demonstration</span>
+                            </div>
+
+                            <video
+                                class="plan-video-player"
+                                controls
+                                preload="metadata"
+                                playsinline
+                            >
+                                <source src="{{ plan.video.url }}">
+                                Your browser does not support video playback.
+                                Please use the video link below.
+                            </video>
+
+                            <p class="plan-video-note">
+                                Follow your trainer's demonstration while
+                                completing your workout.
+                            </p>
+                        </div>
+                    {% endif %}
+
+                    <!-- EXTERNAL VIDEO URL -->
+                    {% if plan.video_url %}
+                        <div class="plan-video-section">
+                            <div class="plan-video-heading">
+                                <span>🔗</span>
+                                <span>Trainer's Video Link</span>
+                            </div>
+
+                            <a
+                                href="{{ plan.video_url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="plan-video-link"
+                            >
+                                <span>▶</span>
+                                <span>Watch External Video</span>
+                                <span>↗</span>
+                            </a>
+
+                            <p class="plan-video-note">
+                                This video opens on the website or platform
+                                provided by your trainer.
+                            </p>
+                        </div>
+                    {% endif %}
+
+                </article>
+
+            {% empty %}
+                <!-- EMPTY STATE -->
+                <div class="empty-state">
+                    <div class="empty-icon">📋</div>
+                    <h3>No plan assigned</h3>
+                    <p>
+                        Your trainer hasn't assigned a workout or nutrition
+                        plan for this day yet.
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- UPCOMING PLANS -->
+    <section class="upcoming-section">
+        <div class="section-heading">
+            <div>
+                <span class="section-eyebrow">COMING UP</span>
+                <h2>Upcoming Plans</h2>
+            </div>
+        </div>
+
+        <div class="upcoming-list">
+            {% for plan in upcoming_plans %}
+                <article class="upcoming-card">
+
+                    <!-- DATE -->
+                    <div class="upcoming-date">
+                        <strong>{{ plan.date|date:"d" }}</strong>
+                        <span>{{ plan.date|date:"M"|upper }}</span>
+                    </div>
+
+                    <!-- INFORMATION -->
+                    <div class="upcoming-info">
+                        <div>
+                            <span class="
+                                upcoming-type
+                                {% if plan.plan_type == 'workout' %}
+                                    workout-text
+                                {% else %}
+                                    nutrition-text
+                                {% endif %}
+                            ">
+                                {{ plan.get_plan_type_display }}
+                            </span>
+
+                            <h3>{{ plan.title }}</h3>
+
+                            {% if plan.video or plan.video_url %}
+                                <span class="plan-video-badge">
+                                    ▶ Video included
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <span class="upcoming-day">
+                            {{ plan.date|date:"l" }}
+                        </span>
+                    </div>
+
+                    <!-- ACTIONS -->
+                    <div class="upcoming-action">
+                        {% if plan.pdf %}
+                            <a
+                                href="{{ plan.pdf.url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Open PDF →
+                            </a>
+                        {% endif %}
+
+                        {% if plan.video %}
+                            <a
+                                href="{{ plan.video.url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Watch Video →
+                            </a>
+                        {% endif %}
+
+                        {% if plan.video_url %}
+                            <a
+                                href="{{ plan.video_url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Video Link ↗
+                            </a>
+                        {% endif %}
+                    </div>
+
+                </article>
+
+            {% empty %}
+                <div class="upcoming-empty">
+                    <span>📅</span>
+                    <div>
+                        <strong>No upcoming plans</strong>
+                        <p>
+                            Future plans from your trainer will appear here.
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+</div>
+{% endblock %}

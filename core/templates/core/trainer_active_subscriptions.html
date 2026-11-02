@@ -1,0 +1,429 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Active Subscriptions | FitConnect</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+    <style>
+
+        .subscriptions-page {
+            padding: 32px;
+        }
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-eyebrow {
+            color: #a78bfa;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .page-header h1 {
+            margin: 8px 0;
+            font-size: 32px;
+        }
+
+        .page-header p {
+            color: #9ca3af;
+            margin: 0;
+        }
+
+        .subscription-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .summary-card {
+            padding: 22px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .summary-label {
+            display: block;
+            color: #9ca3af;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .subscription-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .subscription-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .subscription-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .subscription-table th,
+        .subscription-table td {
+            padding: 18px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .subscription-table th {
+            color: #9ca3af;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .subscription-table td {
+            color: #e5e7eb;
+        }
+
+        .client-name {
+            font-weight: 600;
+        }
+
+        .client-username {
+            display: block;
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .plan-name {
+            font-weight: 600;
+            color: #c4b5fd;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(34,197,94,0.12);
+            color: #86efac;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .days-remaining {
+            font-weight: 600;
+        }
+
+        .days-warning {
+            color: #fbbf24;
+        }
+
+        .days-normal {
+            color: #86efac;
+        }
+
+        .view-client {
+            display: inline-block;
+            padding: 8px 13px;
+            border-radius: 9px;
+            background: rgba(139,92,246,0.12);
+            color: #c4b5fd;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .view-client:hover {
+            background: rgba(139,92,246,0.2);
+        }
+
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        .empty-icon {
+            font-size: 40px;
+            margin-bottom: 14px;
+        }
+
+        .empty-state h3 {
+            color: #e5e7eb;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 800px) {
+
+            .subscription-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .subscriptions-page {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="subscriptions-page">
+
+    <section class="page-header">
+
+        <span class="page-eyebrow">
+            SUBSCRIPTIONS
+        </span>
+
+        <h1>
+            Active Subscriptions
+        </h1>
+
+        <p>
+            Manage clients who currently have an active subscription.
+        </p>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+
+    <section class="subscription-summary">
+
+        <div class="summary-card">
+
+            <span class="summary-label">
+                Active Clients
+            </span>
+
+            <span class="summary-value">
+                {{ subscriptions|length }}
+            </span>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span class="summary-label">
+                Current Subscriptions
+            </span>
+
+            <span class="summary-value">
+                {{ subscriptions|length }}
+            </span>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span class="summary-label">
+                Status
+            </span>
+
+            <span class="summary-value">
+                Active
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUBSCRIPTIONS -->
+
+    <section class="subscription-card">
+
+        {% if subscriptions %}
+
+            <div class="subscription-table-wrapper">
+
+                <table class="subscription-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Client
+                            </th>
+
+                            <th>
+                                Plan
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <th>
+                                Start Date
+                            </th>
+
+                            <th>
+                                End Date
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for subscription in subscriptions %}
+
+                            <tr>
+
+                                <td>
+
+                                    <span class="client-name">
+                                        {{ subscription.client.user.get_full_name|default:subscription.client.user.username }}
+                                    </span>
+
+                                    <span class="client-username">
+                                        @{{ subscription.client.user.username }}
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span class="plan-name">
+                                        {{ subscription.plan_name }}
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    {% if subscription.amount %}
+                                        ₹{{ subscription.amount }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+                                    {{ subscription.start_date|date:"M j, Y" }}
+                                </td>
+
+
+                                <td>
+                                    {{ subscription.end_date|date:"M j, Y" }}
+                                </td>
+
+
+                                <td>
+
+                                    <span class="status-badge status-active">
+
+                                        <span class="status-dot"></span>
+
+                                        Active
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <a
+                                        href="{% url 'core:trainer_client_detail' subscription.client.id %}"
+                                        class="view-client"
+                                    >
+                                        View Client
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    💳
+                </div>
+
+                <h3>
+                    No active subscriptions
+                </h3>
+
+                <p>
+                    Clients with active subscriptions will appear here.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+</body>
+
+</html>

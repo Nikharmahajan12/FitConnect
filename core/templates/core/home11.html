@@ -1,0 +1,681 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitConnect | Transform Your Fitness</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+    <style>
+        .trainer-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+       .trainer-photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 540px;
+    object-fit: cover;
+    object-position: center 22%;
+    border-radius: inherit;
+}
+
+        @media (max-width: 768px) {
+            .trainer-photo {
+                min-height: 420px;
+                object-position: center 20%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="ambient ambient-one"></div>
+<div class="ambient ambient-two"></div>
+<div class="ambient ambient-three"></div>
+
+<!-- NAVBAR -->
+<nav class="landing-nav">
+    <a href="/" class="brand">Fit<span>Connect</span></a>
+
+    <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#programs">Programs</a>
+        <a href="#plans">Plans</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="{% url 'accounts:login' %}" class="nav-login">Login</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">Personalized Fitness Training</div>
+
+        <h1>
+            Build a body
+            <br>
+            you're <span>proud of.</span>
+        </h1>
+
+        <p class="hero-description">
+            Personalized training, structured programs and
+            continuous progress tracking — all connected through
+            one fitness experience.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#plans" class="primary-button">Explore Programs</a>
+            <a href="#about" class="secondary-button">Meet Your Trainer</a>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="floating-card main-fitness-card">
+            <div class="fitness-card-title">Weekly Progress</div>
+            <div class="fitness-circle"><strong>82%</strong></div>
+            <div class="fitness-card-title">Consistency</div>
+            <div class="fitness-card-subtitle">Keep pushing forward</div>
+        </div>
+
+        <div class="floating-card mini-card">
+            <div class="mini-title">Today's Water</div>
+            <div class="mini-value">2.4 L</div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="floating-card mini-card-bottom">
+            <div class="mini-title">Sleep</div>
+            <div class="mini-value">7h 32m</div>
+            <div class="fitness-card-subtitle">Healthy recovery</div>
+        </div>
+    </div>
+</section>
+
+<!-- TRAINER SECTION -->
+<section class="section" id="about">
+    <div class="trainer-section">
+
+        <div class="trainer-image">
+          <img
+    src="{% static 'img/nitish.PNG' %}"
+    alt="Nitish Mahajan - Personal Trainer"
+    class="trainer-photo"
+>
+
+            <div class="trainer-experience">
+                <span class="experience-number">05</span>
+                <div class="experience-copy">
+                    <strong>Years of experience</strong>
+                    <span>Training with purpose</span>
+                </div>
+            </div>
+
+            <div class="portrait-decoration portrait-decoration-one"></div>
+            <div class="portrait-decoration portrait-decoration-two"></div>
+        </div>
+
+        <div class="trainer-info">
+            <div class="trainer-eyebrow">
+                <span class="eyebrow-line"></span>
+                MEET YOUR TRAINER
+            </div>
+
+            <h2 class="trainer-name">
+                Nitish <span>Mahajan.</span>
+            </h2>
+
+            <h3 class="trainer-tagline">
+                Your goals. Your journey.
+                <span>Your stronger self.</span>
+            </h3>
+
+            <p class="trainer-intro">
+                I'm Nitish Mahajan, a passionate Personal Trainer
+                with 5 years of experience in exercise and fitness,
+                dedicated to helping people become stronger,
+                healthier, and more confident versions of themselves.
+            </p>
+
+            <p>
+                My approach goes beyond traditional workouts.
+                I create personalized training programmes based
+                on your individual goals, fitness level, lifestyle,
+                and needs.
+            </p>
+
+            <p>
+                Whether your goal is weight loss, muscle building,
+                strength development, improving mobility, or
+                returning to an active lifestyle, I'm here to
+                guide you with purpose and consistency.
+            </p>
+
+            <p>
+                I also offer rehabilitation training programmes
+                designed to support improvements in movement,
+                mobility, strength, and overall physical function
+                through carefully planned exercises.
+            </p>
+
+            <div class="trainer-specialities">
+                <div class="speciality-item">
+                    <span class="speciality-check">✓</span>
+                    <span>Personalized training</span>
+                </div>
+
+                <div class="speciality-item">
+                    <span class="speciality-check">✓</span>
+                    <span>Strength &amp; muscle building</span>
+                </div>
+
+                <div class="speciality-item">
+                    <span class="speciality-check">✓</span>
+                    <span>Mobility &amp; rehabilitation</span>
+                </div>
+
+                <div class="speciality-item">
+                    <span class="speciality-check">✓</span>
+                    <span>Technique &amp; consistency</span>
+                </div>
+            </div>
+
+            <div class="trainer-bottom">
+                <a href="{% url 'accounts:register' %}" class="trainer-cta">
+                    <span>Start Your Fitness Journey</span>
+                    <span class="cta-arrow">↗</span>
+                </a>
+
+                <span class="trainer-quote">Train with purpose.</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TRAINING PROGRAMS -->
+<section class="section programs-section" id="programs">
+
+    <div class="programs-heading">
+        <div class="programs-heading-content">
+            <div class="programs-eyebrow">
+                <span></span>
+                TRAIN WITH PURPOSE
+            </div>
+
+            <h2 class="section-title">
+                Find your <span>stronger self.</span>
+            </h2>
+
+            <p class="section-description">
+                Every goal starts with a plan. Explore training
+                options designed to help you move better, build
+                strength, and make consistent progress.
+            </p>
+        </div>
+
+        <div class="programs-heading-note">
+            <span class="programs-note-icon">↔</span>
+            <span>Explore our programmes</span>
+        </div>
+    </div>
+
+    <div class="program-marquee" aria-label="Available fitness training programmes">
+        <div class="program-track">
+
+            <div class="program-group">
+
+                <article class="program-card program-fat-loss">
+                    <div class="program-card-top">
+                        <span class="program-number">01</span>
+                        <span class="program-icon" aria-hidden="true">↗</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">BODY COMPOSITION</span>
+                        <h3>Fat Loss</h3>
+                        <p>
+                            Build healthier habits with structured
+                            training focused on sustainable fat loss
+                            and improved fitness.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Consistency over shortcuts</span>
+                        <span class="program-arrow" aria-hidden="true">↗</span>
+                    </div>
+                </article>
+
+                <article class="program-card program-muscle">
+                    <div class="program-card-top">
+                        <span class="program-number">02</span>
+                        <span class="program-icon" aria-hidden="true">✳</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">MUSCLE DEVELOPMENT</span>
+                        <h3>Muscle Building</h3>
+                        <p>
+                            Work towards greater muscle development
+                            through progressive resistance training
+                            and consistent effort.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Build strength progressively</span>
+                        <span class="program-arrow" aria-hidden="true">↗</span>
+                    </div>
+                </article>
+
+                <article class="program-card program-strength">
+                    <div class="program-card-top">
+                        <span class="program-number">03</span>
+                        <span class="program-icon" aria-hidden="true">⌁</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">PERFORMANCE</span>
+                        <h3>Strength Training</h3>
+                        <p>
+                            Develop strength, improve exercise
+                            technique, and progress with a more
+                            structured training approach.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Progress with purpose</span>
+                        <span class="program-arrow" aria-hidden="true">↗</span>
+                    </div>
+                </article>
+
+                <article class="program-card program-mobility">
+                    <div class="program-card-top">
+                        <span class="program-number">04</span>
+                        <span class="program-icon" aria-hidden="true">◎</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">MOVEMENT &amp; WELLNESS</span>
+                        <h3>Mobility &amp; Fitness</h3>
+                        <p>
+                            Improve mobility, endurance, and
+                            everyday movement while building
+                            a more active lifestyle.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Move better every day</span>
+                        <span class="program-arrow" aria-hidden="true">↗</span>
+                    </div>
+                </article>
+
+                <article class="program-card program-rehab">
+                    <div class="program-card-top">
+                        <span class="program-number">05</span>
+                        <span class="program-icon" aria-hidden="true">⌖</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">GUIDED MOVEMENT</span>
+                        <h3>Rehabilitation Training</h3>
+                        <p>
+                            Carefully planned exercises to support
+                            movement, mobility, strength, and
+                            physical function.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Progress at your pace</span>
+                        <span class="program-arrow" aria-hidden="true">↗</span>
+                    </div>
+                </article>
+
+                <article class="program-card program-nutrition">
+                    <div class="program-card-top">
+                        <span class="program-number">06</span>
+                        <span class="program-icon" aria-hidden="true">◒</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">HEALTHY HABITS</span>
+                        <h3>Nutrition Guidance</h3>
+                        <p>
+                            Build more consistent eating habits
+                            that complement your training goals
+                            and daily routine.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Support your training</span>
+                        <span class="program-arrow" aria-hidden="true">↗</span>
+                    </div>
+                </article>
+            </div>
+
+            <!-- DUPLICATE GROUP FOR MARQUEE ANIMATION -->
+            <div class="program-group" aria-hidden="true">
+
+                <article class="program-card program-fat-loss">
+                    <div class="program-card-top">
+                        <span class="program-number">01</span>
+                        <span class="program-icon">↗</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">BODY COMPOSITION</span>
+                        <h3>Fat Loss</h3>
+                        <p>
+                            Build healthier habits with structured
+                            training focused on sustainable fat loss
+                            and improved fitness.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Consistency over shortcuts</span>
+                        <span class="program-arrow">↗</span>
+                    </div>
+                </article>
+
+                <article class="program-card program-muscle">
+                    <div class="program-card-top">
+                        <span class="program-number">02</span>
+                        <span class="program-icon">✳</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">MUSCLE DEVELOPMENT</span>
+                        <h3>Muscle Building</h3>
+                        <p>
+                            Work towards greater muscle development
+                            through progressive resistance training
+                            and consistent effort.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Build strength progressively</span>
+                        <span class="program-arrow">↗</span>
+                    </div>
+                </article>
+
+                <article class="program-card program-strength">
+                    <div class="program-card-top">
+                        <span class="program-number">03</span>
+                        <span class="program-icon">⌁</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">PERFORMANCE</span>
+                        <h3>Strength Training</h3>
+                        <p>
+                            Develop strength, improve exercise
+                            technique, and progress with a more
+                            structured training approach.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Progress with purpose</span>
+                        <span class="program-arrow">↗</span>
+                    </div>
+                </article>
+
+                <article class="program-card program-mobility">
+                    <div class="program-card-top">
+                        <span class="program-number">04</span>
+                        <span class="program-icon">◎</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">MOVEMENT &amp; WELLNESS</span>
+                        <h3>Mobility &amp; Fitness</h3>
+                        <p>
+                            Improve mobility, endurance, and
+                            everyday movement while building
+                            a more active lifestyle.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Move better every day</span>
+                        <span class="program-arrow">↗</span>
+                    </div>
+                </article>
+
+                <article class="program-card program-rehab">
+                    <div class="program-card-top">
+                        <span class="program-number">05</span>
+                        <span class="program-icon">⌖</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">GUIDED MOVEMENT</span>
+                        <h3>Rehabilitation Training</h3>
+                        <p>
+                            Carefully planned exercises to support
+                            movement, mobility, strength, and
+                            physical function.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Progress at your pace</span>
+                        <span class="program-arrow">↗</span>
+                    </div>
+                </article>
+
+                <article class="program-card program-nutrition">
+                    <div class="program-card-top">
+                        <span class="program-number">06</span>
+                        <span class="program-icon">◒</span>
+                    </div>
+                    <div class="program-card-content">
+                        <span class="program-category">HEALTHY HABITS</span>
+                        <h3>Nutrition Guidance</h3>
+                        <p>
+                            Build more consistent eating habits
+                            that complement your training goals
+                            and daily routine.
+                        </p>
+                    </div>
+                    <div class="program-card-footer">
+                        <span>Support your training</span>
+                        <span class="program-arrow">↗</span>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="programs-bottom">
+        <span class="programs-bottom-dot"></span>
+        Personalised training. Consistent effort. Sustainable progress.
+    </div>
+</section>
+
+<!-- PRICING PLANS -->
+<section class="section pricing-section" id="plans">
+    <div class="pricing-container">
+
+        <div class="pricing-heading">
+            <span class="pricing-tag">OUR PLANS</span>
+            <h2>Choose Your <span>Training Plan</span></h2>
+            <p>
+                Find the right training plan for your fitness journey.
+                Choose your preferred training style and duration.
+            </p>
+        </div>
+
+        <div class="pricing-grid">
+
+            <!-- SIMPLE PT -->
+            <div class="pricing-card">
+                <div class="pricing-card-top">
+                    <div class="pricing-icon">🏋️</div>
+                    <h3>Simple PT</h3>
+                    <p class="pricing-description">
+                        Personalized, one-to-one in-person training.
+                    </p>
+                </div>
+
+                <div class="pricing-plan">
+                    <div class="plan-info">
+                        <h4>1 Month</h4>
+                        <p>20 Sessions</p>
+                    </div>
+                    <div class="plan-price">₹20,000</div>
+                    <a class="choose-plan-btn"
+                       href="https://wa.me/916280507660?text=Hello%2C%20I%20am%20interested%20in%20the%20Simple%20PT%201-month%20plan."
+                       target="_blank" rel="noopener noreferrer">
+                        Choose Plan <span>↗</span>
+                    </a>
+                </div>
+
+                <div class="pricing-plan">
+                    <div class="plan-info">
+                        <h4>3 Months</h4>
+                        <p>60 Sessions</p>
+                    </div>
+                    <div class="plan-price">₹50,000</div>
+                    <a class="choose-plan-btn"
+                       href="https://wa.me/916280507660?text=Hello%2C%20I%20am%20interested%20in%20the%20Simple%20PT%203-month%20plan."
+                       target="_blank" rel="noopener noreferrer">
+                        Choose Plan <span>↗</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ONLINE PT -->
+            <div class="pricing-card featured-plan">
+                <div class="featured-label">ONLINE COACHING</div>
+
+                <div class="pricing-card-top">
+                    <div class="pricing-icon">💻</div>
+                    <h3>Online PT</h3>
+                    <p class="pricing-description">
+                        Live online coaching with a personalized workout plan.
+                    </p>
+                </div>
+
+                <div class="pricing-plan">
+                    <div class="plan-info">
+                        <h4>1 Month</h4>
+                        <p>20 Sessions</p>
+                    </div>
+                    <div class="plan-price">₹15,000</div>
+                    <a class="choose-plan-btn"
+                       href="https://wa.me/916280507660?text=Hello%2C%20I%20am%20interested%20in%20the%20Online%20PT%201-month%20plan."
+                       target="_blank" rel="noopener noreferrer">
+                        Choose Plan <span>↗</span>
+                    </a>
+                </div>
+
+                <div class="pricing-plan">
+                    <div class="plan-info">
+                        <h4>3 Months</h4>
+                        <p>60 Sessions</p>
+                    </div>
+                    <div class="plan-price">₹30,000</div>
+                    <a class="choose-plan-btn"
+                       href="https://wa.me/916280507660?text=Hello%2C%20I%20am%20interested%20in%20the%20Online%20PT%203-month%20plan."
+                       target="_blank" rel="noopener noreferrer">
+                        Choose Plan <span>↗</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- GROUP PT -->
+            <div class="pricing-card">
+                <div class="pricing-card-top">
+                    <div class="pricing-icon">👥</div>
+                    <h3>Group PT</h3>
+                    <p class="pricing-description">
+                        Train together in a small, supportive group.
+                    </p>
+                </div>
+
+                <div class="pricing-plan">
+                    <div class="plan-info">
+                        <h4>1 Month</h4>
+                        <p>15 Sessions</p>
+                    </div>
+                    <div class="plan-price">₹8,000</div>
+                    <a class="choose-plan-btn"
+                       href="https://wa.me/916280507660?text=Hello%2C%20I%20am%20interested%20in%20the%20Group%20PT%201-month%20plan."
+                       target="_blank" rel="noopener noreferrer">
+                        Choose Plan <span>↗</span>
+                    </a>
+                </div>
+
+                <div class="pricing-plan">
+                    <div class="plan-info">
+                        <h4>3 Months</h4>
+                        <p>45 Sessions</p>
+                    </div>
+                    <div class="plan-price">₹15,000</div>
+                    <a class="choose-plan-btn"
+                       href="https://wa.me/916280507660?text=Hello%2C%20I%20am%20interested%20in%20the%20Group%20PT%203-month%20plan."
+                       target="_blank" rel="noopener noreferrer">
+                        Choose Plan <span>↗</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="pricing-contact">
+            <p>Need help choosing your plan?</p>
+            <a href="tel:+916280507660">Call Trainer: 6280507660</a>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+    <div class="section-header">
+        <div class="section-label">Simple Process</div>
+        <h2 class="section-title">Your journey starts here.</h2>
+    </div>
+
+    <div class="steps-grid">
+        <div class="step">
+            <div class="step-number">01</div>
+            <h3>Create Account</h3>
+            <p>Create your FitConnect account and tell us about yourself.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">02</div>
+            <h3>Choose a Plan</h3>
+            <p>Explore the training programs and subscription options.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">03</div>
+            <h3>Connect</h3>
+            <p>Contact the trainer and complete your subscription process.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">04</div>
+            <h3>Start Training</h3>
+            <p>Once approved, access your personal FitConnect dashboard.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CALL TO ACTION -->
+<section class="cta" id="contact">
+    <h2>Ready to start?</h2>
+
+    <p>
+        Create your FitConnect account and take the
+        first step toward structured, consistent training.
+    </p>
+
+    <a href="{% url 'accounts:register' %}" class="primary-button">
+        Become a Client
+    </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div>© 2026 FitConnect</div>
+    <div>Personal Training • Progress • Consistency</div>
+</footer>
+
+</body>
+</html>

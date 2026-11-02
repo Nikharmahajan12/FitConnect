@@ -1,0 +1,1369 @@
+{% extends "core/client base.html" %}
+{% load static %}
+
+{% block title %}Profile | FitConnect{% endblock %}
+
+{% block page_css %}
+<style>
+/* =========================================================
+   FITCONNECT — CLIENT PROFILE
+========================================================= */
+
+.profile-page {
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 54px 52px 80px;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.profile-page,
+.profile-page * {
+    box-sizing: border-box;
+}
+
+.profile-header {
+    margin-bottom: 36px;
+}
+
+.profile-header .eyebrow,
+.profile-page .section-eyebrow {
+    color: #b66cff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+}
+
+.profile-header h1 {
+    margin: 10px 0 12px;
+    color: #f7f4fa;
+    font-size: clamp(40px, 4vw, 52px);
+    line-height: 1.02;
+    letter-spacing: -2px;
+}
+
+.profile-header p {
+    margin: 0;
+    color: #9c94aa;
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+/* =========================================================
+   NOTIFICATION MESSAGES
+========================================================= */
+
+.profile-alerts {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-alert {
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.6;
+    border: 1px solid rgba(255, 255, 255, .07);
+    background: rgba(255, 255, 255, .025);
+}
+
+.profile-alert.success {
+    color: #c4f1d0;
+    border-color: rgba(74, 222, 128, .20);
+    background: rgba(74, 222, 128, .07);
+}
+
+.profile-alert.error {
+    color: #fca5a5;
+    border-color: rgba(248, 113, 113, .20);
+    background: rgba(248, 113, 113, .07);
+}
+
+.profile-alert.warning {
+    color: #fcd7a1;
+}
+
+.profile-alert.info {
+    color: #d8b4fe;
+}
+
+/* =========================================================
+   PROFILE HERO
+========================================================= */
+
+.profile-hero {
+    display: grid;
+    grid-template-columns: 1.3fr .7fr;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.profile-card {
+    min-width: 0;
+    background: linear-gradient(
+        145deg,
+        rgba(29, 24, 37, .96),
+        rgba(15, 12, 19, .98)
+    );
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .24);
+}
+
+.identity-card {
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.identity-avatar {
+    width: 78px;
+    height: 78px;
+    flex: 0 0 78px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    color: #fff;
+    font-size: 30px;
+    font-weight: 800;
+    box-shadow: 0 10px 30px rgba(168, 85, 247, .22);
+}
+
+.identity-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.identity-avatar [hidden] {
+    display: none !important;
+}
+
+.identity-copy {
+    min-width: 0;
+}
+
+.identity-copy .section-eyebrow {
+    display: block;
+    margin-bottom: 7px;
+}
+
+.identity-copy h2 {
+    margin: 0 0 6px;
+    color: #f7f4fa;
+    font-size: 25px;
+    letter-spacing: -.6px;
+    overflow-wrap: anywhere;
+}
+
+.identity-copy p {
+    margin: 0;
+    color: #80788d;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   MEMBERSHIP STATUS CARD
+========================================================= */
+
+.membership-card {
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+}
+
+.membership-card::after {
+    content: "";
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    right: -65px;
+    top: -65px;
+    border-radius: 50%;
+    background: rgba(168, 85, 247, .10);
+    pointer-events: none;
+}
+
+.membership-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 9px;
+    background: rgba(168, 85, 247, .10);
+    border: 1px solid rgba(168, 85, 247, .16);
+    color: #d8b4fe;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .9px;
+}
+
+.membership-card h2 {
+    margin: 14px 0 6px;
+    color: #f7f4fa;
+    font-size: 23px;
+    overflow-wrap: anywhere;
+}
+
+.membership-card p {
+    margin: 0;
+    color: #81798d;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   PERSONAL INFORMATION DISPLAY
+========================================================= */
+
+.detail-card {
+    padding: 28px;
+    margin-bottom: 20px;
+}
+
+.detail-card h2 {
+    margin: 8px 0 5px;
+    color: #f7f4fa;
+    font-size: 20px;
+}
+
+.detail-card > p {
+    margin: 0;
+    color: #716a7d;
+    font-size: 12px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.info-item {
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, .055);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .018);
+    min-width: 0;
+}
+
+.info-item span,
+.info-item small {
+    display: block;
+}
+
+.info-item span {
+    color: #847c90;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.info-item strong {
+    display: block;
+    color: #f7f4fa;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+.info-item small {
+    color: #625b6b;
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+/* =========================================================
+   PLAN DETAILS
+========================================================= */
+
+.plan-card {
+    padding: 28px;
+    margin-bottom: 20px;
+}
+
+.plan-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 22px;
+}
+
+.plan-panel {
+    padding: 20px;
+    border-radius: 17px;
+    border: 1px solid rgba(255, 255, 255, .055);
+    background: rgba(255, 255, 255, .018);
+}
+
+.plan-panel .panel-label {
+    color: #847c90;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.plan-panel h3 {
+    margin: 8px 0 16px;
+    color: #f7f4fa;
+    font-size: 22px;
+    overflow-wrap: anywhere;
+}
+
+.plan-dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.plan-date-box {
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, .05);
+    border-radius: 13px;
+    background: rgba(0, 0, 0, .12);
+    min-width: 0;
+}
+
+.plan-date-box span {
+    display: block;
+    color: #70687b;
+    font-size: 10px;
+    margin-bottom: 5px;
+}
+
+.plan-date-box strong {
+    color: #f5f1fa;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.plan-meta {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.meta-pill {
+    padding: 6px 9px;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, .055);
+    background: rgba(255, 255, 255, .02);
+    color: #8d8498;
+    font-size: 10px;
+}
+
+.meta-pill.good {
+    color: #d8b4fe;
+    background: rgba(168, 85, 247, .08);
+    border-color: rgba(168, 85, 247, .15);
+}
+
+/* =========================================================
+   MEMBERSHIP HISTORY
+========================================================= */
+
+.history-list {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-row {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255, 255, 255, .045);
+}
+
+.history-row:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.history-date {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    background: rgba(168, 85, 247, .07);
+    border: 1px solid rgba(168, 85, 247, .11);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.history-date strong {
+    color: #f7f4fa;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.history-date span {
+    color: #8d8399;
+    font-size: 9px;
+    margin-top: 4px;
+    letter-spacing: 1px;
+}
+
+.history-main {
+    min-width: 0;
+}
+
+.history-main strong {
+    display: block;
+    color: #f4eff8;
+    font-size: 13px;
+    margin-bottom: 4px;
+    overflow-wrap: anywhere;
+}
+
+.history-main span {
+    color: #71697b;
+    font-size: 11px;
+    overflow-wrap: anywhere;
+}
+
+.history-status {
+    color: #8d8498;
+    font-size: 10px;
+    text-transform: capitalize;
+}
+
+/* =========================================================
+   NO MEMBERSHIP PLAN
+========================================================= */
+
+.no-plan {
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, .055);
+    background: rgba(255, 255, 255, .018);
+    color: #746c80;
+    margin-top: 22px;
+}
+
+.no-plan strong {
+    display: block;
+    color: #f3edf8;
+    margin-bottom: 5px;
+}
+
+.no-plan p {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   EDITABLE PROFILE FORM
+========================================================= */
+
+.profile-edit-card {
+    padding: 28px;
+    margin-bottom: 20px;
+}
+
+.profile-form {
+    margin-top: 22px;
+}
+
+.profile-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.profile-form-group {
+    min-width: 0;
+}
+
+.profile-form-group.full {
+    grid-column: 1 / -1;
+}
+
+.profile-form-group label {
+    display: block;
+    margin-bottom: 7px;
+    color: #847c90;
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+}
+
+.profile-form-group input,
+.profile-form-group select {
+    width: 100%;
+    min-width: 0;
+    height: 44px;
+    padding: 0 13px;
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 12px;
+    background: #100d15;
+    color: #f5f1fa;
+    font: inherit;
+    font-size: 12px;
+    outline: none;
+    transition: .18s ease;
+}
+
+.profile-form-group input::placeholder {
+    color: #5f5869;
+}
+
+.profile-form-group input:focus,
+.profile-form-group select:focus {
+    border-color: rgba(168, 85, 247, .45);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, .08);
+}
+
+.profile-form-group input[readonly] {
+    color: #777080;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, .015);
+}
+
+/* =========================================================
+   PROFILE PHOTO UPLOAD
+========================================================= */
+
+.profile-photo-field {
+    grid-column: 1 / -1;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+    border: 1px solid rgba(168, 85, 247, .13);
+    border-radius: 16px;
+    background: rgba(168, 85, 247, .035);
+}
+
+.profile-photo-preview {
+    width: 84px;
+    height: 84px;
+    flex: 0 0 84px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    color: #fff;
+    font-size: 28px;
+    font-weight: 800;
+    box-shadow: 0 8px 24px rgba(168, 85, 247, .17);
+}
+
+.profile-photo-preview img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.profile-photo-preview [hidden] {
+    display: none !important;
+}
+
+.profile-photo-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-photo-content label {
+    display: block;
+    margin-bottom: 7px;
+    color: #f4eff8;
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.profile-photo-content p {
+    margin: 0 0 12px;
+    color: #81798d;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.profile-photo-content input[type="file"] {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 42px;
+    padding: 7px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 10px;
+    background: #100d15;
+    color: #9c94aa;
+    font: inherit;
+    font-size: 11px;
+}
+
+.profile-photo-content input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 7px 11px;
+    border: 0;
+    border-radius: 7px;
+    background: rgba(168, 85, 247, .16);
+    color: #e9d5ff;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.profile-photo-content input[type="file"]::file-selector-button:hover {
+    background: rgba(168, 85, 247, .27);
+}
+
+.profile-form-help {
+    margin-top: 6px;
+    color: #5f5869;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.profile-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, .045);
+}
+
+.profile-save-button {
+    border: 1px solid rgba(168, 85, 247, .25);
+    border-radius: 12px;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    color: #fff;
+    min-height: 44px;
+    padding: 0 18px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 750;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(168, 85, 247, .18);
+    transition: .18s ease;
+}
+
+.profile-save-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(168, 85, 247, .24);
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 900px) {
+    .profile-page {
+        padding: 40px 28px 70px;
+    }
+
+    .profile-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .info-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .plan-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .profile-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-form-group.full {
+        grid-column: auto;
+    }
+
+    .profile-photo-field {
+        grid-column: auto;
+    }
+
+    .profile-form-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .profile-save-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .profile-page {
+        padding: 28px 18px 90px;
+    }
+
+    .identity-card,
+    .membership-card,
+    .detail-card,
+    .plan-card,
+    .profile-edit-card {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .identity-card {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .identity-avatar {
+        width: 64px;
+        height: 64px;
+        flex-basis: 64px;
+        font-size: 24px;
+        border-radius: 18px;
+    }
+
+    .identity-copy h2 {
+        font-size: 20px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .plan-dates {
+        grid-template-columns: 1fr;
+    }
+
+    .history-row {
+        grid-template-columns: 58px minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .history-status {
+        grid-column: 2;
+    }
+
+    .profile-photo-field {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 16px;
+    }
+
+    .profile-photo-preview {
+        width: 76px;
+        height: 76px;
+        flex-basis: 76px;
+        border-radius: 18px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <section class="profile-header">
+        <span class="eyebrow">YOUR ACCOUNT</span>
+        <h1>Profile</h1>
+        <p>Your personal information and membership details.</p>
+    </section>
+
+    <!-- =====================================================
+         DJANGO SUCCESS AND ERROR MESSAGES
+    ====================================================== -->
+
+    {% if messages %}
+        <div class="profile-alerts" aria-live="polite">
+            {% for message in messages %}
+                <div class="profile-alert {{ message.tags|default:'info' }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- =====================================================
+         PROFILE IDENTITY AND MEMBERSHIP
+    ====================================================== -->
+
+    <section class="profile-hero">
+
+        <article class="profile-card identity-card">
+
+            <div class="identity-avatar">
+
+                {% if client.profile_image %}
+                    <img
+                        id="profileAvatarImage"
+                        src="{{ client.profile_image.url }}"
+                        alt="Profile photo of {{ request.user.get_full_name|default:request.user.username }}"
+                    >
+                {% else %}
+                    <img
+                        id="profileAvatarImage"
+                        src=""
+                        alt="Profile photo preview"
+                        hidden
+                    >
+                {% endif %}
+
+                <span
+                    id="profileAvatarInitials"
+                    {% if client.profile_image %}hidden{% endif %}
+                >
+                    {% if request.user.first_name %}
+                        {{ request.user.first_name|first|upper }}
+                    {% else %}
+                        {{ request.user.username|first|upper }}
+                    {% endif %}
+                </span>
+
+            </div>
+
+            <div class="identity-copy">
+                <span class="section-eyebrow">CLIENT PROFILE</span>
+
+                <h2>
+                    {% if request.user.get_full_name %}
+                        {{ request.user.get_full_name }}
+                    {% else %}
+                        {{ request.user.username }}
+                    {% endif %}
+                </h2>
+
+                <p>{{ request.user.email|default:"No email added" }}</p>
+            </div>
+
+        </article>
+
+        <article class="profile-card membership-card">
+            <span class="section-eyebrow">MEMBERSHIP</span>
+
+            {% if current_subscription %}
+                <div class="membership-status">Active</div>
+                <h2>{{ current_subscription.plan_name }}</h2>
+                <p>
+                    Membership ends
+                    {{ current_subscription.end_date|date:"d F Y" }}
+                </p>
+
+            {% elif latest_subscription %}
+                <div class="membership-status">
+                    {{ subscription_status|default:latest_subscription.status }}
+                </div>
+                <h2>{{ latest_subscription.plan_name }}</h2>
+                <p>
+                    End date
+                    {{ latest_subscription.end_date|date:"d F Y" }}
+                </p>
+
+            {% elif client.membership_end %}
+                <div class="membership-status">Membership</div>
+                <h2>Current Plan</h2>
+                <p>
+                    Ends {{ client.membership_end|date:"d F Y" }}
+                </p>
+
+            {% else %}
+                <div class="membership-status">Not Assigned</div>
+                <h2>No Active Plan</h2>
+                <p>Your trainer can assign a membership plan.</p>
+            {% endif %}
+        </article>
+
+    </section>
+
+    <!-- =====================================================
+         EDITABLE PERSONAL INFORMATION AND PROFILE PHOTO
+    ====================================================== -->
+
+    <section class="profile-card profile-edit-card">
+
+        <span class="section-eyebrow">PERSONAL INFORMATION</span>
+        <h2>About You</h2>
+        <p style="margin:0;color:#716a7d;font-size:12px;line-height:1.7;">
+            Update your personal information and profile photo.
+        </p>
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="profile-form"
+        >
+
+            {% csrf_token %}
+
+            <div class="profile-form-grid">
+
+                <!-- Profile photo uploader -->
+
+                <div class="profile-photo-field">
+
+                    <div class="profile-photo-preview">
+
+                        <img
+                            id="profilePhotoPreview"
+                            src="{% if client.profile_image %}{{ client.profile_image.url }}{% endif %}"
+                            alt="Selected profile photo preview"
+                            {% if not client.profile_image %}hidden{% endif %}
+                        >
+
+                        <span
+                            id="profilePhotoInitials"
+                            {% if client.profile_image %}hidden{% endif %}
+                        >
+                            {% if request.user.first_name %}
+                                {{ request.user.first_name|first|upper }}
+                            {% else %}
+                                {{ request.user.username|first|upper }}
+                            {% endif %}
+                        </span>
+
+                    </div>
+
+                    <div class="profile-photo-content">
+
+                        <label for="profile_image">
+                            Profile Photo
+                        </label>
+
+                        <p>
+                            Choose a clear photo for your FitConnect account.
+                            Supported formats include JPG, PNG and other
+                            image formats recognized by the server.
+                            Maximum size: 5 MB.
+                        </p>
+
+                        <input
+                            type="file"
+                            id="profile_image"
+                            name="profile_image"
+                            accept="image/*"
+                        >
+
+                        <div class="profile-form-help">
+                            Your existing photo will be kept if you don't
+                            select a new one.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Full name -->
+
+                <div class="profile-form-group">
+                    <label for="full_name">Full Name</label>
+
+                    <input
+                        type="text"
+                        id="full_name"
+                        name="full_name"
+                        value="{{ request.user.get_full_name }}"
+                        maxlength="150"
+                        required
+                    >
+                </div>
+
+                <!-- Username -->
+
+                <div class="profile-form-group">
+                    <label for="username">Username</label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        value="{{ request.user.username }}"
+                        readonly
+                    >
+
+                    <div class="profile-form-help">
+                        Username is fixed for this account.
+                    </div>
+                </div>
+
+                <!-- Email -->
+
+                <div class="profile-form-group">
+                    <label for="email">Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ request.user.email }}"
+                        required
+                    >
+                </div>
+
+                <!-- Phone -->
+
+                <div class="profile-form-group">
+                    <label for="phone">Phone</label>
+
+                    <input
+                        type="text"
+                        id="phone"
+                        name="phone"
+                        value="{{ client.phone }}"
+                        maxlength="15"
+                        inputmode="tel"
+                    >
+                </div>
+
+                <!-- Age -->
+
+                <div class="profile-form-group">
+                    <label for="age">Age</label>
+
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        value="{{ client.age|default_if_none:'' }}"
+                        min="1"
+                        max="120"
+                    >
+                </div>
+
+                <!-- Gender -->
+
+                <div class="profile-form-group">
+                    <label for="gender">Gender</label>
+
+                    <select id="gender" name="gender">
+                        <option value="">Select gender</option>
+
+                        {% for value, label in gender_choices %}
+                            <option
+                                value="{{ value }}"
+                                {% if client.gender == value %}selected{% endif %}
+                            >
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Height -->
+
+                <div class="profile-form-group">
+                    <label for="height">Height (cm)</label>
+
+                    <input
+                        type="number"
+                        id="height"
+                        name="height"
+                        value="{{ client.height|default_if_none:'' }}"
+                        min="1"
+                        max="999.99"
+                        step="0.01"
+                    >
+                </div>
+
+                <!-- Weight -->
+
+                <div class="profile-form-group">
+                    <label for="weight">Weight (kg)</label>
+
+                    <input
+                        type="number"
+                        id="weight"
+                        name="weight"
+                        value="{{ client.weight|default_if_none:'' }}"
+                        min="1"
+                        max="999.99"
+                        step="0.01"
+                    >
+                </div>
+
+                <!-- Fitness goal -->
+
+                <div class="profile-form-group full">
+                    <label for="fitness_goal">Fitness Goal</label>
+
+                    <select id="fitness_goal" name="fitness_goal">
+                        <option value="">Select fitness goal</option>
+
+                        {% for value, label in fitness_goal_choices %}
+                            <option
+                                value="{{ value }}"
+                                {% if client.fitness_goal == value %}selected{% endif %}
+                            >
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Save button -->
+
+            <div class="profile-form-actions">
+
+                <button
+                    type="submit"
+                    class="profile-save-button"
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+    <!-- =====================================================
+         MEMBERSHIP PLAN DETAILS
+    ====================================================== -->
+
+    <section class="profile-card plan-card">
+
+        <span class="section-eyebrow">PLAN DETAILS</span>
+        <h2>Membership Plan</h2>
+        <p>Your current plan and when it is scheduled to end.</p>
+
+        {% if current_subscription %}
+
+            <div class="plan-layout">
+
+                <div class="plan-panel">
+                    <span class="panel-label">Current Plan</span>
+                    <h3>{{ current_subscription.plan_name }}</h3>
+
+                    <div class="plan-dates">
+
+                        <div class="plan-date-box">
+                            <span>Started</span>
+                            <strong>
+                                {{ current_subscription.start_date|date:"d M Y" }}
+                            </strong>
+                        </div>
+
+                        <div class="plan-date-box">
+                            <span>Ends</span>
+                            <strong>
+                                {{ current_subscription.end_date|date:"d M Y" }}
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <div class="plan-meta">
+
+                        <span class="meta-pill good">
+                            {{ current_subscription.status|title }}
+                        </span>
+
+                        {% if current_subscription.amount %}
+                            <span class="meta-pill">
+                                ₹ {{ current_subscription.amount }}
+                            </span>
+                        {% endif %}
+
+                        {% if days_remaining is not None %}
+                            <span class="meta-pill">
+                                {{ days_remaining }}
+                                day{{ days_remaining|pluralize }} remaining
+                            </span>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <div class="plan-panel">
+                    <span class="panel-label">Membership Summary</span>
+                    <h3>You're covered</h3>
+
+                    <p style="margin:0;color:#857d90;font-size:12px;line-height:1.7;">
+                        Your trainer's active subscription is shown here.
+                        The end date is taken directly from your membership
+                        record.
+                    </p>
+                </div>
+
+            </div>
+
+        {% elif latest_subscription %}
+
+            <div class="no-plan">
+                <strong>{{ latest_subscription.plan_name }}</strong>
+                <p>
+                    Status: {{ latest_subscription.status|title }}
+                    · {{ latest_subscription.start_date|date:"d M Y" }}
+                    to {{ latest_subscription.end_date|date:"d M Y" }}
+                </p>
+            </div>
+
+        {% elif client.membership_start or client.membership_end %}
+
+            <div class="no-plan">
+                <strong>Membership Record</strong>
+                <p>
+                    {% if client.membership_start %}
+                        Started {{ client.membership_start|date:"d M Y" }}
+                    {% endif %}
+
+                    {% if client.membership_end %}
+                        · Ends {{ client.membership_end|date:"d M Y" }}
+                    {% endif %}
+                </p>
+            </div>
+
+        {% else %}
+
+            <div class="no-plan">
+                <strong>No membership plan assigned yet.</strong>
+                <p>Your trainer's plan will appear here once it is assigned.</p>
+            </div>
+
+        {% endif %}
+
+    </section>
+
+    <!-- =====================================================
+         MEMBERSHIP HISTORY
+    ====================================================== -->
+
+    {% if subscription_history %}
+
+        <section class="profile-card detail-card">
+
+            <span class="section-eyebrow">HISTORY</span>
+            <h2>Membership History</h2>
+            <p>Previous and current subscriptions linked to your account.</p>
+
+            <div class="history-list">
+
+                {% for subscription in subscription_history %}
+
+                    <article class="history-row">
+
+                        <div class="history-date">
+                            <strong>
+                                {{ subscription.start_date|date:"d" }}
+                            </strong>
+
+                            <span>
+                                {{ subscription.start_date|date:"M"|upper }}
+                            </span>
+                        </div>
+
+                        <div class="history-main">
+                            <strong>{{ subscription.plan_name }}</strong>
+
+                            <span>
+                                {{ subscription.start_date|date:"d M Y" }}
+                                —
+                                {{ subscription.end_date|date:"d M Y" }}
+                            </span>
+                        </div>
+
+                        <span class="history-status">
+                            {{ subscription.status }}
+                        </span>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    {% endif %}
+
+</div>
+
+<!-- =========================================================
+     LIVE PROFILE PHOTO PREVIEW
+========================================================= -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const fileInput = document.getElementById("profile_image");
+
+    const avatarImage = document.getElementById("profileAvatarImage");
+    const avatarInitials = document.getElementById("profileAvatarInitials");
+
+    const photoPreview = document.getElementById("profilePhotoPreview");
+    const photoInitials = document.getElementById("profilePhotoInitials");
+
+    if (!fileInput) {
+        return;
+    }
+
+    fileInput.addEventListener("change", function () {
+        const file = this.files && this.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        // Check the selected file's size before submitting.
+        const maxSize = 5 * 1024 * 1024;
+
+        if (file.size > maxSize) {
+            alert("Please choose an image smaller than 5 MB.");
+            this.value = "";
+            return;
+        }
+
+        // Only preview image files.
+        if (!file.type.startsWith("image/")) {
+            alert("Please choose a valid image file.");
+            this.value = "";
+            return;
+        }
+
+        const previewUrl = URL.createObjectURL(file);
+
+        // Update the large profile avatar in the identity card.
+        if (avatarImage) {
+            avatarImage.src = previewUrl;
+            avatarImage.hidden = false;
+        }
+
+        if (avatarInitials) {
+            avatarInitials.hidden = true;
+        }
+
+        // Update the smaller preview beside the upload control.
+        if (photoPreview) {
+            photoPreview.src = previewUrl;
+            photoPreview.hidden = false;
+        }
+
+        if (photoInitials) {
+            photoInitials.hidden = true;
+        }
+    });
+});
+</script>
+
+{% endblock %}

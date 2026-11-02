@@ -1,0 +1,1042 @@
+/* =========================================================
+   FITCONNECT — CLIENT QUERIES & SUPPORT
+   Purple / Black Premium UI
+   ========================================================= */
+
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+
+    --bg: #08070b;
+    --bg-secondary: #0d0b11;
+
+    --surface: #121017;
+    --surface-2: #17131d;
+    --surface-3: #1d1825;
+
+    --border: rgba(255, 255, 255, 0.07);
+    --border-hover: rgba(168, 85, 247, 0.35);
+
+    --text: #f7f4fa;
+    --text-secondary: #b8afc2;
+    --text-muted: #777080;
+
+    --purple: #a855f7;
+    --purple-light: #c084fc;
+    --purple-dark: #7e22ce;
+
+    --purple-soft: rgba(168, 85, 247, 0.10);
+    --purple-glow: rgba(168, 85, 247, 0.20);
+
+    --green: #4ade80;
+    --yellow: #facc15;
+    --red: #f87171;
+
+    --radius-lg: 24px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+
+    --shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35);
+
+    --transition:
+        180ms ease;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.queries-page {
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding:
+        42px
+        46px
+        70px;
+
+    color:
+        var(--text);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.queries-header {
+
+    position: relative;
+
+    margin-bottom: 34px;
+}
+
+.queries-header::after {
+
+    content: "";
+
+    position: absolute;
+
+    right: 5%;
+    top: -55px;
+
+    width: 190px;
+    height: 190px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(168, 85, 247, 0.12),
+            transparent 68%
+        );
+
+    pointer-events: none;
+}
+
+.queries-eyebrow {
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    color:
+        var(--purple-light);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+
+    text-transform: uppercase;
+}
+
+.queries-header h1 {
+
+    margin:
+        0
+        0
+        10px;
+
+    color:
+        var(--text);
+
+    font-size:
+        clamp(
+            28px,
+            3vw,
+            38px
+        );
+
+    font-weight: 700;
+
+    letter-spacing: -1.4px;
+
+    line-height: 1.1;
+}
+
+.queries-header p {
+
+    margin: 0;
+
+    max-width: 620px;
+
+    color:
+        var(--text-secondary);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   GENERIC QUERY CARD
+========================================================= */
+
+.query-form-card,
+.previous-queries {
+
+    position: relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(29, 24, 37, 0.94),
+            rgba(15, 12, 19, 0.96)
+        );
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        var(--radius-lg);
+
+    box-shadow:
+        var(--shadow);
+
+    overflow: hidden;
+}
+
+.query-form-card::before,
+.previous-queries::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(192, 132, 252, 0.28),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   NEW QUERY CARD
+========================================================= */
+
+.query-form-card {
+
+    padding: 28px;
+
+    margin-bottom: 24px;
+}
+
+
+/* =========================================================
+   CARD HEADING
+========================================================= */
+
+.card-heading {
+
+    margin-bottom: 27px;
+}
+
+.card-heading h2,
+.section-heading h2 {
+
+    margin:
+        0
+        0
+        6px;
+
+    color:
+        var(--text);
+
+    font-size: 17px;
+
+    font-weight: 650;
+
+    letter-spacing: -0.3px;
+}
+
+.card-heading p,
+.section-heading p {
+
+    margin: 0;
+
+    color:
+        var(--text-muted);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group {
+
+    margin-bottom: 19px;
+}
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color:
+        var(--text-secondary);
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        var(--radius-sm);
+
+    background:
+        rgba(0, 0, 0, 0.22);
+
+    color:
+        var(--text);
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    transition:
+        border-color var(--transition),
+        background var(--transition),
+        box-shadow var(--transition);
+}
+
+.form-group input,
+.form-group select {
+
+    height: 46px;
+
+    padding:
+        0
+        14px;
+}
+
+.form-group textarea {
+
+    min-height: 135px;
+
+    padding:
+        13px
+        14px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    border-color:
+        rgba(168, 85, 247, 0.55);
+
+    background:
+        rgba(168, 85, 247, 0.035);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(168, 85, 247, 0.08);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+
+    color:
+        var(--text-muted);
+}
+
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+.form-group select {
+
+    appearance: none;
+
+    cursor: pointer;
+
+    padding-right: 40px;
+
+    background-image:
+        linear-gradient(
+            45deg,
+            transparent 50%,
+            #8f8797 50%
+        ),
+        linear-gradient(
+            135deg,
+            #8f8797 50%,
+            transparent 50%
+        );
+
+    background-position:
+        calc(100% - 17px) 20px,
+        calc(100% - 12px) 20px;
+
+    background-size:
+        5px 5px,
+        5px 5px;
+
+    background-repeat:
+        no-repeat;
+}
+
+.form-group select option {
+
+    background:
+        var(--surface-2);
+
+    color:
+        white;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+========================================================= */
+
+.form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 7px;
+}
+
+.submit-query-button {
+
+    border: none;
+
+    border-radius:
+        var(--radius-sm);
+
+    padding:
+        12px
+        20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            var(--purple-dark)
+        );
+
+    color:
+        white;
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+    box-shadow:
+        0 8px 25px
+        rgba(126, 34, 206, 0.22);
+
+    cursor: pointer;
+
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition);
+}
+
+.submit-query-button:hover {
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 12px 30px
+        rgba(126, 34, 206, 0.34);
+}
+
+.submit-query-button:active {
+
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================================
+   PREVIOUS QUERIES
+========================================================= */
+
+.previous-queries {
+
+    padding:
+        28px;
+}
+
+.section-heading {
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   QUERY ITEM
+========================================================= */
+
+.query-item {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 22px;
+
+    padding:
+        21px
+        0;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.055);
+}
+
+.query-item:first-of-type {
+
+    border-top: none;
+}
+
+
+/* =========================================================
+   QUERY MAIN
+========================================================= */
+
+.query-main {
+
+    min-width: 0;
+
+    flex: 1;
+}
+
+.query-title-row {
+
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-bottom: 8px;
+}
+
+.query-title-row h3 {
+
+    margin: 0;
+
+    color:
+        var(--text);
+
+    font-size: 14px;
+
+    font-weight: 650;
+
+    letter-spacing: -0.2px;
+}
+
+.query-main p {
+    margin: 0 0 8px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+.query-date {
+
+    font-size: 10px;
+
+    color:
+        var(--text-muted);
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.query-status {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding:
+        5px
+        9px;
+
+    border-radius:
+        20px;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+
+    text-transform: uppercase;
+}
+
+.query-status::before {
+
+    content: "";
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+}
+
+.query-status.answered {
+
+    background:
+        rgba(74, 222, 128, 0.09);
+
+    color:
+        #86efac;
+
+    border:
+        1px solid
+        rgba(74, 222, 128, 0.12);
+}
+
+.query-status.answered::before {
+
+    background:
+        var(--green);
+}
+
+.query-status.pending {
+
+    background:
+        rgba(250, 204, 21, 0.08);
+
+    color:
+        #fde68a;
+
+    border:
+        1px solid
+        rgba(250, 204, 21, 0.12);
+}
+
+.query-status.pending::before {
+
+    background:
+        var(--yellow);
+}
+
+.query-status.closed {
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    color:
+        var(--text-muted);
+
+    border:
+        1px solid
+        var(--border);
+}
+
+.query-status.closed::before {
+
+    background:
+        var(--text-muted);
+}
+
+
+/* =========================================================
+   VIEW QUERY BUTTON
+========================================================= */
+
+.view-query-button {
+
+    flex-shrink: 0;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        10px;
+
+    padding:
+        9px
+        15px;
+
+    background:
+        var(--surface-2);
+
+    color:
+        var(--purple-light);
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        transform var(--transition);
+}
+
+.view-query-button:hover {
+
+    background:
+        rgba(168, 85, 247, 0.08);
+
+    border-color:
+        rgba(168, 85, 247, 0.25);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   CLIENT QUERY DETAIL
+========================================================= */
+
+.client-query {
+
+    margin-top: 16px;
+}
+
+.client-query p {
+
+    margin: 0;
+
+    color:
+        var(--text-secondary);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   QUERY LABEL
+========================================================= */
+
+.query-label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color:
+        var(--text-muted);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing:
+        0.08em;
+
+    text-transform:
+        uppercase;
+}
+
+
+/* =========================================================
+   TRAINER RESPONSE
+========================================================= */
+
+.trainer-response {
+
+    margin-top: 20px;
+
+    padding:
+        18px
+        20px;
+
+    border-radius:
+        15px;
+
+    background:
+        rgba(168, 85, 247, 0.07);
+
+    border:
+        1px solid
+        rgba(168, 85, 247, 0.16);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.02);
+}
+
+.response-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 10px;
+}
+
+.trainer-response p {
+
+    margin: 0;
+
+    color:
+        var(--text-secondary);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+.response-status {
+
+    color:
+        var(--purple-light);
+
+    font-size: 11px;
+
+    font-weight: 650;
+}
+
+.response-date {
+
+    display: block;
+
+    margin-top: 12px;
+
+    color:
+        var(--text-muted);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   WAITING RESPONSE
+========================================================= */
+
+.waiting-response {
+
+    margin-top: 18px;
+
+    padding:
+        13px
+        16px;
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    border:
+        1px dashed
+        rgba(255, 255, 255, 0.07);
+
+    color:
+        var(--text-muted);
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .queries-page {
+
+        padding:
+            27px
+            18px
+            50px;
+    }
+
+    .queries-header {
+
+        margin-bottom: 25px;
+    }
+
+    .queries-header h1 {
+
+        font-size: 29px;
+
+        letter-spacing: -1px;
+    }
+
+    .queries-header p {
+
+        font-size: 13px;
+    }
+
+    .query-form-card,
+    .previous-queries {
+
+        border-radius:
+            18px;
+    }
+
+    .query-form-card {
+
+        padding:
+            22px
+            20px;
+    }
+
+    .previous-queries {
+
+        padding:
+            22px
+            20px;
+    }
+
+    .query-item {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        gap: 15px;
+    }
+
+    .view-query-button {
+
+        width: 100%;
+
+        padding:
+            11px
+            15px;
+    }
+
+    .form-actions {
+
+        justify-content:
+            stretch;
+    }
+
+    .submit-query-button {
+
+        width: 100%;
+    }
+
+    .response-header {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        gap: 6px;
+    }
+
+    .trainer-response {
+
+        padding:
+            15px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 450px) {
+
+    .queries-page {
+
+        padding:
+            23px
+            15px
+            40px;
+    }
+
+    .query-form-card,
+    .previous-queries {
+
+        border-radius:
+            16px;
+    }
+
+    .query-form-card {
+
+        padding:
+            20px
+            17px;
+    }
+
+    .previous-queries {
+
+        padding:
+            20px
+            17px;
+    }
+
+    .queries-header h1 {
+
+        font-size: 27px;
+    }
+
+    .query-title-row {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        gap: 7px;
+    }
+}

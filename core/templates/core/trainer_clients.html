@@ -1,0 +1,652 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Clients | FitConnect</title>
+
+    <!-- Shared trainer layout -->
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+    <!-- Page-specific styles -->
+    <link
+    rel="stylesheet"
+    href="{% static 'css/trainer-clients.css' %}?v=2"
+>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <h2>FitConnect</h2>
+
+            <span>Trainer Panel</span>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="{% url 'core:trainer_dashboard' %}"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">▣</span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- CLIENTS -->
+
+            <a
+                href="{% url 'core:trainer_clients' %}"
+                class="nav-item active"
+            >
+
+                <span class="nav-icon">👥</span>
+
+                <span>
+                    Clients
+                </span>
+
+            </a>
+
+
+            <!-- QUERIES -->
+
+            <a
+                href="{% url 'core:trainer_queries' %}"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">💬</span>
+
+                <span>
+                    Queries &amp; Support
+                </span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =====================================================
+             DJANGO MESSAGES
+        ====================================================== -->
+
+        {% if messages %}
+
+            <div class="messages-container">
+
+                {% for message in messages %}
+
+                    <div class="message message-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- =====================================================
+             TOPBAR
+        ====================================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-date">
+
+                <span>
+                    Today
+                </span>
+
+                <strong>
+                    {{ today|date:"l, F j, Y" }}
+                </strong>
+
+            </div>
+
+
+            <div class="trainer-profile">
+
+                <div class="trainer-avatar">
+                    T
+                </div>
+
+                <div class="trainer-info">
+
+                    <strong>
+                        Trainer
+                    </strong>
+
+                    <span>
+                        FitConnect
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             PAGE HEADER
+        ====================================================== -->
+
+        <section class="page-header">
+
+            <span class="page-eyebrow">
+                TRAINER PANEL
+            </span>
+
+            <h1>
+                Clients
+            </h1>
+
+            <p>
+                Manage your clients and monitor their
+                membership and daily activity.
+            </p>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             CONNECT CLIENT
+        ====================================================== -->
+
+        <section class="dashboard-card connect-client-card">
+
+            <div class="connect-client-content">
+
+
+                <!-- LEFT -->
+
+                <div class="connect-client-info">
+
+                    <span class="section-eyebrow">
+                        CLIENT CONNECTION
+                    </span>
+
+                    <h2>
+                        Connect a Client
+                    </h2>
+
+                    <p>
+                        Add a registered FitConnect client
+                        to your trainer account.
+                    </p>
+
+                </div>
+
+
+
+                <!-- RIGHT -->
+
+                <form
+                    method="POST"
+                    action="{% url 'core:trainer_connect_client' %}"
+                    class="connect-client-form"
+                >
+
+                    {% csrf_token %}
+
+
+                    <label for="client-username">
+                        Registered Username
+                    </label>
+
+
+                    <div class="connect-client-input">
+
+                        <input
+                            type="text"
+                            id="client-username"
+                            name="username"
+                            placeholder="Enter client username"
+                            autocomplete="off"
+                            required
+                        >
+
+
+                        <button type="submit">
+
+                            <span>
+                                Connect
+                            </span>
+
+                            <span>
+                                →
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                    <span class="connect-client-help">
+                        The client must already have a FitConnect account.
+                    </span>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             CLIENT SUMMARY
+        ====================================================== -->
+
+        <section class="clients-summary">
+
+
+            <!-- TOTAL CLIENTS -->
+
+            <div class="dashboard-card client-summary-card">
+
+                <div class="summary-content">
+
+                    <span class="summary-label">
+                        TOTAL CLIENTS
+                    </span>
+
+                    <strong class="summary-value">
+                        {{ clients|length }}
+                    </strong>
+
+                    <span class="summary-description">
+                        Clients connected to your account
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ACTIVE MEMBERSHIPS -->
+
+            <div class="dashboard-card client-summary-card">
+
+                <div class="summary-content">
+
+                    <span class="summary-label">
+                        ACTIVE MEMBERSHIPS
+                    </span>
+
+                    <strong class="summary-value">
+                        {{ active_clients_count }}
+                    </strong>
+
+                    <span class="summary-description">
+                        Currently active clients
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TODAY -->
+
+            <div class="dashboard-card client-summary-card">
+
+                <div class="summary-content">
+
+                    <span class="summary-label">
+                        TODAY
+                    </span>
+
+                    <strong class="summary-value summary-date">
+                        {{ today|date:"d M" }}
+                    </strong>
+
+                    <span class="summary-description">
+                        Current trainer activity
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             CLIENT LIST
+        ====================================================== -->
+
+        <section class="dashboard-card clients-list-card">
+
+
+            <!-- LIST HEADER -->
+
+            <div class="card-header">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        CLIENT MANAGEMENT
+                    </span>
+
+                    <h2>
+                        Your Clients
+                    </h2>
+
+                    <p>
+                        Clients currently connected to your
+                        trainer account.
+                    </p>
+
+                </div>
+
+
+                <div class="client-list-count">
+
+                    <strong>
+                        {{ clients|length }}
+                    </strong>
+
+                    <span>
+                        Clients
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 CLIENTS
+            ================================================== -->
+
+            {% if clients %}
+
+                <div class="clients-list">
+
+                    {% for item in clients %}
+
+                        <article class="client-item">
+
+
+                            <!-- =================================================
+                                 CLIENT PROFILE
+                            ================================================== -->
+
+                            <div class="client-profile">
+
+                                <div class="client-avatar">
+
+                                    {{ item.client.user.username|first|upper }}
+
+                                </div>
+
+
+                                <div class="client-profile-info">
+
+                                    <strong class="client-name">
+
+                                        {{ item.client.user.username }}
+
+                                    </strong>
+
+
+                                    <span class="client-username">
+
+                                        @{{ item.client.user.username }}
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 MEMBERSHIP
+                            ================================================== -->
+
+                            <div class="client-info-block">
+
+                                <span class="client-info-label">
+                                    Membership
+                                </span>
+
+
+                                {% if item.client.membership_end %}
+
+                                    {% if item.days_remaining >= 0 %}
+
+                                        <span class="membership-status membership-active">
+
+                                            <span class="status-dot"></span>
+
+                                            Active
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="membership-status membership-expired">
+
+                                            <span class="status-dot"></span>
+
+                                            Expired
+
+                                        </span>
+
+                                    {% endif %}
+
+                                {% else %}
+
+                                    <span class="membership-status membership-unknown">
+
+                                        Not Set
+
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 MEMBERSHIP END
+                            ================================================== -->
+
+                            <div class="client-info-block">
+
+                                <span class="client-info-label">
+                                    Membership Ends
+                                </span>
+
+
+                                <span class="client-info-value">
+
+                                    {% if item.client.membership_end %}
+
+                                        {{ item.client.membership_end|date:"d M Y" }}
+
+                                    {% else %}
+
+                                        —
+
+                                    {% endif %}
+
+                                </span>
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 TODAY'S ATTENDANCE
+                            ================================================== -->
+
+
+<!-- =================================================
+     TODAY'S ATTENDANCE
+================================================== -->
+
+<div class="client-info-block client-attendance">
+
+    <span class="client-info-label">
+        Today's Attendance
+    </span>
+
+    {% if item.client_marked and item.trainer_marked %}
+
+        <span class="client-attendance-status present">
+            <span>✓</span>
+            Client &amp; Trainer marked
+        </span>
+
+    {% elif item.client_marked %}
+
+        <span class="client-attendance-status present">
+            <span>✓</span>
+            Client marked
+        </span>
+
+    {% elif item.trainer_marked %}
+
+        <span class="client-attendance-status present">
+            <span>✓</span>
+            Trainer marked
+        </span>
+
+    {% else %}
+
+        <span class="client-attendance-status waiting">
+            <span>—</span>
+            Not Marked
+        </span>
+
+    {% endif %}
+
+</div>
+
+
+                            <!-- =================================================
+                                 VIEW DETAILS
+                            ================================================== -->
+
+                            <div class="client-action">
+
+                                <a
+                                    href="{% url 'core:trainer_client_detail' item.client.id %}"
+                                    class="client-view-button"
+                                >
+
+                                    <span>
+                                        View Details
+                                    </span>
+
+                                    <span>
+                                        →
+                                    </span>
+
+                                </a>
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- =================================================
+                     EMPTY STATE
+                ================================================== -->
+
+                <div class="empty-clients">
+
+                    <div class="empty-state-icon">
+                        👥
+                    </div>
+
+
+                    <strong>
+                        No clients yet
+                    </strong>
+
+
+                    <p>
+                        Clients can register themselves on FitConnect.
+                        Once registered, enter their username above
+                        to connect them to your trainer account.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

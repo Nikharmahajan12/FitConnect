@@ -1,0 +1,841 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}FitConnect{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1003">
+    {% block page_css %}{% endblock %}
+
+    <style>
+        :root {
+            --client-sidebar-width: 268px;
+            --client-topbar-height: 160px;
+            --client-bg: #09070d;
+            --client-sidebar-bg: #0c0a10;
+            --client-text: #f5f1fa;
+            --client-muted: #8f879b;
+            --client-purple: #a855f7;
+            --client-purple-light: #c084fc;
+            --client-border: rgba(255,255,255,.07);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 100% !important;
+            background: var(--client-bg) !important;
+            color: var(--client-text) !important;
+            overflow-x: hidden !important;
+        }
+
+        body {
+            font-family: Inter, system-ui, -apple-system,
+                BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .app-shell {
+            position: relative !important;
+            width: 100% !important;
+            min-height: 100vh !important;
+            background: var(--client-bg) !important;
+            overflow-x: hidden !important;
+        }
+
+        /* SIDEBAR */
+
+        .app-shell .sidebar {
+            position: fixed !important;
+            inset: 0 auto 0 0 !important;
+            width: var(--client-sidebar-width) !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            padding: 28px 18px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            background: var(--client-sidebar-bg) !important;
+            border-right: 1px solid var(--client-border) !important;
+            z-index: 1000 !important;
+            overflow: hidden !important;
+        }
+
+        .app-shell .brand {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            padding: 4px 12px 36px !important;
+            flex-shrink: 0 !important;
+        }
+
+        .app-shell .brand-mark {
+            width: 40px !important;
+            height: 40px !important;
+            flex: 0 0 40px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 11px !important;
+            background: linear-gradient(135deg,#a855f7,#7c3aed) !important;
+            color: white !important;
+            font-size: 19px !important;
+            font-weight: 800 !important;
+            box-shadow: 0 8px 25px rgba(168,85,247,.25) !important;
+        }
+
+        .app-shell .brand-name {
+            color: #f5f1fa !important;
+            font-size: 17px !important;
+            font-weight: 750 !important;
+            letter-spacing: -.4px !important;
+            white-space: nowrap !important;
+        }
+
+        .app-shell .sidebar-section {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 16px !important;
+            flex-shrink: 0 !important;
+        }
+
+        .app-shell .sidebar-label {
+            padding: 0 14px !important;
+            color: #7b7288 !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            letter-spacing: 1.6px !important;
+        }
+
+        .app-shell .sidebar-nav,
+        .app-shell .sidebar-bottom {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 6px !important;
+        }
+
+        .app-shell .sidebar-bottom { margin-top: auto !important; }
+
+        .app-shell .nav-item {
+            position: relative !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 13px !important;
+            width: 100% !important;
+            min-height: 48px !important;
+            padding: 12px 14px !important;
+            border-radius: 13px !important;
+            color: #aaa2b6 !important;
+            text-decoration: none !important;
+            font-size: 14px !important;
+            font-weight: 550 !important;
+            transition: .18s ease !important;
+        }
+
+        .app-shell .nav-item:hover {
+            background: rgba(255,255,255,.035) !important;
+            color: #f5f1fa !important;
+        }
+
+        .app-shell .nav-item.active {
+            background: linear-gradient(
+                90deg,rgba(168,85,247,.17),rgba(168,85,247,.06)
+            ) !important;
+            color: #d8b4fe !important;
+        }
+
+        .app-shell .nav-item.active::before {
+            content: "";
+            position: absolute;
+            left: -18px;
+            top: 50%;
+            width: 3px;
+            height: 24px;
+            border-radius: 0 4px 4px 0;
+            background: #a855f7;
+            transform: translateY(-50%);
+        }
+
+        .app-shell .nav-icon {
+            width: 22px !important;
+            min-width: 22px !important;
+            flex: 0 0 22px !important;
+            text-align: center !important;
+            font-size: 17px !important;
+        }
+
+        /* MAIN AREA AND TOPBAR */
+
+        .app-shell .main-area {
+            position: relative !important;
+            width: calc(100% - var(--client-sidebar-width)) !important;
+            max-width: calc(100% - var(--client-sidebar-width)) !important;
+            min-width: 0 !important;
+            min-height: 100vh !important;
+            margin-left: var(--client-sidebar-width) !important;
+            background: var(--client-bg) !important;
+            overflow-x: hidden !important;
+        }
+
+        .app-shell .topbar {
+            width: 100% !important;
+            height: var(--client-topbar-height) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            gap: 22px !important;
+            padding: 0 42px !important;
+            background: rgba(9,7,13,.82) !important;
+            border-bottom: 1px solid var(--client-border) !important;
+            backdrop-filter: blur(18px) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 900 !important;
+        }
+
+        .app-shell .topbar-date {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-end !important;
+            gap: 3px !important;
+            color: #c084fc !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            white-space: nowrap !important;
+        }
+
+        .app-shell .current-time {
+            color: #c084fc !important;
+            font-size: 12px !important;
+        }
+
+        /* PROFILE */
+
+        .app-shell .profile-area {
+            display: flex !important;
+            align-items: center !important;
+            gap: 11px !important;
+            min-width: 0 !important;
+            flex: 0 0 auto !important;
+        }
+
+        .app-shell .profile-avatar {
+            width: 46px !important;
+            height: 46px !important;
+            flex: 0 0 46px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            overflow: hidden !important;
+            border: 2px solid rgba(192,132,252,.65) !important;
+            border-radius: 50% !important;
+            background: linear-gradient(135deg,#8b5cf6,#a855f7) !important;
+            color: white !important;
+            font-size: 14px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            box-shadow: 0 5px 18px rgba(168,85,247,.22) !important;
+        }
+
+        .app-shell .profile-avatar img {
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: none !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            border-radius: 50% !important;
+        }
+
+        .app-shell .profile-info {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 2px !important;
+            min-width: 0 !important;
+        }
+
+        .app-shell .profile-info strong {
+            color: #f5f1fa !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            max-width: 180px !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            white-space: nowrap !important;
+        }
+
+        .app-shell .profile-info span {
+            color: #6f687a !important;
+            font-size: 11px !important;
+        }
+
+        /* NOTIFICATION BELL */
+
+        .app-shell .notification-wrapper {
+            position: relative !important;
+            display: flex !important;
+            align-items: center !important;
+            flex: 0 0 auto !important;
+        }
+
+        .app-shell .notification-trigger {
+            position: relative !important;
+            width: 42px !important;
+            height: 42px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border: 1px solid var(--client-border) !important;
+            border-radius: 13px !important;
+            background: rgba(255,255,255,.035) !important;
+            color: #e9d5ff !important;
+            cursor: pointer !important;
+        }
+
+        .app-shell .notification-trigger:hover {
+            background: rgba(168,85,247,.15) !important;
+            border-color: rgba(168,85,247,.4) !important;
+        }
+
+        .app-shell .notification-trigger:focus-visible {
+            outline: 2px solid #c084fc !important;
+            outline-offset: 3px !important;
+        }
+
+        .app-shell .notification-trigger svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        .app-shell .notification-count {
+            position: absolute !important;
+            top: -6px !important;
+            right: -6px !important;
+            min-width: 19px !important;
+            height: 19px !important;
+            padding: 0 5px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border: 2px solid var(--client-bg) !important;
+            border-radius: 20px !important;
+            background: #ef4444 !important;
+            color: white !important;
+            font-size: 10px !important;
+            font-weight: 800 !important;
+        }
+
+        /* NOTIFICATION DROPDOWN */
+
+        .app-shell .notification-panel {
+            display: none;
+            position: absolute;
+            top: calc(100% + 14px);
+            right: -20px;
+            width: min(360px,calc(100vw - 32px));
+            max-height: 420px;
+            overflow-y: auto;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 16px;
+            background: #100c18;
+            box-shadow: 0 18px 50px rgba(0,0,0,.45);
+            z-index: 2000;
+        }
+
+        .app-shell .notification-wrapper.open .notification-panel {
+            display: block;
+        }
+
+        .app-shell .notification-panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 8px 14px;
+            border-bottom: 1px solid var(--client-border);
+        }
+
+        .app-shell .notification-panel-heading strong {
+            color: #f5f1fa;
+            font-size: 15px;
+        }
+
+        .app-shell .notification-panel-heading p {
+            margin: 4px 0 0;
+            color: var(--client-muted);
+            font-size: 11px;
+        }
+
+        .app-shell .notification-unread-label {
+            color: #d8b4fe;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .app-shell .notification-item {
+            padding: 13px 9px;
+            border-bottom: 1px solid var(--client-border);
+        }
+
+        .app-shell .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .app-shell .notification-item.unread {
+            background: rgba(168,85,247,.07);
+            border-radius: 10px;
+        }
+
+        .app-shell .notification-item-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .app-shell .notification-item-top strong {
+            color: #e9d5ff;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .app-shell .notification-item p {
+            margin: 7px 0;
+            color: #c4bdcf;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .app-shell .notification-item time {
+            color: #80768f;
+            font-size: 10px;
+        }
+
+        .app-shell .notification-link {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .app-shell .notification-link:hover strong {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .app-shell .notification-type {
+            display: inline-block;
+            margin-bottom: 5px;
+            color: #c084fc;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+        }
+
+        .app-shell .notification-unread-dot {
+            width: 7px;
+            height: 7px;
+            flex: 0 0 7px;
+            margin-top: 5px;
+            border-radius: 50%;
+            background: #a855f7;
+        }
+
+        .app-shell .notification-empty {
+            padding: 24px 12px;
+            color: #a49aac;
+            font-size: 12px;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        /* LOGOUT */
+
+        .logout-form {
+            width: 100%;
+            margin: 0;
+        }
+
+        .logout-form .logout-item {
+            appearance: none;
+            border: 0;
+            background: transparent;
+            font-family: inherit;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+            :root { --client-sidebar-width: 220px; }
+
+            .app-shell .topbar {
+                padding: 0 24px !important;
+                gap: 16px !important;
+            }
+
+            .app-shell .profile-info strong {
+                max-width: 120px !important;
+            }
+        }
+
+        @media (max-width: 680px) {
+            :root { --client-sidebar-width: 0px; }
+
+            .app-shell .sidebar { display: none !important; }
+
+            .app-shell .main-area {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-left: 0 !important;
+            }
+
+            .app-shell .topbar {
+                height: 82px !important;
+                padding: 0 16px !important;
+                gap: 12px !important;
+            }
+
+            .app-shell .topbar-date,
+            .app-shell .current-time {
+                font-size: 10px !important;
+            }
+
+            .app-shell .profile-avatar {
+                width: 40px !important;
+                height: 40px !important;
+                flex-basis: 40px !important;
+            }
+
+            .app-shell .profile-info { display: none !important; }
+
+            .app-shell .notification-panel { right: -55px; }
+        }
+
+        @media (max-width: 380px) {
+            .app-shell .topbar {
+                padding: 0 10px !important;
+                gap: 9px !important;
+            }
+
+            .app-shell .topbar-date {
+                white-space: normal !important;
+            }
+
+            .app-shell .notification-panel {
+                right: -48px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="app-shell">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-mark">F</div>
+            <div class="brand-name">FitConnect</div>
+        </div>
+
+        <div class="sidebar-section">
+            <span class="sidebar-label">MAIN</span>
+
+            <nav class="sidebar-nav">
+                <a href="{% url 'core:home' %}"
+                   class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                    <span class="nav-icon">⌂</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="{% url 'core:progress' %}"
+                   class="nav-item {% if request.resolver_match.url_name == 'progress' %}active{% endif %}">
+                    <span class="nav-icon">↗</span>
+                    <span>Progress</span>
+                </a>
+
+                <a href="{% url 'core:schedule' %}"
+                   class="nav-item {% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">
+                    <span class="nav-icon">▣</span>
+                    <span>Schedule</span>
+                </a>
+
+                <a href="{% url 'core:messages' %}"
+                   class="nav-item {% if request.resolver_match.url_name == 'messages' %}active{% endif %}">
+                    <span class="nav-icon">◌</span>
+                    <span>Messages</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="sidebar-bottom">
+            <a href="{% url 'core:profile' %}"
+               class="nav-item {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+                <span class="nav-icon">◉</span>
+                <span>Profile</span>
+            </a>
+
+            <form method="post" action="{% url 'client_logout' %}" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="nav-item logout-item">
+                    <span class="nav-icon">↪</span>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-area">
+        <header class="topbar">
+
+            <div class="topbar-date">
+                <span id="current-date"></span>
+                <span class="current-time" id="current-time"></span>
+            </div>
+
+            <!-- NOTIFICATION BELL -->
+
+            <div class="notification-wrapper" id="clientNotificationWrapper">
+                <button
+                    type="button"
+                    class="notification-trigger"
+                    id="clientNotificationButton"
+                    aria-label="Open notifications"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-controls="clientNotificationPanel"
+                >
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path
+                            d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <path
+                            d="M10 21h4"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                        />
+                    </svg>
+
+                    {% if unread_client_notification_count %}
+                        <span class="notification-count">
+                            {{ unread_client_notification_count }}
+                        </span>
+                    {% endif %}
+                </button>
+
+                <!-- NOTIFICATION DROPDOWN -->
+
+                <div
+                    class="notification-panel"
+                    id="clientNotificationPanel"
+                    aria-label="Client notifications"
+                >
+                    <div class="notification-panel-heading">
+                        <div>
+                            <strong>Notifications</strong>
+                            <p>Workout plans and subscription updates</p>
+                        </div>
+
+                        {% if unread_client_notification_count %}
+                            <span class="notification-unread-label">
+                                {{ unread_client_notification_count }} unread
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    {% for item in client_subscription_notifications %}
+                        {% with notification=item.notification %}
+
+                            <article class="notification-item {% if not notification.is_read %}unread{% endif %}">
+                                {% if item.notification_type == "training" %}
+
+                                    <a
+                                        class="notification-link"
+                                        href="{% url 'core:open_training_notification' notification.id %}"
+                                    >
+                                        <span class="notification-type">
+                                            Workout / Nutrition
+                                        </span>
+
+                                        <div class="notification-item-top">
+                                            <strong>{{ notification.title }}</strong>
+
+                                            {% if not notification.is_read %}
+                                                <span class="notification-unread-dot"
+                                                      aria-label="Unread"></span>
+                                            {% endif %}
+                                        </div>
+
+                                        <p>{{ notification.message }}</p>
+                                    </a>
+
+                                {% else %}
+
+                                    <span class="notification-type">
+                                        Subscription
+                                    </span>
+
+                                    <div class="notification-item-top">
+                                        <strong>{{ notification.title }}</strong>
+
+                                        {% if not notification.is_read %}
+                                            <span class="notification-unread-dot"
+                                                  aria-label="Unread"></span>
+                                        {% endif %}
+                                    </div>
+
+                                    <p>{{ notification.message }}</p>
+
+                                {% endif %}
+
+                                <time datetime="{{ notification.created_at|date:'c' }}">
+                                    {{ notification.created_at|date:"d M Y, h:i A" }}
+                                </time>
+                            </article>
+
+                        {% endwith %}
+                    {% empty %}
+                        <div class="notification-empty">
+                            You're all caught up!<br>
+                            No new workout plans or subscription reminders.
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- CLIENT PROFILE PHOTO -->
+
+            <div class="profile-area">
+                <a
+                    href="{% url 'core:profile' %}"
+                    class="profile-avatar"
+                    aria-label="Open your profile"
+                    title="My Profile"
+                >
+                    {% if request.user.client_profile.profile_image %}
+                        <img
+                            src="{{ request.user.client_profile.profile_image.url }}"
+                            alt="Profile photo"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <span style="display:none;width:100%;height:100%;align-items:center;justify-content:center;">
+                            {% if request.user.first_name %}
+                                {{ request.user.first_name|first|upper }}
+                            {% else %}
+                                {{ request.user.username|first|upper }}
+                            {% endif %}
+                        </span>
+                    {% else %}
+                        {% if request.user.first_name %}
+                            {{ request.user.first_name|first|upper }}
+                        {% else %}
+                            {{ request.user.username|first|upper }}
+                        {% endif %}
+                    {% endif %}
+                </a>
+
+                <div class="profile-info">
+                    <strong>
+                        {% if request.user.get_full_name %}
+                            {{ request.user.get_full_name }}
+                        {% else %}
+                            {{ request.user.username }}
+                        {% endif %}
+                    </strong>
+                    <span>Client</span>
+                </div>
+            </div>
+
+        </header>
+
+        {% block content %}{% endblock %}
+    </main>
+</div>
+
+<!-- CLOCK AND NOTIFICATION DROPDOWN -->
+
+<script>
+    function updateClientClock() {
+        const now = new Date();
+
+        const date = now.toLocaleDateString("en-IN", {
+            weekday: "long",
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        });
+
+        const time = now.toLocaleTimeString("en-IN", {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+        const dateElement = document.getElementById("current-date");
+        const timeElement = document.getElementById("current-time");
+
+        if (dateElement) dateElement.textContent = date;
+        if (timeElement) timeElement.textContent = time;
+    }
+
+    updateClientClock();
+    setInterval(updateClientClock, 1000);
+
+    const notificationWrapper = document.getElementById(
+        "clientNotificationWrapper"
+    );
+
+    const notificationButton = document.getElementById(
+        "clientNotificationButton"
+    );
+
+    if (notificationWrapper && notificationButton) {
+        notificationButton.addEventListener("click", function (event) {
+            event.stopPropagation();
+
+            const isOpen = notificationWrapper.classList.toggle("open");
+
+            notificationButton.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+            );
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!notificationWrapper.contains(event.target)) {
+                notificationWrapper.classList.remove("open");
+                notificationButton.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                notificationWrapper.classList.remove("open");
+                notificationButton.setAttribute("aria-expanded", "false");
+                notificationButton.focus();
+            }
+        });
+    }
+</script>
+
+{% block page_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,402 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ client.user.username }} Plans | FitConnect</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/trainer-client-plans.css' %}?v=4">
+</head>
+
+<body>
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>FitConnect</h2>
+            <span>Trainer Panel</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="{% url 'core:trainer_dashboard' %}" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{% url 'core:trainer_clients' %}" class="nav-item active">
+                <span class="nav-icon">👥</span>
+                <span>Clients</span>
+            </a>
+
+            <a href="{% url 'core:trainer_queries' %}" class="nav-item">
+                <span class="nav-icon">💬</span>
+                <span>Queries &amp; Support</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div class="topbar-date">
+                <span>FitConnect</span>
+                <strong>Trainer Portal</strong>
+            </div>
+
+            <div class="trainer-profile">
+                <div class="trainer-avatar">
+                    {{ request.user.username|first|upper }}
+                </div>
+
+                <div class="trainer-info">
+                    <span>Trainer</span>
+                    <strong>{{ request.user.username }}</strong>
+                </div>
+            </div>
+        </header>
+
+        <section class="plans-page">
+
+            <!-- BACK TO CLIENT -->
+            <a href="{% url 'core:trainer_client_detail' client.id %}" class="back-link">
+                <span>←</span>
+                <span>Back to Client</span>
+            </a>
+
+            <!-- CLIENT HEADER -->
+            <section class="client-header">
+                <div class="client-header-left">
+                    <div class="client-avatar">
+                        {{ client.user.username|first|upper }}
+                    </div>
+
+                    <div class="client-header-info">
+                        <span class="eyebrow">CLIENT TRAINING</span>
+                        <h1>{{ client.user.username }}</h1>
+                        <p>Assign and manage workout and nutrition plans.</p>
+                    </div>
+                </div>
+
+                <div class="client-header-status">
+                    <span class="plans-label">TRAINING PLANS</span>
+                </div>
+            </section>
+
+            <!-- ASSIGN NEW PLAN -->
+            <section class="plan-form-card">
+
+                <div class="section-heading">
+                    <div class="section-icon">＋</div>
+
+                    <div>
+                        <span class="section-eyebrow">PLAN MANAGEMENT</span>
+                        <h2>Assign New Plan</h2>
+                        <p>Upload a PDF and optionally attach a workout video.</p>
+                    </div>
+                </div>
+
+                <!-- ERROR MESSAGE -->
+                {% if error %}
+                    <div class="error-message">
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                <!-- DJANGO MESSAGES -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="{% if 'error' in message.tags %}error-message{% else %}success-message{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- PLAN FORM -->
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-grid">
+
+                        <!-- PLAN DATE -->
+                        <div class="form-group">
+                            <label for="date">Plan Date</label>
+                            <input
+                                type="date"
+                                id="date"
+                                name="date"
+                                required
+                            >
+                        </div>
+
+                        <!-- PLAN TYPE -->
+                        <div class="form-group">
+                            <label for="plan_type">Plan Type</label>
+
+                            <select id="plan_type" name="plan_type" required>
+                                <option value="">Select plan type</option>
+                                <option value="workout">Workout</option>
+                                <option value="nutrition">Nutrition</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- PLAN TITLE -->
+                    <div class="form-group">
+                        <label for="title">Plan Title</label>
+
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            placeholder="e.g. Upper Body Workout"
+                            maxlength="200"
+                            required
+                        >
+                    </div>
+
+                    <!-- REQUIRED PDF UPLOAD -->
+                    <div class="form-group">
+                        <label for="pdf">PDF File</label>
+
+                        <div class="file-upload">
+                            <input
+                                type="file"
+                                id="pdf"
+                                name="pdf"
+                                accept="application/pdf,.pdf"
+                                required
+                            >
+
+                            <label for="pdf" class="upload-placeholder">
+                                <span class="upload-icon">↑</span>
+                                <strong>Choose PDF file</strong>
+                                <small>PDF files only</small>
+                                <span class="selected-file" id="selected-file"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- OPTIONAL DIRECT VIDEO UPLOAD -->
+                    <div class="form-group video-url-group">
+                        <label for="video">
+                            Upload Workout Video
+                            <span class="optional-label">(Optional)</span>
+                        </label>
+
+                        <input
+                            type="file"
+                            id="video"
+                            name="video"
+                            accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov"
+                        >
+
+                        <small class="field-help">
+                            Select a video from your computer. Supported formats: MP4, WebM, and MOV.
+                        </small>
+
+                        <span class="selected-file" id="selected-video-file"></span>
+                    </div>
+
+                    <!-- OPTIONAL VIDEO URL -->
+                    <div class="form-group video-url-group">
+                        <label for="video_url">
+                            Workout Video URL
+                            <span class="optional-label">(Optional)</span>
+                        </label>
+
+                        <input
+                            type="url"
+                            id="video_url"
+                            name="video_url"
+                            placeholder="https://www.youtube.com/watch?v=..."
+                            maxlength="500"
+                        >
+
+                        <small class="field-help">
+                            Alternatively, paste a YouTube or other video URL. You can leave this blank if you uploaded a video file above.
+                        </small>
+                    </div>
+
+                    <!-- SUBMIT -->
+                    <div class="form-actions">
+                        <button type="submit" class="assign-button">
+                            <span>＋</span>
+                            Assign Plan
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- EXISTING PLANS -->
+            <section class="existing-plans">
+
+                <div class="section-heading">
+                    <div class="section-icon">📋</div>
+
+                    <div>
+                        <span class="section-eyebrow">ASSIGNED PLANS</span>
+                        <h2>Client Plans</h2>
+                        <p>Plans already provided to this client.</p>
+                    </div>
+                </div>
+
+                {% if plans %}
+                    <div class="plans-list">
+
+                        {% for plan in plans %}
+                            <article class="plan-item">
+
+                                <!-- PLAN ICON -->
+                                <div class="plan-icon {% if plan.plan_type == 'workout' %}workout{% else %}nutrition{% endif %}">
+                                    {% if plan.plan_type == "workout" %}
+                                        🏋
+                                    {% else %}
+                                        🥗
+                                    {% endif %}
+                                </div>
+
+                                <!-- PLAN INFORMATION -->
+                                <div class="plan-info">
+                                    <div class="plan-title-row">
+                                        <h3>{{ plan.title }}</h3>
+
+                                        <span class="plan-type">
+                                            {{ plan.get_plan_type_display }}
+                                        </span>
+                                    </div>
+
+                                    <p class="plan-date">
+                                        {{ plan.date|date:"d M Y" }}
+                                    </p>
+
+                                    {% if plan.pdf %}
+                                        <span class="file-name">
+                                            {{ plan.pdf.name|cut:"training_plans/" }}
+                                        </span>
+                                    {% endif %}
+
+                                    <!-- VIDEO ATTACHMENT STATUS -->
+                                    {% if plan.video or plan.video_url %}
+                                        <p class="plan-video-status">
+                                            <span>▶</span> Workout video attached
+                                        </p>
+                                    {% endif %}
+                                </div>
+
+                                <!-- VIEW PDF -->
+                                {% if plan.pdf %}
+                                    <a
+                                        href="{{ plan.pdf.url }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="view-pdf"
+                                    >
+                                        <span>↗</span>
+                                        View PDF
+                                    </a>
+                                {% endif %}
+
+                                <!-- VIEW UPLOADED VIDEO -->
+                                {% if plan.video %}
+                                    <a
+                                        href="{{ plan.video.url }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="view-pdf view-video"
+                                    >
+                                        <span>▶</span>
+                                        Uploaded Video
+                                    </a>
+                                {% endif %}
+
+                                <!-- VIEW EXTERNAL VIDEO -->
+                                {% if plan.video_url %}
+                                    <a
+                                        href="{{ plan.video_url }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="view-pdf view-video"
+                                    >
+                                        <span>▶</span>
+                                        Video Link
+                                    </a>
+                                {% endif %}
+
+                            </article>
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+                    <div class="empty-plans">
+                        <div class="empty-icon">📄</div>
+                        <h3>No plans assigned yet</h3>
+                        <p>
+                            Upload a workout or nutrition PDF above
+                            to assign the first plan.
+                        </p>
+                    </div>
+                {% endif %}
+
+            </section>
+        </section>
+    </main>
+</div>
+
+<script>
+    // Show the selected PDF filename.
+    const pdfInput = document.getElementById("pdf");
+    const selectedFile = document.getElementById("selected-file");
+
+    if (pdfInput && selectedFile) {
+        pdfInput.addEventListener("change", function () {
+            selectedFile.textContent =
+                this.files && this.files.length > 0
+                    ? this.files[0].name
+                    : "";
+        });
+    }
+
+    // Show the selected video filename.
+    const videoInput = document.getElementById("video");
+    const selectedVideoFile = document.getElementById("selected-video-file");
+
+    if (videoInput && selectedVideoFile) {
+        videoInput.addEventListener("change", function () {
+            selectedVideoFile.textContent =
+                this.files && this.files.length > 0
+                    ? "Selected video: " + this.files[0].name
+                    : "";
+        });
+    }
+
+    // Warn if both a direct upload and a video URL are entered.
+    // Both are allowed, but this helps the trainer notice the choice.
+    const planForm = document.querySelector("form");
+    const videoUrlInput = document.getElementById("video_url");
+
+    if (planForm && videoInput && videoUrlInput) {
+        planForm.addEventListener("submit", function (event) {
+            if (videoInput.files.length > 0 && videoUrlInput.value.trim() !== "") {
+                const confirmed = window.confirm(
+                    "You selected both a video file and a video URL. " +
+                    "Both will be attached to this plan. Continue?"
+                );
+
+                if (!confirmed) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,637 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Queries & Support | FitConnect</title>
+
+
+    <!-- =====================================================
+         SHARED FITCONNECT STYLES
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+
+    <!-- =====================================================
+         TRAINER QUERIES STYLES
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/trainer-queries.css' %}?v=2"
+    >
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="sidebar-logo">
+
+            <h2>
+                FitConnect
+            </h2>
+
+            <span>
+                Trainer Panel
+            </span>
+
+        </div>
+
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="{% url 'core:trainer_dashboard' %}"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    ▣
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+
+            <!-- CLIENTS -->
+
+            <a
+                href="{% url 'core:trainer_clients' %}"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    👥
+                </span>
+
+                <span>
+                    Clients
+                </span>
+
+            </a>
+
+
+
+            <!-- QUERIES -->
+
+            <a
+                href="{% url 'core:trainer_queries' %}"
+                class="nav-item active"
+            >
+
+                <span class="nav-icon">
+                    💬
+                </span>
+
+                <span>
+                    Queries & Support
+                </span>
+
+            </a>
+
+
+
+            <!-- SCHEDULE -->
+
+
+
+
+            <!-- PROGRESS -->
+
+           
+
+
+            <!-- PROFILE -->
+
+          
+
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =====================================================
+             TOPBAR
+        ====================================================== -->
+
+        <header class="topbar">
+
+
+            <div class="topbar-date">
+
+                <span class="topbar-label">
+                    Trainer Support
+                </span>
+
+                <strong>
+                    Queries & Support
+                </strong>
+
+            </div>
+
+
+
+            <div class="trainer-profile">
+
+                <div class="trainer-avatar">
+                    T
+                </div>
+
+
+                <div class="trainer-info">
+
+                    <strong>
+                        Trainer
+                    </strong>
+
+                    <span>
+                        FitConnect
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =====================================================
+             PAGE CONTENT
+        ====================================================== -->
+
+        <div class="queries-page">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        CLIENT SUPPORT
+                    </span>
+
+                    <h1>
+                        Queries & Support
+                    </h1>
+
+                    <p>
+                        Manage questions and support requests from your clients.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PENDING QUERIES
+            ================================================== -->
+
+            <section class="query-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            Pending Queries
+                        </h2>
+
+                        <p>
+                            Queries waiting for your response.
+                        </p>
+
+                    </div>
+
+                    <span class="query-count">
+                        {{ pending_queries|length }}
+                    </span>
+
+                </div>
+
+
+
+                {% if pending_queries %}
+
+                    <div class="query-list">
+
+                        {% for query in pending_queries %}
+
+                            <article class="query-card">
+
+
+                                <div class="query-card-main">
+
+
+                                    <div class="query-top">
+
+                                        <span class="query-category">
+                                            {{ query.get_category_display }}
+                                        </span>
+
+                                        <span class="query-status pending">
+                                            Pending
+                                        </span>
+
+                                    </div>
+
+
+                                    <h3>
+                                        {{ query.subject }}
+                                    </h3>
+
+
+                                    <p class="query-client">
+
+                                        From
+
+                                        <strong>
+                                            {{ query.client.user.get_full_name|default:query.client.user.username }}
+                                        </strong>
+
+                                    </p>
+
+
+                                    <p class="query-preview">
+                                        {{ query.message|truncatechars:180 }}
+                                    </p>
+
+
+                                    <span class="query-date">
+                                        {{ query.created_at|date:"d M Y, h:i A" }}
+                                    </span>
+
+
+                                </div>
+
+
+
+                                <div class="query-card-action">
+
+                                    <a
+                                        href="{% url 'core:trainer_query_detail' query.id %}"
+                                        class="query-button"
+                                    >
+
+                                        View
+
+                                        <span>
+                                            →
+                                        </span>
+
+                                    </a>
+
+                                </div>
+
+
+                            </article>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            ✓
+                        </div>
+
+                        <h3>
+                            No pending queries
+                        </h3>
+
+                        <p>
+                            You're all caught up.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ANSWERED QUERIES
+            ================================================== -->
+
+            <section class="query-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            Answered Queries
+                        </h2>
+
+                        <p>
+                            Queries that have already received a response.
+                        </p>
+
+                    </div>
+
+                    <span class="query-count">
+                        {{ answered_queries|length }}
+                    </span>
+
+                </div>
+
+
+
+                {% if answered_queries %}
+
+                    <div class="query-list">
+
+                        {% for query in answered_queries %}
+
+                            <article class="query-card">
+
+
+                                <div class="query-card-main">
+
+
+                                    <div class="query-top">
+
+                                        <span class="query-category">
+                                            {{ query.get_category_display }}
+                                        </span>
+
+                                        <span class="query-status answered">
+                                            Answered
+                                        </span>
+
+                                    </div>
+
+
+                                    <h3>
+                                        {{ query.subject }}
+                                    </h3>
+
+
+                                    <p class="query-client">
+
+                                        From
+
+                                        <strong>
+                                            {{ query.client.user.get_full_name|default:query.client.user.username }}
+                                        </strong>
+
+                                    </p>
+
+
+                                    <p class="query-preview">
+                                        {{ query.message|truncatechars:180 }}
+                                    </p>
+
+
+                                    <span class="query-date">
+                                        {{ query.created_at|date:"d M Y, h:i A" }}
+                                    </span>
+
+
+                                </div>
+
+
+
+                                <div class="query-card-action">
+
+                                    <a
+                                        href="{% url 'core:trainer_query_detail' query.id %}"
+                                        class="query-button"
+                                    >
+
+                                        View
+
+                                        <span>
+                                            →
+                                        </span>
+
+                                    </a>
+
+                                </div>
+
+
+                            </article>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            —
+                        </div>
+
+                        <h3>
+                            No answered queries
+                        </h3>
+
+                        <p>
+                            Answered queries will appear here.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CLOSED QUERIES
+            ================================================== -->
+
+            <section class="query-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            Closed Queries
+                        </h2>
+
+                        <p>
+                            Queries that have been closed.
+                        </p>
+
+                    </div>
+
+                    <span class="query-count">
+                        {{ closed_queries|length }}
+                    </span>
+
+                </div>
+
+
+
+                {% if closed_queries %}
+
+                    <div class="query-list">
+
+                        {% for query in closed_queries %}
+
+                            <article class="query-card">
+
+
+                                <div class="query-card-main">
+
+
+                                    <div class="query-top">
+
+                                        <span class="query-category">
+                                            {{ query.get_category_display }}
+                                        </span>
+
+                                        <span class="query-status closed">
+                                            Closed
+                                        </span>
+
+                                    </div>
+
+
+                                    <h3>
+                                        {{ query.subject }}
+                                    </h3>
+
+
+                                    <p class="query-client">
+
+                                        From
+
+                                        <strong>
+                                            {{ query.client.user.get_full_name|default:query.client.user.username }}
+                                        </strong>
+
+                                    </p>
+
+
+                                    <p class="query-preview">
+                                        {{ query.message|truncatechars:180 }}
+                                    </p>
+
+
+                                    <span class="query-date">
+                                        {{ query.created_at|date:"d M Y, h:i A" }}
+                                    </span>
+
+
+                                </div>
+
+
+
+                                <div class="query-card-action">
+
+                                    <a
+                                        href="{% url 'core:trainer_query_detail' query.id %}"
+                                        class="query-button"
+                                    >
+
+                                        View
+
+                                        <span>
+                                            →
+                                        </span>
+
+                                    </a>
+
+                                </div>
+
+
+                            </article>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            —
+                        </div>
+
+                        <h3>
+                            No closed queries
+                        </h3>
+
+                        <p>
+                            Closed queries will appear here.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+</div>
+
+</body>
+
+</html>

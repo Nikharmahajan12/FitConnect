@@ -1,0 +1,713 @@
+/* =========================================================
+   FITCONNECT — TRAINER SCHEDULE
+   Purple / Black Premium UI
+   ========================================================= */
+
+:root {
+    --schedule-bg: #08070b;
+    --schedule-surface: #121017;
+    --schedule-surface-2: #17131d;
+    --schedule-surface-3: #1d1825;
+
+    --schedule-border: rgba(255, 255, 255, 0.07);
+
+    --schedule-text: #f7f4fa;
+    --schedule-text-secondary: #b8afc2;
+    --schedule-text-muted: #777080;
+
+    --schedule-purple: #a855f7;
+    --schedule-purple-light: #c084fc;
+    --schedule-purple-dark: #7e22ce;
+
+    --schedule-green: #4ade80;
+
+    --schedule-radius-lg: 24px;
+    --schedule-radius-md: 18px;
+    --schedule-radius-sm: 12px;
+
+    --schedule-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35);
+
+    --schedule-transition: 180ms ease;
+}
+
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
+
+.trainer-schedule-page {
+    position: relative;
+
+    max-width: 1150px;
+
+    margin: 0 auto;
+
+    padding: 40px 44px 75px;
+
+    color: var(--schedule-text);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.schedule-header {
+    position: relative;
+
+    margin-bottom: 32px;
+}
+
+.schedule-header::after {
+    content: "";
+
+    position: absolute;
+
+    top: -70px;
+    right: 3%;
+
+    width: 210px;
+    height: 210px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(168, 85, 247, 0.12),
+            transparent 68%
+        );
+
+    pointer-events: none;
+}
+
+.schedule-eyebrow {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: var(--schedule-purple-light);
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+
+    text-transform: uppercase;
+}
+
+.schedule-header h2 {
+    position: relative;
+    z-index: 1;
+
+    margin: 0 0 9px;
+
+    color: var(--schedule-text);
+
+    font-size: clamp(28px, 3vw, 38px);
+
+    font-weight: 700;
+
+    letter-spacing: -1.3px;
+
+    line-height: 1.1;
+}
+
+.schedule-header p {
+    position: relative;
+    z-index: 1;
+
+    max-width: 600px;
+
+    margin: 0;
+
+    color: var(--schedule-text-secondary);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   CLIENTS CARD
+========================================================= */
+
+.clients-card {
+    position: relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(29, 24, 37, 0.94),
+            rgba(15, 12, 19, 0.97)
+        );
+
+    border: 1px solid var(--schedule-border);
+
+    border-radius: var(--schedule-radius-lg);
+
+    box-shadow: var(--schedule-shadow);
+
+    overflow: hidden;
+}
+
+.clients-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(192, 132, 252, 0.35),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.clients-card > .section-heading {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 26px 28px;
+
+    margin: 0;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.055);
+}
+
+.section-heading h3 {
+    margin: 0 0 5px;
+
+    color: var(--schedule-text);
+
+    font-size: 16px;
+
+    font-weight: 650;
+
+    letter-spacing: -0.3px;
+}
+
+.section-heading p {
+    margin: 0;
+
+    color: var(--schedule-text-muted);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   CLIENT COUNT
+========================================================= */
+
+.client-count {
+    flex-shrink: 0;
+
+    padding: 7px 11px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(168, 85, 247, 0.08);
+
+    border:
+        1px solid rgba(168, 85, 247, 0.14);
+
+    color: var(--schedule-purple-light);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   CLIENT LIST
+========================================================= */
+
+.client-list {
+    padding: 0 28px;
+}
+
+
+/* =========================================================
+   CLIENT ROW
+========================================================= */
+
+.client-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 19px 0;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.055);
+
+    transition:
+        padding var(--schedule-transition),
+        background var(--schedule-transition);
+}
+
+.client-row:last-child {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   CLIENT INFO
+========================================================= */
+
+.client-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   CLIENT AVATAR
+========================================================= */
+
+.client-avatar {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--schedule-purple),
+            var(--schedule-purple-dark)
+        );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 8px 24px rgba(126, 34, 206, 0.22);
+}
+
+
+/* =========================================================
+   CLIENT NAME
+========================================================= */
+
+.client-info h4 {
+    margin: 0 0 4px;
+
+    color: var(--schedule-text);
+
+    font-size: 13px;
+
+    font-weight: 650;
+}
+
+.client-info span {
+    color: var(--schedule-text-muted);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   MANAGE BUTTON
+========================================================= */
+
+.manage-button {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    flex-shrink: 0;
+
+    padding: 10px 15px;
+
+    border:
+        1px solid rgba(168, 85, 247, 0.16);
+
+    border-radius: 11px;
+
+    background:
+        rgba(168, 85, 247, 0.06);
+
+    color: var(--schedule-purple-light);
+
+    text-decoration: none;
+
+    font-size: 10px;
+
+    font-weight: 650;
+
+    transition:
+        background var(--schedule-transition),
+        border-color var(--schedule-transition),
+        transform var(--schedule-transition),
+        box-shadow var(--schedule-transition);
+}
+
+.manage-button span {
+    color: var(--schedule-purple-light);
+
+    font-size: 14px;
+
+    line-height: 1;
+
+    transition:
+        transform var(--schedule-transition);
+}
+
+.manage-button:hover {
+    background:
+        rgba(168, 85, 247, 0.12);
+
+    border-color:
+        rgba(168, 85, 247, 0.3);
+
+    box-shadow:
+        0 8px 22px rgba(126, 34, 206, 0.12);
+
+    transform: translateY(-1px);
+}
+
+.manage-button:hover span {
+    transform: translateX(3px);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+    padding: 60px 25px;
+
+    text-align: center;
+}
+
+.empty-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 16px;
+
+    border-radius: 17px;
+
+    background:
+        rgba(168, 85, 247, 0.08);
+
+    border:
+        1px solid rgba(168, 85, 247, 0.12);
+
+    color: var(--schedule-purple-light);
+
+    font-size: 22px;
+}
+
+.empty-state h3 {
+    margin: 0 0 7px;
+
+    color: var(--schedule-text);
+
+    font-size: 14px;
+}
+
+.empty-state p {
+    margin: 0;
+
+    color: var(--schedule-text-muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   INFORMATION CARDS
+========================================================= */
+
+.schedule-info-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+
+    margin-top: 20px;
+}
+
+.info-card {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+    padding: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(29, 24, 37, 0.8),
+            rgba(15, 12, 19, 0.88)
+        );
+
+    border:
+        1px solid var(--schedule-border);
+
+    border-radius: var(--schedule-radius-md);
+
+    transition:
+        border-color var(--schedule-transition),
+        transform var(--schedule-transition);
+}
+
+.info-card:hover {
+    border-color:
+        rgba(168, 85, 247, 0.18);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   INFO ICON
+========================================================= */
+
+.info-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 13px;
+
+    font-size: 17px;
+}
+
+.workout-icon {
+    background:
+        rgba(168, 85, 247, 0.1);
+
+    border:
+        1px solid rgba(168, 85, 247, 0.14);
+}
+
+.nutrition-icon {
+    background:
+        rgba(74, 222, 128, 0.07);
+
+    border:
+        1px solid rgba(74, 222, 128, 0.11);
+}
+
+
+/* =========================================================
+   INFO TEXT
+========================================================= */
+
+.info-card h4 {
+    margin: 1px 0 6px;
+
+    color: var(--schedule-text);
+
+    font-size: 12px;
+
+    font-weight: 650;
+}
+
+.info-card p {
+    margin: 0;
+
+    color: var(--schedule-text-muted);
+
+    font-size: 10px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .trainer-schedule-page {
+        padding: 34px 30px 60px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .trainer-schedule-page {
+        padding: 27px 18px 55px;
+    }
+
+    .schedule-header {
+        margin-bottom: 25px;
+    }
+
+    .schedule-header h2 {
+        font-size: 29px;
+    }
+
+    .schedule-header p {
+        font-size: 12px;
+    }
+
+    .clients-card {
+        border-radius: 18px;
+    }
+
+    .clients-card > .section-heading {
+        align-items: flex-start;
+
+        padding: 21px 19px;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .client-list {
+        padding: 0 19px;
+    }
+
+    .client-row {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 14px;
+
+        padding: 18px 0;
+    }
+
+    .manage-button {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        padding: 11px 15px;
+    }
+
+    .schedule-info-grid {
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+    }
+
+    .info-card {
+        padding: 19px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 450px) {
+
+    .trainer-schedule-page {
+        padding: 23px 15px 45px;
+    }
+
+    .schedule-header h2 {
+        font-size: 27px;
+
+        letter-spacing: -1px;
+    }
+
+    .clients-card {
+        border-radius: 16px;
+    }
+
+    .clients-card > .section-heading {
+        padding: 19px 16px;
+    }
+
+    .client-list {
+        padding: 0 16px;
+    }
+
+    .client-avatar {
+        width: 43px;
+        height: 43px;
+
+        border-radius: 13px;
+    }
+
+    .client-info h4 {
+        font-size: 12px;
+    }
+
+    .info-card {
+        padding: 17px;
+    }
+}

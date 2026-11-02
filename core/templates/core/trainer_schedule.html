@@ -1,0 +1,277 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Schedule | FitConnect</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/trainer-dashboard.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'css/trainer-schedule.css' %}">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <h2>FitConnect</h2>
+            <span>Trainer Panel</span>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{% url 'core:trainer_dashboard' %}"
+               class="nav-item">
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+            <a href="{% url 'core:trainer_clients' %}"
+               class="nav-item">
+                <span>👥</span>
+                Clients
+            </a>
+
+
+           <a href="{% url 'core:trainer_queries' %}"
+   class="nav-item ">
+    <span class="nav-icon">💬</span>
+    <span>Queries &amp; Support</span>
+</a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+                <span class="topbar-label">
+                    TRAINING MANAGEMENT
+                </span>
+
+                <h1>Schedule</h1>
+            </div>
+
+
+            <div class="trainer-profile">
+
+                <div class="trainer-avatar">
+                    {{ request.user.username|first|upper }}
+                </div>
+
+                <div>
+                    <strong>
+                        {{ request.user.username }}
+                    </strong>
+
+                    <span>
+                        Trainer
+                    </span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= PAGE ================= -->
+
+        <section class="trainer-schedule-page">
+
+
+            <!-- HEADER -->
+
+            <div class="schedule-header">
+
+                <span class="schedule-eyebrow">
+                    CLIENT SCHEDULE
+                </span>
+
+                <h2>
+                    Manage Training Plans
+                </h2>
+
+                <p>
+                    Select a client to assign and manage their
+                    workout and nutrition plans.
+                </p>
+
+            </div>
+
+
+            <!-- ================= CLIENTS ================= -->
+
+            <div class="clients-card">
+
+                <div class="section-heading">
+
+                    <div>
+                        <h3>Your Clients</h3>
+
+                        <p>
+                            Choose a client to manage their schedule.
+                        </p>
+                    </div>
+
+                    <span class="client-count">
+                        {{ clients|length }} Client{{ clients|length|pluralize }}
+                    </span>
+
+                </div>
+
+
+                {% if clients %}
+
+                    <div class="client-list">
+
+                        {% for client in clients %}
+
+                            <div class="client-row">
+
+
+                                <!-- CLIENT -->
+
+                                <div class="client-info">
+
+                                    <div class="client-avatar">
+
+                                        {{ client.user.username|first|upper }}
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <h4>
+                                            {{ client.user.username }}
+                                        </h4>
+
+                                        <span>
+                                            Client
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ACTION -->
+
+                                <a
+                                    href="{% url 'core:trainer_client_plans' client.id %}"
+                                    class="manage-button"
+                                >
+                                    Manage Plans
+                                    <span>→</span>
+                                </a>
+
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <!-- EMPTY STATE -->
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            👥
+                        </div>
+
+                        <h3>
+                            No clients yet
+                        </h3>
+
+                        <p>
+                            Clients assigned to you will appear here.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ================= INFO ================= -->
+
+            <div class="schedule-info-grid">
+
+
+                <div class="info-card">
+
+                    <div class="info-icon workout-icon">
+                        🏋
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            Workout Plans
+                        </h4>
+
+                        <p>
+                            Upload workout PDFs for individual clients
+                            and specific dates.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-icon nutrition-icon">
+                        🥗
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            Nutrition Plans
+                        </h4>
+
+                        <p>
+                            Provide nutrition plans as PDFs and make
+                            them available to your clients.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

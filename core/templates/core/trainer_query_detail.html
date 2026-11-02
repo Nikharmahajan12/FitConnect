@@ -1,0 +1,630 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Query Details | FitConnect</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/base.css' %}?v=2">
+
+    <link rel="stylesheet"
+          href="{% static 'css/trainer-query-detail.css' %}?v=2">
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <h2>FitConnect</h2>
+
+            <span>Trainer Panel</span>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+
+            <!-- DASHBOARD -->
+
+            <a href="{% url 'core:trainer_dashboard' %}"
+               class="nav-item">
+
+                <span class="nav-icon">▣</span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- CLIENTS -->
+
+            <a href="{% url 'core:trainer_clients' %}"
+               class="nav-item">
+
+                <span class="nav-icon">👥</span>
+
+                <span>
+                    Clients
+                </span>
+
+            </a>
+
+
+            <!-- QUERIES -->
+
+            <a href="{% url 'core:trainer_queries' %}"
+               class="nav-item active">
+
+                <span class="nav-icon">💬</span>
+
+                <span>
+                    Queries &amp; Support
+                </span>
+
+            </a>
+
+
+            <!-- SCHEDULE -->
+
+
+
+            <!-- CLIENT PROGRESS -->
+
+         
+
+            <!-- PROFILE -->
+
+          
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             TOP BAR
+             ================================================= -->
+
+        <header class="topbar">
+
+
+            <div class="topbar-date">
+
+                <span>
+                    FitConnect
+                </span>
+
+                <strong>
+                    Trainer Portal
+                </strong>
+
+            </div>
+
+
+
+            <div class="trainer-profile">
+
+
+                <div class="trainer-avatar">
+
+                    {{ request.user.username|first|upper }}
+
+                </div>
+
+
+                <div class="trainer-info">
+
+                    <span>
+                        Trainer
+                    </span>
+
+                    <strong>
+                        {{ request.user.username }}
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             QUERY PAGE
+             ================================================= -->
+
+        <section class="query-page">
+
+
+            <!-- =================================================
+                 BACK TO QUERIES
+                 ================================================= -->
+
+            <a href="{% url 'core:trainer_queries' %}"
+               class="query-back-button">
+
+                <span>
+                    ←
+                </span>
+
+                <span>
+                    Back to Queries
+                </span>
+
+            </a>
+
+
+
+            <!-- =================================================
+                 PAGE HEADER
+                 ================================================= -->
+
+            <div class="query-page-header">
+
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        CLIENT SUPPORT
+                    </span>
+
+
+                    <h1>
+                        Query Details
+                    </h1>
+
+
+                    <p>
+                        Review the client's question and manage the support request.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 QUERY DETAIL CARD
+                 ================================================= -->
+
+            <section class="query-detail-card">
+
+
+
+                <!-- =================================================
+                     QUERY HEADER
+                     ================================================= -->
+
+                <div class="query-detail-header">
+
+
+                    <div class="query-title-area">
+
+
+                        <span class="query-detail-category">
+
+                            {{ query.get_category_display }}
+
+                        </span>
+
+
+                        <h2>
+
+                            {{ query.subject }}
+
+                        </h2>
+
+
+                    </div>
+
+
+
+                    <!-- STATUS -->
+
+                    <span class="query-detail-status {{ query.status }}">
+
+                        {{ query.get_status_display }}
+
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CLIENT INFORMATION
+                     ================================================= -->
+
+                <div class="query-client-info">
+
+
+                    <div class="query-detail-avatar">
+
+                        {{ query.client.user.username|first|upper }}
+
+                    </div>
+
+
+                    <div class="query-client-text">
+
+
+                        <strong>
+
+                            {{ query.client.user.username }}
+
+                        </strong>
+
+
+                        <span>
+
+                            Submitted
+                            {{ query.created_at|date:"F j, Y" }}
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CLIENT MESSAGE
+                     ================================================= -->
+
+                <div class="query-section">
+
+
+                    <div class="query-section-heading">
+
+
+                        <span class="query-section-icon">
+                            ?
+                        </span>
+
+
+                        <div>
+
+
+                            <span class="section-eyebrow">
+
+                                CLIENT MESSAGE
+
+                            </span>
+
+
+                            <h3>
+
+                                Client's Query
+
+                            </h3>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="query-message">
+
+                        {{ query.message|linebreaks }}
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     TRAINER RESPONSE
+                     ================================================= -->
+
+                <div class="query-section">
+
+
+                    <div class="query-section-heading">
+
+
+                        <span class="query-section-icon response">
+                            ↗
+                        </span>
+
+
+                        <div>
+
+
+                            <span class="section-eyebrow">
+
+                                TRAINER RESPONSE
+
+                            </span>
+
+
+                            <h3>
+
+                                Your Response
+
+                            </h3>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         PENDING
+                         ================================================= -->
+
+                    {% if query.status == "pending" %}
+
+
+                        <form method="POST"
+                              class="query-response-form">
+
+
+                            {% csrf_token %}
+
+
+                            <!-- Tell backend this is a response -->
+
+                            <input type="hidden"
+                                   name="action"
+                                   value="respond">
+
+
+                            <textarea
+                                name="response"
+                                class="query-response-input"
+                                placeholder="Write your response to the client..."
+                                required></textarea>
+
+
+
+                            <div class="query-response-actions">
+
+
+                                <button
+                                    type="submit"
+                                    class="query-response-button">
+
+
+                                    <span>
+                                        ↗
+                                    </span>
+
+
+                                    Send Response
+
+
+                                </button>
+
+
+                            </div>
+
+
+                        </form>
+
+
+
+                    <!-- =================================================
+                         ANSWERED
+                         ================================================= -->
+
+                    {% elif query.status == "answered" %}
+
+
+                        {% if query.response %}
+
+
+                            <div class="existing-response">
+
+                                {{ query.response|linebreaks }}
+
+                            </div>
+
+
+                            {% if query.answered_at %}
+
+                                <div class="response-meta">
+
+                                    Answered on
+                                    {{ query.answered_at|date:"F j, Y" }}
+
+                                </div>
+
+                            {% endif %}
+
+
+                        {% endif %}
+
+
+
+                        <!-- CLOSE QUERY -->
+
+                        <div class="query-close-section">
+
+
+                            <div class="close-query-info">
+
+                                <span class="close-query-icon">
+                                    ✓
+                                </span>
+
+
+                                <div>
+
+                                    <strong>
+                                        Response sent
+                                    </strong>
+
+                                    <span>
+                                        Close this query once the support request has been resolved.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <form method="POST"
+                                  class="close-query-form">
+
+
+                                {% csrf_token %}
+
+
+                                <!-- Tell backend this is a close action -->
+
+                                <input type="hidden"
+                                       name="action"
+                                       value="close">
+
+
+                                <button
+                                    type="submit"
+                                    class="close-query-button">
+
+
+                                    <span>
+                                        ✓
+                                    </span>
+
+
+                                    Close Query
+
+
+                                </button>
+
+
+                            </form>
+
+
+                        </div>
+
+
+
+                    <!-- =================================================
+                         CLOSED
+                         ================================================= -->
+
+                    {% elif query.status == "closed" %}
+
+
+                        {% if query.response %}
+
+
+                            <div class="existing-response">
+
+                                {{ query.response|linebreaks }}
+
+                            </div>
+
+
+                            {% if query.answered_at %}
+
+                                <div class="response-meta">
+
+                                    Answered on
+                                    {{ query.answered_at|date:"F j, Y" }}
+
+                                </div>
+
+                            {% endif %}
+
+
+                        {% endif %}
+
+
+
+                        <!-- CLOSED MESSAGE -->
+
+                        <div class="query-closed-message">
+
+
+                            <span class="query-closed-icon">
+                                ✓
+                            </span>
+
+
+                            <div>
+
+                                <strong>
+                                    Query Closed
+                                </strong>
+
+                                <span>
+                                    This support request has been resolved and closed.
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </section>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

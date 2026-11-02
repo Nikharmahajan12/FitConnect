@@ -1,0 +1,1222 @@
+{% extends "core/client base.html" %}
+{% load static %}
+
+{% block title %}FitConnect | Client Dashboard{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/client-dashboard.css' %}?v=4">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+
+
+            <!-- =================================================
+                 WELCOME
+            ================================================== -->
+
+            <section class="welcome-section">
+
+                <div>
+
+                    <p class="eyebrow">
+                        {{ today|date:"l, F j"|upper }}
+                    </p>
+
+                    <h1>
+                        Good morning{% if request.user.first_name %}, {{ request.user.first_name }}{% endif %}
+                    </h1>
+
+                    <p class="welcome-text">
+                        Here's a look at your health and lifestyle
+                        for today.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+<!-- =================================================
+     SUBSCRIPTION RENEWAL ALERT
+================================================== -->
+
+{% if subscription_expiry_alert and active_subscription %}
+<section class="subscription-renewal-alert" role="alert">
+    <div class="subscription-alert-icon">🔔</div>
+
+    <div class="subscription-alert-content">
+        <h3>
+            {% if days_until_expiry == 1 %}
+                Your subscription expires tomorrow!
+            {% else %}
+                Your subscription expires in {{ days_until_expiry }} days!
+            {% endif %}
+        </h3>
+
+        <p>
+            Your {{ active_subscription.plan_name }} subscription
+            expires on {{ active_subscription.end_date|date:"d M Y" }}.
+            Renew now to continue enjoying your FitConnect services.
+        </p>
+
+        <a href="{% url 'core:website_home' %}"
+           class="subscription-renew-button">
+            Renew Subscription
+        </a>
+    </div>
+</section>
+{% endif %}
+
+
+
+<!-- =================================================
+     SUBSCRIPTION RENEWAL ALERT
+================================================== -->
+
+{% if subscription_expiry_alert and active_subscription %}
+<section class="subscription-renewal-alert" role="alert">
+    <div class="subscription-alert-icon">🔔</div>
+
+    <div class="subscription-alert-content">
+        <h3>
+            {% if days_until_expiry == 0 %}
+                Your subscription expires today!
+            {% elif days_until_expiry == 1 %}
+                Your subscription expires tomorrow!
+            {% else %}
+                Your subscription expires in {{ days_until_expiry }} days!
+            {% endif %}
+        </h3>
+
+        <p>
+            Your {{ active_subscription.plan_name }} subscription
+            expires on {{ active_subscription.end_date|date:"d M Y" }}.
+            {% if days_until_expiry == 0 %}
+                Please renew today to continue enjoying your
+                FitConnect services.
+            {% else %}
+                Renew before the expiry date to continue enjoying
+                your FitConnect services.
+            {% endif %}
+        </p>
+
+        <a href="{% url 'core:website_home' %}"
+           class="subscription-renew-button">
+            Renew Subscription
+        </a>
+    </div>
+</section>
+{% endif %}
+
+
+            <!-- =================================================
+                 TODAY
+            ================================================== -->
+
+            <section class="today-grid">
+
+
+                <!-- =================================================
+                     ATTENDANCE
+                ================================================== -->
+
+                <div class="card attendance-today-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Today's Attendance
+                            </h3>
+
+                            <p>
+                                Mark your attendance for today.
+                            </p>
+
+                        </div>
+
+                        <span class="card-icon">
+                            ✓
+                        </span>
+
+                    </div>
+
+
+                    <div class="attendance-content">
+
+                        {% if daily_log.attendance %}
+
+                            <!-- PRESENT -->
+
+                            <div class="attendance-status">
+
+                                <div class="status-circle">
+                                    ✓
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Present
+                                    </strong>
+
+                                    <span>
+                                        Today's attendance
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        {% else %}
+
+                            <!-- NOT MARKED -->
+
+                            <div class="attendance-status">
+
+                                <div class="status-circle">
+                                    ○
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Not Marked
+                                    </strong>
+
+                                    <span>
+                                        Today's attendance
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                class="primary-button"
+                                id="attendanceButton"
+                                onclick="markAttendance()"
+                                data-url="{% url 'core:mark_attendance' %}">
+
+                                Mark Attendance
+
+                            </button>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     TODAY'S HEALTH
+                ================================================== -->
+
+                <div class="card health-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Today's Health
+                            </h3>
+
+                            <p>
+                                Your lifestyle summary for today.
+                            </p>
+
+                        </div>
+
+                        <span class="card-icon">
+                            ❤️
+                        </span>
+
+                    </div>
+
+
+                    <div class="health-grid">
+
+
+                        <!-- SLEEP -->
+
+                        <div class="health-item">
+
+                            <div class="health-icon">
+                                😴
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Sleep
+                                </span>
+
+                                <strong>
+
+                                    {% if daily_log.sleep_hours %}
+
+                                        {{ daily_log.sleep_hours }} h
+
+                                    {% else %}
+
+                                        Not recorded
+
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- WATER -->
+
+                        <div class="health-item">
+
+                            <div class="health-icon">
+                                💧
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Water
+                                </span>
+
+                                <strong>
+
+                                    {% if daily_log.water_liters %}
+
+                                        {{ daily_log.water_liters }} L
+
+                                    {% else %}
+
+                                        Not recorded
+
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- NUTRITION -->
+
+                        <div class="health-item">
+
+                            <div class="health-icon">
+                                🥗
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Nutrition
+                                </span>
+
+
+                                {% if daily_log.nutrition %}
+
+                                    <strong class="nutrition-good">
+
+                                        {% if daily_log.nutrition == "excellent" %}
+
+                                            Excellent
+
+                                        {% elif daily_log.nutrition == "good" %}
+
+                                            Good
+
+                                        {% elif daily_log.nutrition == "average" %}
+
+                                            Average
+
+                                        {% elif daily_log.nutrition == "poor" %}
+
+                                            Needs Improvement
+
+                                        {% endif %}
+
+                                    </strong>
+
+                                {% else %}
+
+                                    <strong>
+                                        Not recorded
+                                    </strong>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 BODY COMPOSITION TEST
+            ================================================== -->
+
+            <section class="card composition-card">
+
+                <div class="card-header">
+                    <div>
+                        <span class="composition-eyebrow">
+                            BODY ANALYSIS
+                        </span>
+
+                        <h3>Body Composition Test</h3>
+
+                        <p>
+                            Record your assessment results and track
+                            changes over time.
+                        </p>
+                    </div>
+
+                    <span class="card-icon">⚖️</span>
+                </div>
+
+                <!-- LATEST RESULTS -->
+
+                <div class="composition-values">
+
+                    <div class="composition-value">
+                        <span>Body Fat</span>
+                        <strong>
+                            {% if latest_body_composition %}
+                                {{ latest_body_composition.body_fat_percent|floatformat:1 }}
+                            {% else %}
+                                —
+                            {% endif %}
+                        </strong>
+                        <small>%</small>
+                    </div>
+
+                    <div class="composition-value">
+                        <span>Muscle Mass</span>
+                        <strong>
+                            {% if latest_body_composition %}
+                                {{ latest_body_composition.muscle_mass_kg|floatformat:1 }}
+                            {% else %}
+                                —
+                            {% endif %}
+                        </strong>
+                        <small>kg</small>
+                    </div>
+
+                    <div class="composition-value">
+                        <span>Body Water</span>
+                        <strong>
+                            {% if latest_body_composition %}
+                                {{ latest_body_composition.body_water_percent|floatformat:1 }}
+                            {% else %}
+                                —
+                            {% endif %}
+                        </strong>
+                        <small>%</small>
+                    </div>
+
+                    <div class="composition-value">
+                        <span>BMI</span>
+                        <strong>
+                            {% if latest_body_composition %}
+                                {{ latest_body_composition.bmi|floatformat:1 }}
+                            {% else %}
+                                —
+                            {% endif %}
+                        </strong>
+                        <small>kg/m²</small>
+                    </div>
+
+                </div>
+
+                <!-- FORM ERRORS -->
+
+                {% if body_composition_error %}
+                    <div class="composition-error">
+                        {{ body_composition_error }}
+                    </div>
+                {% endif %}
+
+                <!-- SAVE TEST -->
+
+                <form method="post" class="composition-form">
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="save_body_composition"
+                    >
+
+                    <div class="composition-field">
+                        <label for="composition-date">
+                            Test Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="composition-date"
+                            name="test_date"
+                            value="{% now 'Y-m-d' %}"
+                            max="{% now 'Y-m-d' %}"
+                            required
+                        >
+                    </div>
+
+                    <div class="composition-field">
+                        <label for="composition-fat">
+                            Body Fat (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="composition-fat"
+                            name="body_fat_percent"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            placeholder="e.g. 22.5"
+                            required
+                        >
+                    </div>
+
+                    <div class="composition-field">
+                        <label for="composition-muscle">
+                            Muscle Mass (kg)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="composition-muscle"
+                            name="muscle_mass_kg"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="e.g. 32.4"
+                            required
+                        >
+                    </div>
+
+                    <div class="composition-field">
+                        <label for="composition-water">
+                            Body Water (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="composition-water"
+                            name="body_water_percent"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            placeholder="e.g. 55.2"
+                            required
+                        >
+                    </div>
+
+                    <div class="composition-field">
+                        <label for="composition-bmi">
+                            BMI
+                        </label>
+
+                        <input
+                            type="number"
+                            id="composition-bmi"
+                            name="bmi"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="e.g. 23.4"
+                            required
+                        >
+                    </div>
+
+                    <div class="composition-field composition-full">
+                        <label for="composition-notes">
+                            Notes (optional)
+                        </label>
+
+                        <textarea
+                            id="composition-notes"
+                            name="notes"
+                            rows="2"
+                            placeholder="Assessment device or observations"
+                        ></textarea>
+                    </div>
+
+                    <div class="composition-full">
+                        <button
+                            type="submit"
+                            class="primary-button composition-submit"
+                        >
+                            Save Test Results
+                        </button>
+                    </div>
+
+                </form>
+
+                <!-- RECENT TESTS -->
+
+                <div class="composition-history">
+
+                    <h4>Recent Tests</h4>
+
+                    {% for test in recent_body_composition_tests %}
+
+                        <div class="composition-history-row">
+                            <span>
+                                {{ test.test_date|date:"d M Y" }}
+                            </span>
+
+                            <strong>
+                                Fat {{ test.body_fat_percent|floatformat:1 }}%
+                                · Muscle {{ test.muscle_mass_kg|floatformat:1 }} kg
+                            </strong>
+                        </div>
+
+                    {% empty %}
+
+                        <p class="composition-note">
+                            No test results recorded yet.
+                            Add your first assessment above.
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+                <p class="composition-note">
+                    Enter results from your assessment or body-composition
+                    device. FitConnect records the values you provide.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 LAST WEEK'S PROGRESS
+            ================================================== -->
+
+            <section class="card weekly-progress-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h3>
+                            Last Week's Progress
+                        </h3>
+
+                        <p>
+                            Your lifestyle and consistency
+                            over the last 7 days.
+                        </p>
+
+                    </div>
+
+                    <span class="card-icon">
+                        📊
+                    </span>
+
+                </div>
+
+
+                <!-- WEEKLY SUMMARY -->
+
+                <div class="weekly-summary">
+
+
+                    <!-- ATTENDANCE -->
+
+                    <div class="weekly-stat">
+
+                        <div class="weekly-stat-icon">
+                            🏃
+                        </div>
+
+                        <div class="weekly-stat-content">
+
+                            <span>
+                                Attendance
+                            </span>
+
+                            <strong>
+                                {{ attendance_count }}/7
+                            </strong>
+
+                            <small>
+                                days attended
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- SLEEP -->
+
+                    <div class="weekly-stat">
+
+                        <div class="weekly-stat-icon">
+                            😴
+                        </div>
+
+                        <div class="weekly-stat-content">
+
+                            <span>
+                                Average Sleep
+                            </span>
+
+                            <strong>
+
+                                {% if avg_sleep is not None %}
+
+                                    {{ avg_sleep|floatformat:1 }} h
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </strong>
+
+                            <small>
+                                per recorded day
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- WATER -->
+
+                    <div class="weekly-stat">
+
+                        <div class="weekly-stat-icon">
+                            💧
+                        </div>
+
+                        <div class="weekly-stat-content">
+
+                            <span>
+                                Average Water
+                            </span>
+
+                            <strong>
+
+                                {% if avg_water is not None %}
+
+                                    {{ avg_water|floatformat:1 }} L
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </strong>
+
+                            <small>
+                                per recorded day
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- NUTRITION -->
+
+                    <div class="weekly-stat">
+
+                        <div class="weekly-stat-icon">
+                            🥗
+                        </div>
+
+                        <div class="weekly-stat-content">
+
+                            <span>
+                                Nutrition
+                            </span>
+
+                            <strong>
+
+                                {% if nutrition_consistency %}
+
+                                    {{ nutrition_consistency }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </strong>
+
+                            <small>
+
+                                {% if nutrition_days %}
+
+                                    {{ nutrition_days }}
+                                    day{{ nutrition_days|pluralize }}
+                                    logged
+
+                                {% else %}
+
+                                    Not recorded
+
+                                {% endif %}
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- WEEKLY PERFORMANCE -->
+
+                <div class="performance-section">
+
+                    <div class="performance-header">
+
+                        <div>
+
+                            <strong>
+                                Weekly Performance
+                            </strong>
+
+                            <span>
+                                Your overall lifestyle consistency.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="performance-placeholder">
+
+                        <div class="performance-placeholder-icon">
+                            📈
+                        </div>
+
+                        <span>
+                            Your 7-day performance graph will appear here.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LIFESTYLE + IMPROVEMENT
+            ================================================== -->
+
+            <section class="lifestyle-grid">
+
+
+                <!-- =================================================
+                     LIFESTYLE TRACKER
+                ================================================== -->
+
+                <div class="card lifestyle-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Lifestyle Tracker
+                            </h3>
+
+                            <p>
+                                Record today's health information.
+                            </p>
+
+                        </div>
+
+                        <span class="card-icon">
+                            ✦
+                        </span>
+
+                    </div>
+
+
+                    <form
+                        id="lifestyleForm"
+                        onsubmit="saveLifestyle(event)">
+
+                        {% csrf_token %}
+
+
+                        <!-- SLEEP -->
+
+                        <div class="form-group">
+
+                            <label for="sleep">
+                                Sleep
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <input
+                                    type="number"
+                                    id="sleep"
+                                    name="sleep"
+                                    min="0"
+                                    max="24"
+                                    step="0.1"
+                                    placeholder="7.5">
+
+                                <span>
+                                    hours
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- WATER -->
+
+                        <div class="form-group">
+
+                            <label for="water">
+                                Water Intake
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <input
+                                    type="number"
+                                    id="water"
+                                    name="water"
+                                    min="0"
+                                    max="20"
+                                    step="0.1"
+                                    placeholder="2.5">
+
+                                <span>
+                                    liters
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- NUTRITION -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Nutrition
+                            </label>
+
+                            <div class="nutrition-inputs">
+
+
+                                <!-- CALORIES -->
+
+                                <div class="input-wrapper">
+
+                                    <input
+                                        type="number"
+                                        id="calories"
+                                        name="calories"
+                                        min="0"
+                                        max="10000"
+                                        step="1"
+                                        placeholder="2000">
+
+                                    <span>
+                                        kcal
+                                    </span>
+
+                                </div>
+
+
+
+                                <!-- PROTEIN -->
+
+                                <div class="input-wrapper">
+
+                                    <input
+                                        type="number"
+                                        id="protein"
+                                        name="protein"
+                                        min="0"
+                                        max="500"
+                                        step="0.1"
+                                        placeholder="120">
+
+                                    <span>
+                                        g protein
+                                    </span>
+
+                                </div>
+
+
+
+                                <!-- CARBS -->
+
+                                <div class="input-wrapper">
+
+                                    <input
+                                        type="number"
+                                        id="carbs"
+                                        name="carbs"
+                                        min="0"
+                                        max="1000"
+                                        step="0.1"
+                                        placeholder="250">
+
+                                    <span>
+                                        g carbs
+                                    </span>
+
+                                </div>
+
+
+
+                                <!-- FIBER -->
+
+                                <div class="input-wrapper">
+
+                                    <input
+                                        type="number"
+                                        id="fiber"
+                                        name="fiber"
+                                        min="0"
+                                        max="200"
+                                        step="0.1"
+                                        placeholder="30">
+
+                                    <span>
+                                        g fiber
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- NUTRITION QUALITY -->
+
+                        <div class="form-group">
+
+                            <label for="nutrition">
+                                Nutrition Quality
+                            </label>
+
+                            <select
+                                id="nutrition"
+                                name="nutrition">
+
+                                <option value="">
+                                    Select today's nutrition
+                                </option>
+
+                                <option value="excellent">
+                                    Excellent
+                                </option>
+
+                                <option value="good">
+                                    Good
+                                </option>
+
+                                <option value="average">
+                                    Average
+                                </option>
+
+                                <option value="poor">
+                                    Needs Improvement
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- SAVE -->
+
+                        <button
+                            type="submit"
+                            class="primary-button full-width">
+
+                            Save Today's Data
+
+                        </button>
+
+                    </form>
+
+
+                    <p
+                        id="saveMessage"
+                        class="save-message">
+                    </p>
+
+                </div>
+
+<section class="card step-counter-card">
+    <div class="step-counter-header">
+        <div>
+            <span class="step-counter-eyebrow">DAILY ACTIVITY</span>
+            <h3>Daily Step Counter</h3>
+            <p>Track your daily movement manually.</p>
+        </div>
+        <span class="step-counter-icon">👟</span>
+    </div>
+
+    <div class="step-counter-summary">
+        <span class="step-counter-label">TODAY'S STEPS</span>
+        <div class="step-counter-number">
+            {{ today_steps|default:0 }}
+            <span>steps</span>
+        </div>
+
+        <div class="step-progress-track">
+            <div
+                class="step-progress-fill"
+                style="width: {{ step_progress }}%;"
+            ></div>
+        </div>
+
+        <div class="step-progress-details">
+            <span>Goal: {{ step_goal }} steps</span>
+            <strong>{{ step_progress }}%</strong>
+        </div>
+    </div>
+
+    {% if step_count_error %}
+        <div class="step-counter-error">
+            {{ step_count_error }}
+        </div>
+    {% endif %}
+
+    <form method="post" class="step-counter-form">
+        {% csrf_token %}
+
+        <input
+            type="hidden"
+            name="action"
+            value="save_daily_steps"
+        >
+
+        <label for="step-date">Date</label>
+        <input
+            type="date"
+            id="step-date"
+            name="step_date"
+            value="{% now 'Y-m-d' %}"
+            max="{% now 'Y-m-d' %}"
+            required
+        >
+
+        <label for="step-count">Steps walked</label>
+        <input
+            type="number"
+            id="step-count"
+            name="steps"
+            min="0"
+            max="1000000"
+            step="1"
+            placeholder="e.g. 6500"
+            required
+        >
+
+        <button
+            type="submit"
+            class="step-counter-submit"
+        >
+            Save Daily Steps
+        </button>
+    </form>
+
+    <div class="step-counter-history">
+        <h4>Recent Step History</h4>
+
+        {% for entry in recent_step_counts %}
+            <div class="step-history-row">
+                <span>{{ entry.date|date:"d M Y" }}</span>
+                <strong>{{ entry.steps }} steps</strong>
+            </div>
+        {% empty %}
+            <p class="step-counter-note">
+                No step entries yet. Record your first day above.
+            </p>
+        {% endfor %}
+    </div>
+</section>
+
+
+
+                <!-- =================================================
+                     WHAT TO IMPROVE
+                ================================================== -->
+
+              
+</a>
+            </section>
+
+
+
+            <!-- =================================================
+                 WEEKLY LIFESTYLE TREND
+            ================================================== -->
+
+            
+
+
+        </div>
+{% endblock %}
+
+{% block page_js %}
+{{ trend_data|json_script:"trend-data" }}
+
+
+<script>
+
+    window.trendData = JSON.parse(
+        document.getElementById("trend-data").textContent
+    );
+
+</script>
+
+<script src="{% static 'js/client-dashboard.js' %}?v=3"></script>
+{% endblock %}

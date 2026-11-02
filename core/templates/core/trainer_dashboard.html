@@ -1,0 +1,1356 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Trainer Dashboard | FitConnect</title>
+
+
+    <!-- =====================================================
+         SHARED FITCONNECT STYLES
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+
+    <!-- =====================================================
+         TRAINER DASHBOARD STYLES
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/trainer-dashboard.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="sidebar-logo">
+
+            <h2>
+                FitConnect
+            </h2>
+
+            <span>
+                Trainer Panel
+            </span>
+
+        </div>
+
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="{% url 'core:trainer_dashboard' %}"
+                class="nav-item active"
+            >
+
+                <span class="nav-icon">
+                    ▣
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+
+            <!-- CLIENTS -->
+
+            <a
+                href="{% url 'core:trainer_clients' %}"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    👥
+                </span>
+
+                <span>
+                    Clients
+                </span>
+
+            </a>
+
+
+
+            <!-- QUERIES -->
+
+           <a href="{% url 'core:trainer_queries' %}"
+   class="nav-item ">
+    <span class="nav-icon">💬</span>
+    <span>Queries &amp; Support</span>
+</a>
+
+
+
+            <!-- SCHEDULE -->
+
+
+
+            <!-- PROGRESS -->
+
+           
+
+
+            <!-- PROFILE -->
+
+          
+
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =====================================================
+             TOPBAR
+        ====================================================== -->
+
+        <header class="topbar">
+
+
+            <div class="topbar-date">
+
+                <span class="topbar-label">
+                    Today
+                </span>
+
+                <strong>
+                    {{ today|date:"l, F j, Y" }}
+                </strong>
+
+            </div>
+
+
+
+            <div class="trainer-profile">
+
+
+                <div class="trainer-avatar">
+                    T
+                </div>
+
+
+                <div class="trainer-info">
+
+                    <strong>
+                        Trainer
+                    </strong>
+
+                    <span>
+                        FitConnect
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =====================================================
+             PAGE HEADER
+        ====================================================== -->
+
+        <section class="page-header">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    TRAINER PANEL
+                </span>
+
+                <h1>
+                    Trainer Dashboard
+                </h1>
+
+                <p>
+                    Manage your clients, track attendance and respond
+                    to support requests.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             DATE NAVIGATION
+        ====================================================== -->
+
+        <section class="date-navigation">
+
+
+            <!-- PREVIOUS DAY -->
+
+            {% if previous_date %}
+
+                <a
+                    href="?date={{ previous_date|date:'Y-m-d' }}"
+                    class="date-arrow"
+                    aria-label="Previous day"
+                >
+                    ←
+                </a>
+
+            {% else %}
+
+                <span
+                    class="date-arrow disabled"
+                    aria-disabled="true"
+                >
+                    ←
+                </span>
+
+            {% endif %}
+
+
+
+            <!-- SELECTED DATE -->
+
+            <div class="selected-date">
+
+                <span class="date-label">
+                    Selected Date
+                </span>
+
+                <strong>
+                    {{ selected_date|date:"l, F j, Y" }}
+                </strong>
+
+
+                {% if selected_date == today %}
+
+                    <span class="today-indicator">
+                        Today
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- NEXT DAY -->
+
+            {% if next_date %}
+
+                <a
+                    href="?date={{ next_date|date:'Y-m-d' }}"
+                    class="date-arrow"
+                    aria-label="Next day"
+                >
+                    →
+                </a>
+
+            {% else %}
+
+                <span
+                    class="date-arrow disabled"
+                    aria-disabled="true"
+                >
+                    →
+                </span>
+
+            {% endif %}
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             CALENDAR
+        ====================================================== -->
+
+        <section class="calendar-section">
+
+
+            <div class="calendar-wrapper">
+
+
+                <button
+                    type="button"
+                    id="calendarToggle"
+                    class="calendar-toggle"
+                >
+
+                    <span>
+                        📅
+                    </span>
+
+                    <span>
+                        Calendar
+                    </span>
+
+                </button>
+
+
+
+                <!-- CALENDAR POPUP -->
+
+                <div
+                    id="calendarPopup"
+                    class="calendar-popup"
+                >
+
+
+                    <!-- CALENDAR HEADER -->
+
+                    <div class="calendar-popup-header">
+
+
+                        <!-- PREVIOUS MONTH -->
+
+                        {% if previous_month_date %}
+
+                            <a
+                                href="?date={{ previous_month_date }}"
+                                class="calendar-month-button"
+                                aria-label="Previous month"
+                            >
+                                ←
+                            </a>
+
+                        {% else %}
+
+                            <span
+                                class="calendar-month-button disabled"
+                                aria-disabled="true"
+                            >
+                                ←
+                            </span>
+
+                        {% endif %}
+
+
+
+                        <!-- MONTH -->
+
+                        <div class="calendar-month-title">
+
+                            <span>
+                                Calendar
+                            </span>
+
+                            <h3>
+                                {{ selected_date|date:"F Y" }}
+                            </h3>
+
+                        </div>
+
+
+
+                        <!-- NEXT MONTH -->
+
+                        {% if next_month_date %}
+
+                            <a
+                                href="?date={{ next_month_date }}"
+                                class="calendar-month-button"
+                                aria-label="Next month"
+                            >
+                                →
+                            </a>
+
+                        {% else %}
+
+                            <span
+                                class="calendar-month-button disabled"
+                                aria-disabled="true"
+                            >
+                                →
+                            </span>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+
+                    <!-- WEEK DAYS -->
+
+                    <div class="calendar-days calendar-weekdays">
+
+                        <span>Mon</span>
+                        <span>Tue</span>
+                        <span>Wed</span>
+                        <span>Thu</span>
+                        <span>Fri</span>
+                        <span>Sat</span>
+                        <span>Sun</span>
+
+                    </div>
+
+
+
+                    <!-- DATES -->
+
+                    <div class="calendar-days">
+
+
+                        {% for week in calendar_weeks %}
+
+                            {% for day in week %}
+
+
+                                {% if day <= today %}
+
+
+                                    <a
+                                        href="?date={{ day|date:'Y-m-d' }}"
+                                        class="
+                                            calendar-day
+
+                                            {% if day.month != calendar_month %}
+                                                other-month
+                                            {% endif %}
+
+                                            {% if day == today %}
+                                                today
+                                            {% endif %}
+
+                                            {% if day == selected_date %}
+                                                selected
+                                            {% endif %}
+                                        "
+                                    >
+
+                                        {{ day.day }}
+
+                                    </a>
+
+
+                                {% else %}
+
+
+                                    <span
+                                        class="
+                                            calendar-day
+                                            future-date
+
+                                            {% if day.month != calendar_month %}
+                                                other-month
+                                            {% endif %}
+                                        "
+                                        aria-disabled="true"
+                                    >
+
+                                        {{ day.day }}
+
+                                    </span>
+
+
+                                {% endif %}
+
+
+                            {% endfor %}
+
+                        {% endfor %}
+
+
+                    </div>
+
+
+
+                    <!-- CALENDAR LEGEND -->
+
+                    <div class="calendar-legend">
+
+
+                        <span>
+
+                            <i class="legend-dot today-dot"></i>
+
+                            Today
+
+                        </span>
+
+
+                        <span>
+
+                            <i class="legend-dot selected-dot"></i>
+
+                            Selected
+
+                        </span>
+
+
+                        <span>
+
+                            <i class="legend-dot future-dot"></i>
+
+                            Unavailable
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             CLIENT ATTENDANCE
+        ====================================================== -->
+
+        <section class="dashboard-card attendance-card">
+
+
+            <!-- ATTENDANCE HEADER -->
+
+            <div class="card-header">
+
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        DAILY TRACKING
+                    </span>
+
+                    <h2>
+                        Clients Attendance
+                    </h2>
+
+                    <p>
+                        Attendance overview for
+                        {{ selected_date|date:"F j, Y" }}
+                    </p>
+
+                </div>
+
+
+
+                <div class="attendance-summary">
+
+                    <span class="client-count">
+
+                        {{ clients|length }}
+
+                        <small>
+                            Total Clients
+                        </small>
+
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ATTENDANCE INFORMATION -->
+
+            <div class="attendance-info-bar">
+
+
+                <div class="attendance-info-item">
+
+                    <span class="info-dot present-dot"></span>
+
+                    <span>
+                        Present
+                    </span>
+
+                </div>
+
+
+
+                <div class="attendance-info-item">
+
+                    <span class="info-dot waiting-dot"></span>
+
+                    <span>
+                        Waiting for client
+                    </span>
+
+                </div>
+
+
+
+                {% if selected_date == today %}
+
+
+                    <div class="attendance-info-note">
+
+                        <span>
+                            ℹ
+                        </span>
+
+                        <span>
+                            You can mark attendance for today only.
+                        </span>
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <div class="attendance-info-note">
+
+                        <span>
+                            🔒
+                        </span>
+
+                        <span>
+                            Previous dates are read-only.
+                        </span>
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+
+            <!-- ATTENDANCE TABLE -->
+
+            <div class="attendance-table-wrapper">
+
+
+                <table class="attendance-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Client
+                            </th>
+
+                            <th>
+                                Attendance
+                            </th>
+
+                            <th>
+                                Marked By
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                        {% for item in clients %}
+
+
+                            <tr>
+
+
+                                <!-- CLIENT -->
+
+                                <td>
+
+                                    <div class="client-cell">
+
+
+                                        <div class="client-avatar">
+
+                                            {{ item.client.user.username|first|upper }}
+
+                                        </div>
+
+
+                                        <div class="client-details">
+
+                                            <strong>
+                                                {{ item.client.user.username }}
+                                            </strong>
+
+                                            <span>
+                                                FitConnect Client
+                                            </span>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </td>
+
+
+
+                                <!-- ATTENDANCE -->
+
+                                <td>
+
+
+                                    {% if item.attendance %}
+
+
+                                        <span class="attendance-status present">
+
+                                            <span class="status-icon">
+                                                ✓
+                                            </span>
+
+                                            Present
+
+                                        </span>
+
+
+                                    {% else %}
+
+
+                                        <span class="attendance-status absent">
+
+                                            <span class="status-icon">
+                                                —
+                                            </span>
+
+                                            Not marked
+
+                                        </span>
+
+
+                                    {% endif %}
+
+
+                                </td>
+
+
+
+                                <!-- MARKED BY -->
+
+
+<!-- MARKED BY -->
+<td>
+    {% if item.client_marked and item.trainer_marked %}
+
+        <span class="attendance-source client-marked">
+            <span class="source-dot"></span>
+            Client &amp; Trainer marked
+        </span>
+
+    {% elif item.client_marked %}
+
+        <span class="attendance-source client-marked">
+            <span class="source-dot"></span>
+            Client marked
+        </span>
+
+    {% elif item.trainer_marked %}
+
+        <span class="attendance-source trainer-marked">
+            <span class="source-dot"></span>
+            Trainer marked
+        </span>
+
+    {% elif item.attendance %}
+
+        <span class="attendance-source trainer-marked">
+            <span class="source-dot"></span>
+            Previously marked
+        </span>
+
+    {% else %}
+
+        <span class="attendance-source waiting">
+            <span class="source-dot"></span>
+            Not marked
+        </span>
+
+    {% endif %}
+</td>
+
+
+                              
+<td>
+    {% if selected_date == today and not item.trainer_marked %}
+
+        <form
+            method="POST"
+            action="{% url 'core:trainer_mark_attendance' item.client.id %}"
+            class="attendance-form"
+        >
+            {% csrf_token %}
+
+            <button type="submit" class="attendance-action">
+                <span>✓</span>
+                Mark Present
+            </button>
+        </form>
+
+    {% elif item.trainer_marked %}
+
+        <span class="attendance-locked recorded">
+            <span>✓</span>
+            Recorded
+        </span>
+
+    {% else %}
+
+        <span class="attendance-locked">
+            <span>🔒</span>
+            Read only
+        </span>
+
+    {% endif %}
+</td>
+
+
+                            </tr>
+
+
+                        {% empty %}
+
+
+                            <tr>
+
+                                <td
+                                    colspan="4"
+                                    class="empty-state"
+                                >
+
+
+                                    <div class="empty-state-icon">
+                                        👥
+                                    </div>
+
+
+                                    <strong>
+                                        No clients assigned
+                                    </strong>
+
+
+                                    <p>
+                                        You don't have any clients assigned
+                                        to your trainer account yet.
+                                    </p>
+
+
+                                </td>
+
+                            </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+
+            <!-- ATTENDANCE FOOTER -->
+
+            {% if clients %}
+
+
+                <div class="attendance-footer">
+
+
+                    <span>
+
+                        Showing attendance for
+
+                        <strong>
+                            {{ selected_date|date:"F j, Y" }}
+                        </strong>
+
+                    </span>
+
+
+
+                    {% if selected_date == today %}
+
+
+                        <span class="footer-status">
+                            ● Live attendance
+                        </span>
+
+
+                    {% else %}
+
+
+                        <span class="footer-status locked">
+                            🔒 Historical record
+                        </span>
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             BOTTOM GRID
+        ====================================================== -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- =================================================
+                 QUERIES
+            ================================================== -->
+
+            <div class="dashboard-card queries-card">
+
+
+                <div class="card-header">
+
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            SUPPORT
+                        </span>
+
+                        <h2>
+                            Queries &amp; Support
+                        </h2>
+
+                        <p>
+                            Client queries waiting for your response.
+                        </p>
+
+                    </div>
+
+
+                    <span class="query-count">
+                        {{ pending_query_count }}
+                    </span>
+
+
+                </div>
+
+
+
+                {% if pending_queries %}
+
+
+                    <div class="query-list">
+
+
+                        {% for query in pending_queries %}
+
+
+                            <article class="trainer-query">
+
+
+                                <div class="query-content">
+
+
+                                    <div class="query-title">
+
+                                        <h3>
+                                            {{ query.subject }}
+                                        </h3>
+
+                                        <span>
+                                            {{ query.get_category_display }}
+                                        </span>
+
+                                    </div>
+
+
+                                    <p>
+                                        {{ query.message|truncatechars:120 }}
+                                    </p>
+
+
+                                    <small>
+
+                                        From
+
+                                        <strong>
+                                            {{ query.client.user.username }}
+                                        </strong>
+
+                                        ·
+
+                                        {{ query.created_at|date:"F j, Y" }}
+
+                                    </small>
+
+
+                                </div>
+
+
+
+                                <a
+                                    href="{% url 'core:trainer_query_detail' query.id %}"
+                                    class="query-button"
+                                >
+
+                                    View
+
+                                    <span>
+                                        →
+                                    </span>
+
+                                </a>
+
+
+                            </article>
+
+
+                        {% endfor %}
+
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <div class="empty-card">
+
+
+                        <div class="empty-icon">
+                            ✓
+                        </div>
+
+
+                        <p>
+                            No pending queries.
+                        </p>
+
+
+                        <span>
+                            You're all caught up.
+                        </span>
+
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MEMBERSHIP
+            ================================================== -->
+
+            <div class="dashboard-card membership-card">
+
+
+                <div class="card-header">
+
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            CLIENT OVERVIEW
+                        </span>
+
+                        <h2>
+                            Membership Status
+                        </h2>
+
+                        <p>
+                            Track your clients' membership periods.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="membership-list">
+
+
+                    {% for item in clients %}
+
+
+                        <div class="membership-item">
+
+
+                            <div class="membership-client">
+
+
+                                <div class="client-avatar">
+
+                                    {{ item.client.user.username|first|upper }}
+
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        {{ item.client.user.username }}
+                                    </strong>
+
+
+                                    {% if item.client.membership_end %}
+
+                                        <span>
+
+                                            Ends
+                                            {{ item.client.membership_end|date:"M j, Y" }}
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span>
+                                            No end date
+                                        </span>
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="membership-days">
+
+
+                                {% if item.days_remaining is not None %}
+
+
+                                    {% if item.days_remaining < 0 %}
+
+
+                                        <strong class="expired">
+                                            Expired
+                                        </strong>
+
+
+                                    {% elif item.days_remaining <= 7 %}
+
+
+                                        <strong class="ending-soon">
+
+                                            {{ item.days_remaining }}
+
+                                            {% if item.days_remaining == 1 %}
+                                                day
+                                            {% else %}
+                                                days
+                                            {% endif %}
+
+                                        </strong>
+
+
+                                    {% else %}
+
+
+                                        <strong>
+
+                                            {{ item.days_remaining }}
+
+                                            days
+
+                                        </strong>
+
+
+                                    {% endif %}
+
+
+                                {% else %}
+
+
+                                    <strong>
+                                        —
+                                    </strong>
+
+
+                                {% endif %}
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    {% empty %}
+
+
+                        <div class="empty-card">
+
+                            <p>
+                                No clients available.
+                            </p>
+
+                        </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =============================================================
+     CALENDAR JAVASCRIPT
+============================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const calendarToggle =
+        document.getElementById("calendarToggle");
+
+    const calendarPopup =
+        document.getElementById("calendarPopup");
+
+
+    if (!calendarToggle || !calendarPopup) {
+        return;
+    }
+
+
+    /* =========================================================
+       OPEN / CLOSE CALENDAR
+    ========================================================== */
+
+    calendarToggle.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        calendarPopup.classList.toggle("show");
+
+    });
+
+
+    /* =========================================================
+       CLOSE WHEN CLICKING OUTSIDE
+    ========================================================== */
+
+    document.addEventListener("click", function (event) {
+
+        if (
+            !calendarPopup.contains(event.target) &&
+            !calendarToggle.contains(event.target)
+        ) {
+
+            calendarPopup.classList.remove("show");
+
+        }
+
+    });
+
+
+    /* =========================================================
+       CLOSE WITH ESCAPE
+    ========================================================== */
+
+    document.addEventListener("keydown", function (event) {
+
+        if (event.key === "Escape") {
+
+            calendarPopup.classList.remove("show");
+
+        }
+
+    });
+
+});
+
+</script>
+
+
+</body>
+
+</html>

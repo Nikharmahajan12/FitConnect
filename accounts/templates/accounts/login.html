@@ -1,0 +1,236 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | FitConnect</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}?v=2"
+    >
+
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            background: #171321;
+            border: 1px solid #2d263d;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 32px;
+        }
+
+        .login-logo p {
+            margin-top: 8px;
+            color: #a9a1b8;
+            font-size: 14px;
+        }
+
+        .login-card h2 {
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .login-subtitle {
+            color: #a9a1b8;
+            margin-bottom: 28px;
+            font-size: 14px;
+        }
+
+        .login-field {
+            margin-bottom: 20px;
+        }
+
+        .login-field label {
+            display: block;
+            color: #ddd6e8;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .login-field input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 15px;
+            border-radius: 10px;
+            border: 1px solid #393148;
+            background: #0f0c16;
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .login-field input:focus {
+            border-color: #9b7cff;
+        }
+
+        .login-button {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            background: #8b6ff7;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .login-button:hover {
+            background: #795ce8;
+        }
+
+        .login-error {
+            background: rgba(220, 70, 90, 0.12);
+            border: 1px solid rgba(220, 70, 90, 0.35);
+            color: #ff9da9;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* =========================
+           SIGN UP SECTION
+        ========================= */
+
+        .login-signup {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 22px;
+            border-top: 1px solid #2d263d;
+            color: #9f97ad;
+            font-size: 14px;
+        }
+
+        .login-signup a {
+            color: #a78bfa;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+            transition: color 0.2s ease;
+        }
+
+        .login-signup a:hover {
+            color: #c4b5fd;
+            text-decoration: underline;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #8f879e;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <div class="login-logo">
+            <h1>FitConnect</h1>
+            <p>Your fitness journey, connected.</p>
+        </div>
+
+        <h2>Welcome back</h2>
+
+        <p class="login-subtitle">
+            Login to continue to your FitConnect account.
+        </p>
+
+        {% if error %}
+            <div class="login-error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="login-field">
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    required
+                >
+            </div>
+
+            <div class="login-field">
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+            </div>
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+                Login
+            </button>
+
+        </form>
+
+        <!-- SIGN UP LINK -->
+
+        <div class="login-signup">
+            <span>Don't have an account?</span>
+
+            <a href="{% url 'accounts:register' %}">
+                Sign Up
+            </a>
+        </div>
+
+        <div class="login-footer">
+            FitConnect
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

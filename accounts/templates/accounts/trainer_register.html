@@ -1,0 +1,342 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Trainer Registration | FitConnect</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}?v=2"
+    >
+
+    <style>
+        .trainer-register-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .trainer-register-card {
+            width: 100%;
+            max-width: 500px;
+            background: #171321;
+            border: 1px solid #2d263d;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .trainer-register-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .trainer-register-logo h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 32px;
+        }
+
+        .trainer-register-logo p {
+            margin-top: 8px;
+            color: #a9a1b8;
+            font-size: 14px;
+        }
+
+        .trainer-register-card h2 {
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .trainer-register-subtitle {
+            color: #a9a1b8;
+            margin-bottom: 28px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .trainer-field {
+            margin-bottom: 20px;
+        }
+
+        .trainer-field label {
+            display: block;
+            color: #ddd6e8;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .trainer-field input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 15px;
+            border-radius: 10px;
+            border: 1px solid #393148;
+            background: #0f0c16;
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .trainer-field input:focus {
+            border-color: #9b7cff;
+        }
+
+        .trainer-hint {
+            display: block;
+            margin-top: 6px;
+            color: #777083;
+            font-size: 12px;
+        }
+
+        .trainer-register-button {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            background: #8b6ff7;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .trainer-register-button:hover {
+            background: #795ce8;
+        }
+
+        .trainer-error {
+            background: rgba(220, 70, 90, 0.12);
+            border: 1px solid rgba(220, 70, 90, 0.35);
+            color: #ff9da9;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .trainer-login {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 22px;
+            border-top: 1px solid #2d263d;
+            color: #9f97ad;
+            font-size: 14px;
+        }
+
+        .trainer-login a {
+            color: #a78bfa;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .trainer-login a:hover {
+            color: #c4b5fd;
+            text-decoration: underline;
+        }
+
+        .trainer-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #8f879e;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="trainer-register-page">
+
+    <div class="trainer-register-card">
+
+        <div class="trainer-register-logo">
+            <h1>FitConnect</h1>
+            <p>Your fitness journey, connected.</p>
+        </div>
+
+        <h2>Create Trainer Account</h2>
+
+        <p class="trainer-register-subtitle">
+            Set up your trainer account to manage your clients,
+            workouts and fitness plans.
+        </p>
+
+        {% if error %}
+            <div class="trainer-error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <!-- =========================
+             TRAINER REGISTRATION FORM
+        ========================== -->
+
+        <form
+            method="POST"
+            action="{% url 'accounts:trainer_register' %}"
+        >
+
+            {% csrf_token %}
+
+            <!-- FULL NAME -->
+
+            <div class="trainer-field">
+
+                <label for="full_name">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="full_name"
+                    name="full_name"
+                    placeholder="Enter your full name"
+                    value="{{ form_data.full_name|default:'' }}"
+                    autocomplete="name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- USERNAME -->
+
+            <div class="trainer-field">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Choose a username"
+                    value="{{ form_data.username|default:'' }}"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="trainer-field">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email address"
+                    value="{{ form_data.email|default:'' }}"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="trainer-field">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter 6-digit password"
+                    pattern="[0-9]{6}"
+                    maxlength="6"
+                    minlength="6"
+                    inputmode="numeric"
+                    autocomplete="new-password"
+                    required
+                >
+
+                <span class="trainer-hint">
+                    Password must contain exactly 6 digits.
+                </span>
+
+            </div>
+
+
+            <!-- CONFIRM PASSWORD -->
+
+            <div class="trainer-field">
+
+                <label for="confirm_password">
+                    Confirm Password
+                </label>
+
+                <input
+                    type="password"
+                    id="confirm_password"
+                    name="confirm_password"
+                    placeholder="Re-enter your password"
+                    pattern="[0-9]{6}"
+                    maxlength="6"
+                    minlength="6"
+                    inputmode="numeric"
+                    autocomplete="new-password"
+                    required
+                >
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="trainer-register-button"
+            >
+                Create Trainer Account
+            </button>
+
+        </form>
+
+
+        <!-- =========================
+             LOGIN LINK
+        ========================== -->
+
+        <div class="trainer-login">
+
+            <span>Already have a trainer account?</span>
+
+            <a href="{% url 'accounts:login' %}">
+                Login
+            </a>
+
+        </div>
+
+
+        <div class="trainer-footer">
+            FitConnect
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
